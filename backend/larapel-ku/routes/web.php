@@ -17,9 +17,6 @@ use App\Http\Controllers\LoginController;
 
 Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('/register', 'Auth\RegisterController@register')->middleware('web');
-Route::get('/registration-success', function () {
-    return view('registration-success');
-})->name('registration-success'); // Tambahkan nama rute 'registration-success'
 
 Route::get('/actionlogin', [LoginController::class, 'login'])->name('login');
 Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actionlogin');
