@@ -18,6 +18,7 @@ function LoginForm() {
       </div>
       <div className="w-1/2 flex justify-center items-center">
         <div className="bg-white shadow-md rounded px-8 py-8">
+          <h1 className="text-center text-2xl font-bold mb-4">MyRoti</h1>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
               Username
