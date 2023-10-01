@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Crypt;
+
 
 class RegisterController extends Controller
 {
@@ -68,14 +69,11 @@ class RegisterController extends Controller
 
      protected function create(array $data)
      {
+        $passwordEncrypted = Crypt::encryptString($data['password']);
          return User::create([
              'username' => $data['username'],
              'nama' => $data['name'],
-             'password' => Hash::make($data['password']), // Menggunakan Hash untuk mengamankan kata sandi
+             'password' => $passwordEncrypted, 
          ]);
-         if ($user) {
-            return redirect()->route('login')->with('registrationSuccess', 'Registrasi berhasil, beralih ke halaman login.');
-        }
-        return $user;
      }
 }
