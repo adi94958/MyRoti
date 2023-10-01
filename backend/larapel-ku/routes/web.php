@@ -22,3 +22,9 @@ Route::get('/actionlogin', [LoginController::class, 'login'])->name('login');
 Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actionlogin');
 Route::get('home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout')->middleware('auth');
+
+Route::get('/datakoor', 'DataKoordinatorController@index')->name('datakoor.index');
+// Route::get('/datakoor/edit/{username}', 'DataKoordinatorController@edit')->name('edit.koordinator');
+// Route::get('/datakoor/delete/{username}', 'DataKoordinatorController@delete')->name('delete.koordinator');
+
+
