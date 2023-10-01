@@ -11,13 +11,17 @@ function LoginForm() {
     console.log('Password:', password);
   };
 
+  const backgroundColorStyle = {
+    backgroundColor: 'burlywood',
+  };
+  
   return (
     <div className="flex h-screen">
       <div className="w-[80%] bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }}>
         {/* Isi gambar latar belakang */}
       </div>
-      <div className="w-1/2 flex justify-center items-center">
-        <div className="bg-white shadow-md rounded px-8 py-8">
+      <div className="w-1/2 flex justify-center items-center" style={backgroundColorStyle}>
+        <div className="bg-white shadow-md rounded px-12 py-12">
           <h1 className="text-center text-2xl font-bold mb-4">MyRoti</h1>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
