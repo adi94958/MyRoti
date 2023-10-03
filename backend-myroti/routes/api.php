@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataKurirController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DataKoordinatorController;
+use App\Http\Controllers\LapakController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::middleware(['auth:sanctum', 'check.user.type:admin'])->group(function () 
 });
 Route::middleware(['auth:sanctum', 'check.user.type:koordinator'])->group(function () {
     // Koordinator routes here
+    Route::get('/koordinator/lapak', [LapakController::class, 'readDataLapak']);
 });
 Route::middleware(['auth:sanctum', 'check.user.type:kurir'])->group(function () {
     // Kurir routes here

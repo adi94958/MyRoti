@@ -22,34 +22,34 @@ class UserSeeder extends Seeder
         //     'created_at' => Carbon::now(),
         //     'updated_at' => Carbon::now(),
         // ]);
-        // DB::table('koordinators')->insert([
-        //     'username' => 'koordinator',
-        //     'password' => Hash::make('123'),
-        //     'nama' => 'Adi',
-        //     'user_type' => 'koordinator',
-        //     'created_at' => Carbon::now(),
-        //     'updated_at' => Carbon::now(),
-        // ]);
-        DB::table('kurirs')->insert([
-            [
-                'username' => 'kurir2',
-                'password' => Hash::make('123456'),
-                'nama' => 'Adrian',
-                'area' => 'Bandung Barat',
-                'user_type' => 'kurir',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'username' => 'kurir3',
-                'password' => Hash::make('123456'),
-                'nama' => 'Fadel',
-                'area' => 'Cimahi',
-                'user_type' => 'kurir',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
+        DB::table('koordinators')->insert([
+            'username' => 'koordinator',
+            'password' => Hash::make('123'),
+            'nama' => 'Adi',
+            'user_type' => 'koordinator',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
+        // DB::table('kurirs')->insert([
+        //     [
+        //         'username' => 'kurir2',
+        //         'password' => Hash::make('123456'),
+        //         'nama' => 'Adrian',
+        //         'area' => 'Bandung Barat',
+        //         'user_type' => 'kurir',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'username' => 'kurir3',
+        //         'password' => Hash::make('123456'),
+        //         'nama' => 'Fadel',
+        //         'area' => 'Cimahi',
+        //         'user_type' => 'kurir',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]
+        // ]);
         
     }
 }
