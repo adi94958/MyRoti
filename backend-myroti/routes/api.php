@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataKurirController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DataKoordinatorController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,11 @@ use App\Http\Controllers\DataKoordinatorController;
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::get('/infologin', [AuthenticationController::class, 'infoLogin'])->middleware(['auth:sanctum']);
+
+Route::middleware(['auth:sanctum', 'check.user.type:admin'])->group(function () {
+    Route::get('/dashboard/admin', [DashboardController::class, 'adminDashboard']);
+});
+
 
 Route::middleware(['auth:sanctum', 'check.user.type:admin'])->group(function () {
     // Admin routes here
