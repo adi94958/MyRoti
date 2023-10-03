@@ -15,8 +15,8 @@ class DashboardController extends Controller
         $kurirCount = Kurir::count();
 
         return response()->json([
-            'koordinator_count' => $koordinatorCount,
-            'kurir_count' => $kurirCount,
+            "$koordinatorCount akun",
+            "$kurirCount akun",
         ]);
     }
 }
