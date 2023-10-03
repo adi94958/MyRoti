@@ -19,9 +19,4 @@ class DashboardController extends Controller
             "$kurirCount akun",
         ]);
     }
-
-    public function koordinatorDashboard()
-    {
-        //
-    }
 }
