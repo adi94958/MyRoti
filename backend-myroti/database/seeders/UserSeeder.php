@@ -15,13 +15,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // DB::table('admins')->insert([
-        //     'username' => 'admin',
-        //     'password' => Hash::make('123456'),
-        //     'user_type' => 'admin',
-        //     'created_at' => Carbon::now(),
-        //     'updated_at' => Carbon::now(),
-        // ]);
+        DB::table('admins')->insert([
+            'username' => 'admin',
+            'password' => Hash::make('123456'),
+            'user_type' => 'admin',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
         DB::table('koordinators')->insert([
             'username' => 'koordinator',
             'password' => Hash::make('123'),

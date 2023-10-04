@@ -14,7 +14,8 @@ class LapakSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('lapak')->insert([
+
+        DB::table('dataroti')->insert([
             'nama_roti' => 'Croissant',
             'stok_roti' => 10,
             'rasa_roti' => 'Strawberry',

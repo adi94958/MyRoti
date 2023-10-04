@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DataKoordinatorController;
 use App\Http\Controllers\LapakController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataRotiController;
 
 
 /*
@@ -45,6 +46,15 @@ Route::middleware(['auth:sanctum', 'check.user.type:admin'])->group(function () 
 Route::middleware(['auth:sanctum', 'check.user.type:koordinator'])->group(function () {
     // Koordinator routes here
     Route::get('/koordinator/lapak', [LapakController::class, 'readDataLapak']);
+    Route::post('/koordinator/lapak/registrasi', [LapakController::class, 'registerLapak']);
+    Route::put('/koordinator/lapak/update/{id}', [LapakController::class, 'updateLapak']);
+    Route::delete('/koordinator/lapak/delete/{id}', [LapakCOntroller::class, 'deleteLapak']);
+
+    Route::get('/koordinator/dataroti', [DataRotiController::class, 'readDataRoti']);
+    Route::post('/koordinator/dataroti/registrasi', [DataRotiController::class, 'registerRoti']);
+    Route::put('/koordinator/dataroti/update/{id}', [DataRotiController::class, 'updateRoti']);
+    Route::delete('/koordinator/dataroti/delete/{id}', [DataRotiController::class, 'deleteRoti']);
+
 });
 Route::middleware(['auth:sanctum', 'check.user.type:kurir'])->group(function () {
     // Kurir routes here

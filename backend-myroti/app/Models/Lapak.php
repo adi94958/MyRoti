@@ -10,9 +10,10 @@ class Lapak extends Model
     use HasFactory;
 
     protected $table = 'lapak';
+    protected $primaryKey = 'kode_lapak';
     protected $fillable = [
         'nama_lapak', 
-        'id_area_distribusi',
+        'area',
         'alamat_lapak',
     ];
 

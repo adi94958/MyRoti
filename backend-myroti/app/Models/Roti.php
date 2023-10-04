@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Roti extends Model
 {
     use HasFactory;
+
     protected $table = 'dataroti';
+    protected $primaryKey = 'kode_lapak';
     protected $fillable = [
         'nama_roti', 
         'stok_roti',

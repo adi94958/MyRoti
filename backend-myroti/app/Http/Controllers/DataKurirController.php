@@ -57,6 +57,7 @@ class DataKurirController extends Controller
             'password' => 'required',
             'nama' => 'required',
             'user_type' =>'required',
+            'area' => 'required'
         ]);
 
          // Memastikan username tidak ada yang sama di tabel admin, kurir, dan koordinator
