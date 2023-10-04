@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -17,7 +16,7 @@ class UserSeeder extends Seeder
     {
         DB::table('admins')->insert([
             'username' => 'admin',
-            'password' => Hash::make('123456'),
+            'password' => Crypt::encryptString('admin'),
             'user_type' => 'admin',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -25,7 +24,7 @@ class UserSeeder extends Seeder
         DB::table('koordinators')->insert([
             [
             'username' => 'koordinator',
-            'password' => Hash::make('123'),
+            'password' => Crypt::encryptString('koordinator'),
             'nama' => 'Adi',
             'user_type' => 'koordinator',
             'created_at' => Carbon::now(),
@@ -33,7 +32,7 @@ class UserSeeder extends Seeder
         ],
         [
             'username' => 'koordinator2',
-            'password' => Hash::make('456'),
+            'password' => Crypt::encryptString('koordiantor2'),
             'nama' => 'Alya',
             'user_type' => 'koordinator',
             'created_at' => Carbon::now(),
@@ -42,8 +41,8 @@ class UserSeeder extends Seeder
         ]);
         DB::table('kurirs')->insert([
             [
-                'username' => 'kurir2',
-                'password' => Hash::make('123456'),
+                'username' => 'kurir',
+                'password' => Crypt::encryptString('kurir'),
                 'nama' => 'Adrian',
                 'area' => 'Bandung Barat',
                 'user_type' => 'kurir',
@@ -51,8 +50,8 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'username' => 'kurir3',
-                'password' => Hash::make('123456'),
+                'username' => 'kurir2',
+                'password' => Crypt::encryptString('kurir2'),
                 'nama' => 'Fadel',
                 'area' => 'Cimahi',
                 'user_type' => 'kurir',

@@ -6,12 +6,14 @@ use Closure;
 
 class CheckUserType
 {
-    public function handle($request, Closure $next, $userType)
+    public function handle($request, Closure $next, ...$types)
     {
-        if (auth()->user()->user_type !== $userType) {
-            abort(403, 'Unauthorized');
+        $user = $request->user();
+        
+        if ($user && in_array($user->type, $types)) {
+            return $next($request);
         }
 
-        return $next($request);
+        return response()->json(['error' => 'Unauthorized.'], 403);
     }
 }

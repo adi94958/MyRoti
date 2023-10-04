@@ -63,8 +63,8 @@ class DataKurirController extends Controller
          // Memastikan username tidak ada yang sama di tabel admin, kurir, dan koordinator
          if (
             Admin::where('username', $request->username)->exists() ||
-            Kurir::where('username', $request->username)->exists() ||
-            Koordinator::where('username', $request->username)->where('id', '<>', $kurir->id)->exists()
+            Kurir::where('username', $request->username)->where('id', '<>', $kurir->id)->exists() ||
+            Koordinator::where('username', $request->username)->exists()
         ) {
             return response()->json(['message' => 'Username sudah digunakan pada tabel lain'], 422);
         }

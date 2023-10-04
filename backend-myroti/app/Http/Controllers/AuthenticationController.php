@@ -6,8 +6,8 @@ use App\Models\Admin;
 use App\Models\Kurir;
 use App\Models\Koordinator;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
@@ -27,26 +27,27 @@ class AuthenticationController extends Controller
         } elseif ($kurir = Kurir::where('username', $request->username)->first()) {
             $user = $kurir;
         } else {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json([
+                'message' => 'Invalid credentials'
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        if (Hash::check($request->password, $user->password)) {
-            return $user->createToken('authToken')->plainTextToken;
-            
-        }
-
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        Auth::login($user);
+        $datas = $user::select('username', 'user_type')->first();
+        return response()->json([
+            'message' => 'Successfully logged in',
+            'user' => $datas,
+            'response' => 200   
+        ]);
     }
 
-    public function infoLogin(Request $request) 
-    {
-        return response()->json(Auth::user());
-    }
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        Auth::logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ], Response::HTTP_OK);
     }
 }
