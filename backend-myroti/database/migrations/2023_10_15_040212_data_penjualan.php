@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('datapenjualan')) {
         Schema::create('datapenjualan', function (Blueprint $table){
             $table->id();
             $table->integer('id_transaksi');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->text('catatan_penjual');
             $table->string('status_setor', 15);
         });
+        }
     }
 
     /**
