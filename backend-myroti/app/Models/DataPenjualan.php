@@ -22,8 +22,4 @@ class DataPenjualan extends Model
         'status_setor',
     ];
 
-    public function totalSaleHarian($tanggal)
-    {
-        return $this->whereDate('tanggal_pengiriman', $tanggal)->sum('uang_setoran');
-    }
 }
