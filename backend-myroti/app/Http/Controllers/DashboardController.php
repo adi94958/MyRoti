@@ -39,8 +39,7 @@ class DashboardController extends Controller
         $query->whereDate('tanggal_pengiriman', $tanggalDistribusi);
     })->sum('jumlah_roti');
 
-
-    //total yang roti terjual hari itu
+    //total roti terjual hari itu
     $totalRotiDidistribusikan = TransaksiRoti::whereHas('transaksi', function ($query) use ($tanggalDistribusi) {
         $query->whereDate('tanggal_pengiriman', $tanggalDistribusi);
     })->sum('jumlah_roti');
@@ -55,9 +54,13 @@ class DashboardController extends Controller
     $lapakBaruHarian = Lapak::whereDate('created_at', $tanggal)->count();
 
     //setoran mingguan (diagram)
+    $tanggalAwalMinggu = now()->startOfWeek(); // Mengambil awal minggu dari tanggal saat ini
+    $totalSetoranMingguan = DataPenjualan::whereBetween('tanggal_pengiriman', [$tanggalAwalMinggu->toDateString(), $tanggal])->sum('uang_setoran');
 
 
     //setoran bulanam (diagram dan rata2)
+    $tanggalAwalBulan = now()->startOfMonth(); // Mengambil awal bulan dari tanggal saat ini
+    $totalSetoranBulanan = DataPenjualan::whereBetween('tanggal_pengiriman', [$tanggalAwalBulan->toDateString(), $tanggal])->sum('uang_setoran');
 
 
     return response()->json([
@@ -65,7 +68,8 @@ class DashboardController extends Controller
         'totalPengirimanHariIni' => $totalPengirimanHariIni,
         'totalRotiTerjualHariIni' => $totalRotiTerjual,
         'lapakBaruHarian' => $lapakBaruHarian,
-        // Tambahkan data lain sesuai kebutuhan
+        'totalSetoranMingguan' => $totalSetoranMingguan,
+        'totalSetoranBulanan' => $totalSetoranBulanan,
     ]);
 }
 
