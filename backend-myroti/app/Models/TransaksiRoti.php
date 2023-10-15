@@ -17,6 +17,7 @@ class TransaksiRoti extends Model
         'jumlah_roti',
     ];
 
+    //hubungan FK ke PM
     public function penjualan()
     {
         return $this->belongsTo(DataPenjualan::class, 'id_penjualan', 'id_penjualan');
@@ -27,4 +28,8 @@ class TransaksiRoti extends Model
         return $this->belongsTo(Transaksi::class, 'id_transaksi', 'id_transaksi');
     }
 
+    public function roti()
+    {
+        return $this->belongsTo(Roti::class, 'kode_roti', 'kode_roti');
+    }
 }

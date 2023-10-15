@@ -20,10 +20,26 @@ class Transaksi extends Model
         'status',
         'bukti_pengiriman',
     ];
-
+//hubungan FK ke PM
     public function pengirim()
     {
         return $this->belongsTo(Kurir::class, 'username', 'username');
+    }
+
+    public function lapak()
+    {
+        return $this->belongsTo(Lapak::class, 'kode_lapak', 'kode_lapak');
+    }
+
+//hubungan PK ke FK
+    public function transaksiRoti()
+    {
+        return $this->hasMany(TransaksiRoti::class, 'id_transaksi', 'id_transaksi');
+    }
+
+    public function dataPenjualan()
+    {
+        return $this->hasMany(DataPenjualan::class, 'id_transaksi', 'id_transaksi');
     }
 
 }

@@ -7,6 +7,7 @@ use App\Models\Koordinator;
 use App\Models\DataPenjualan;
 use App\Models\Lapak;
 use App\Models\TransaksiRoti;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 
@@ -28,23 +29,25 @@ class DashboardController extends Controller
 
     public function koordinatorDashboard()
 {
-    $tanggalDistribusi = now()->subDays(3)->toDateString();
+    $tanggalDistribusi = '2023-10-10'; //misal
     $tanggal = now()->toDateString();
     //setoran harian
     $totalPenjualanHarian = DataPenjualan::whereDate('tanggal_pengiriman', $tanggal)->sum('uang_setoran');
     
     //total pengiriman roti hari itu
-    $totalPengirimanHariIni = DataPenjualan::whereDate('tanggal_pengiriman', $tanggal)->sum('');
+    $totalPengirimanHariIni = TransaksiRoti::whereHas('transaksi', function ($query) use ($tanggalDistribusi) {
+        $query->whereDate('tanggal_pengiriman', $tanggalDistribusi);
+    })->sum('jumlah_roti');
+
 
     //total yang roti terjual hari itu
-    //roti yang terjual adalah pengiriman - roti basi misal jarak pendistribusian 3 hari
     $totalRotiDidistribusikan = TransaksiRoti::whereHas('transaksi', function ($query) use ($tanggalDistribusi) {
         $query->whereDate('tanggal_pengiriman', $tanggalDistribusi);
     })->sum('jumlah_roti');
     
-    $totalRotiBasi = DataPenjualan::where('tanggal_pengiriman', '>=', $tanggalDistribusi)
-        ->where('tanggal_pengiriman', '<=', $tanggal)
-        ->sum('roti_basi');
+    $totalRotiBasi = DataPenjualan::whereHas('transaksiRoti.transaksi', function ($query) use ($tanggalDistribusi) {
+        $query->whereDate('tanggal_pengiriman', $tanggalDistribusi);
+    })->sum('roti_basi');
 
     $totalRotiTerjual = $totalRotiDidistribusikan - $totalRotiBasi;
 

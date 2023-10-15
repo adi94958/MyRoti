@@ -17,4 +17,9 @@ class Lapak extends Model
         'alamat_lapak',
     ];
 
+    //hubungan PK ke FK
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'kode_lapak', 'kode_lapak');
+    }
 }

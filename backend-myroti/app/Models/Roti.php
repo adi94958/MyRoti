@@ -10,7 +10,7 @@ class Roti extends Model
     use HasFactory;
 
     protected $table = 'dataroti';
-    protected $primaryKey = 'kode_lapak';
+    protected $primaryKey = 'kode_roti';
     protected $fillable = [
         'nama_roti', 
         'stok_roti',
