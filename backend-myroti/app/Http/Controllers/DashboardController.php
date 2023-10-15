@@ -18,18 +18,16 @@ class DashboardController extends Controller
     $koordinatorCount = Koordinator::count();
     $kurirCount = Kurir::count();
 
-    $koordinatorMessage = "Koordinator: $koordinatorCount akun";
-    $kurirMessage = "Kurir: $kurirCount akun";
-
     return response()->json([
-        $koordinatorMessage,
-        $kurirMessage,
+        "Koordinator: $koordinatorCount akun",
+        "Kurir: $kurirCount akun"
     ]);
 }
 
     public function koordinatorDashboard()
 {
-    $tanggalDistribusi = '2023-10-10'; //misal
+    //misal $tanggalDistribusi = '2023-10-10'; 
+    $tanggalDistribusi = now()->subDay(1)->toDateString();
     $tanggal = now()->toDateString();
     //setoran harian
     $totalPenjualanHarian = DataPenjualan::whereDate('tanggal_pengiriman', $tanggal)->sum('uang_setoran');
@@ -55,13 +53,20 @@ class DashboardController extends Controller
 
     //setoran mingguan (diagram)
     $tanggalAwalMinggu = now()->startOfWeek(); // Mengambil awal minggu dari tanggal saat ini
-    $totalSetoranMingguan = DataPenjualan::whereBetween('tanggal_pengiriman', [$tanggalAwalMinggu->toDateString(), $tanggal])->sum('uang_setoran');
-
+    $tanggalAkhirMinggu = now()->endOfWeek(); // Mengambil akhir minggu dari tanggal saat ini
+    $totalSetoranMingguan = DataPenjualan::whereBetween('tanggal_pengiriman', [$tanggalAwalMinggu, $tanggalAkhirMinggu])->sum('uang_setoran');
+    
 
     //setoran bulanam (diagram dan rata2)
-    $tanggalAwalBulan = now()->startOfMonth(); // Mengambil awal bulan dari tanggal saat ini
-    $totalSetoranBulanan = DataPenjualan::whereBetween('tanggal_pengiriman', [$tanggalAwalBulan->toDateString(), $tanggal])->sum('uang_setoran');
+    $tahun = now()->year;
+    $tanggalAwalTahun = "$tahun-01-01";
+    $tanggalAkhirTahun = "$tahun-12-31";
 
+    $totalPenjualanBulanan = DataPenjualan::whereBetween('tanggal_pengiriman', [$tanggalAwalTahun, $tanggalAkhirTahun])
+    ->selectRaw("to_char(tanggal_pengiriman, 'Month') as bulan, SUM(uang_setoran) as total_setoran")
+    ->groupBy('bulan')
+    ->orderBy('bulan')
+    ->get();
 
     return response()->json([
         'totalPenjualanHarian' => $totalPenjualanHarian,
@@ -69,7 +74,7 @@ class DashboardController extends Controller
         'totalRotiTerjualHariIni' => $totalRotiTerjual,
         'lapakBaruHarian' => $lapakBaruHarian,
         'totalSetoranMingguan' => $totalSetoranMingguan,
-        'totalSetoranBulanan' => $totalSetoranBulanan,
+        'dataPenjualanBulanan' => $totalPenjualanBulanan,
     ]);
 }
 
