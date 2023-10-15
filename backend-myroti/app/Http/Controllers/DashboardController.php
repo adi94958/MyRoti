@@ -68,6 +68,21 @@ class DashboardController extends Controller
     ->orderBy('bulan')
     ->get();
 
+    //rata2 perbulanya
+    $totalSetoranTahunan = 0;
+    // Loop melalui hasil query
+    foreach ($totalPenjualanBulanan as $data) {
+        $totalSetoranTahunan += $data->total_setoran;
+    }
+
+    // Menghitung jumlah bulan
+    $jumlahBulan = count($totalPenjualanBulanan);
+    
+
+    // Menghitung rata-rata setoran per bulan
+    $rataRataSetoranBulanan = ($jumlahBulan > 0) ? number_format($totalSetoranTahunan / $jumlahBulan, 2) : 0;
+
+
     return response()->json([
         'totalPenjualanHarian' => $totalPenjualanHarian,
         'totalPengirimanHariIni' => $totalPengirimanHariIni,
@@ -75,6 +90,7 @@ class DashboardController extends Controller
         'lapakBaruHarian' => $lapakBaruHarian,
         'totalSetoranMingguan' => $totalSetoranMingguan,
         'dataPenjualanBulanan' => $totalPenjualanBulanan,
+        'Rata-rata pertahun' => $rataRataSetoranBulanan,
     ]);
 }
 
