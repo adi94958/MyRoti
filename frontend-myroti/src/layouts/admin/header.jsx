@@ -1,6 +1,4 @@
 import React from 'react'
-import { DASHBOARD_SIDEBAR_LINKS} from './dataAdmin'
-import { Link } from 'react-router-dom';
 
 export default function Header() {
 
