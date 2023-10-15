@@ -36,6 +36,7 @@ Route::put('/kurir/update/{id}', [DataKurirController::class, 'updateKurir']);
 Route::delete('/kurir/delete/{id}', [DataKurirController::class, 'deleteKurir']);
 
 // Koordinator routes here
+Route::get('/dashboard/koordinator', [DashboardController::class, 'koordinatorDashboard']);
 Route::get('/koordinator/lapak', [LapakController::class, 'readDataLapak']);
 Route::post('/koordinator/lapak/registrasi', [LapakController::class, 'registerLapak']);
 Route::put('/koordinator/lapak/update/{id}', [LapakController::class, 'updateLapak']);
