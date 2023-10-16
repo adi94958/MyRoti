@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
 import { PencilIcon, UserPlusIcon , TrashIcon} from "@heroicons/react/24/solid";
 import {
   Card,
@@ -8,78 +10,51 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
- 
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
+import { Link, useNavigate } from "react-router-dom";
  
 const TABLE_HEAD = ["Nama", "Username", "Password", "Area"];
  
-const TABLE_ROWS = [
-  {
-    id: 1,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-    area: "bandung"
-  },
-  {
-    id: 2,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-    area: "bandung"
-  },
-  {
-    id: 3,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-    area: "bandung"
-  },
-  {
-    id: 4,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-    area: "bandung"
-  },
-  {
-    id: 5,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-    area: "bandung"
-  },
-  {
-    id: 6,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-    area: "bandung"
-  },
-  {
-    id: 7,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-    area: "bandung"
-  },
-];
- 
 export default function Kurir() {
+  const [data, setData] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch data from the API endpoint
+    handleData();
+    
+  }, []);
+
+  function handleData(){
+    axios.get('http://localhost:8000/api/kurir')
+    .then((response) => {
+      setData(response.data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  function handleDelete(id){
+    axios.delete(`http://localhost:8000/api/kurir/delete/${id}`)
+    .then(handleData)
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  function handleEdit(item){
+    localStorage.setItem(
+      'dataKurir',
+      JSON.stringify({
+        id: item.id,
+        nama: item.nama,
+        username: item.username,
+        password: item.password,
+        area: item.area,
+      })
+    );
+    navigate('/admin/kurir/edit')
+  }
 
   return (
     <Card className="h-full w-full">
@@ -91,9 +66,9 @@ export default function Kurir() {
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Link to="/admin/kurir/regis">
+            <Link to="/admin/kurir/regis">        
                 <Button className="flex items-center gap-3" size="sm">
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
                 </Button>
             </Link>
           </div>
@@ -138,25 +113,24 @@ export default function Kurir() {
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(
-              ({ id, name, username, password, area }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
+            {data.map((item, index) => {
+                const isLast = index === data.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
  
                 return (
-                  <tr key={name}>
+                  <tr key={item.id}>
                     <td className={classes}>
                         <div className="flex justify-center">
                             <Typography>
-                                {id}
+                                {index + 1}
                             </Typography>
                         </div>
                     </td>
                     <td className={classes}>
                         <Typography>
-                            {name}
+                            {item.nama}
                         </Typography>
                     </td>
                     <td className={classes}>
@@ -166,7 +140,7 @@ export default function Kurir() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {username}
+                          {item.username}
                         </Typography>
                       </div>
                     </td>
@@ -176,30 +150,26 @@ export default function Kurir() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {password}
+                          {item.password}
                         </Typography>                        
                     </td>
                     <td className={classes}>
-                            <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                            >
-                            {area}
-                            </Typography>    
+                    <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {item.area}
+                        </Typography>                        
                     </td>
                     <td className={classes}>
                         <div className="flex justify-center">
-                            <Tooltip content="Delete User">
-                                <IconButton variant="text">
-                                <TrashIcon className="h-4 w-4" />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip content="Edit User">
-                                <IconButton variant="text">
+                              <IconButton variant="text" onClick={() => handleDelete(item.id)}>
+                                <TrashIcon className="h-4 w-4"/>
+                              </IconButton>
+                              <IconButton variant="text" onClick={() => handleEdit(item)}>
                                 <PencilIcon className="h-4 w-4" />
-                                </IconButton>
-                            </Tooltip>
+                              </IconButton>
                         </div>
                     </td>
                   </tr>
@@ -212,3 +182,4 @@ export default function Kurir() {
     </Card>
   );
 }
+
