@@ -13,7 +13,7 @@ return new class extends Migration
     {
         if (!Schema::hasTable('datapenjualan')) {
         Schema::create('datapenjualan', function (Blueprint $table){
-            $table->id();
+            $table->bigIncrements('id_penjualan');
             $table->integer('id_transaksi');
             $table->timestamp('tanggal_pengiriman')->useCurrent();
             $table->string('status', 100);
