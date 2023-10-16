@@ -14,15 +14,18 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function adminDashboard()
-{
-    $koordinatorCount = Koordinator::count();
-    $kurirCount = Kurir::count();
-
-    return response()->json([
-        "Koordinator: $koordinatorCount akun",
-        "Kurir: $kurirCount akun"
-    ]);
-}
+    {
+        $koordinatorCount = Koordinator::count();
+        $kurirCount = Kurir::count();
+    
+        $koordinatorMessage = "$koordinatorCount akun";
+        $kurirMessage = "$kurirCount akun";
+    
+        return response()->json([
+            'koordinator' => $koordinatorMessage,
+            'kurir' => $kurirMessage,
+        ]);
+    }
 
     public function koordinatorDashboard()
 {
