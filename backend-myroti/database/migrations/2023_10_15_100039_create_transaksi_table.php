@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         if (!Schema::hasTable('transaksi')) {
-        Schema::create('transaksi', function (Blueprint $table) {
-            $table->id();
-            $table->string('username', 225)->collation('pg_catalog.default');
-            $table->bigInteger('kode_lapak')->nullable();
-            $table->timestamp('tanggal_pengiriman')->default(now());
-            $table->string('status', 225)->collation('pg_catalog.default');
-            $table->text('bukti_pengiriman')->collation('pg_catalog.default');
-            $table->primary('id_transaksi');
-        });
+            Schema::create('transaksi', function (Blueprint $table) {  
+                $table->bigIncrements('id_transaksi');
+                $table->string('username', 225)->collation('C');       
+                $table->bigInteger('kode_lapak')->nullable();
+                $table->timestamp('tanggal_pengiriman')->default(now());
+                $table->string('status', 225)->collation('C');
+                $table->text('bukti_pengiriman')->collation('C');      
+            });
         }
+
     }
 
     /**

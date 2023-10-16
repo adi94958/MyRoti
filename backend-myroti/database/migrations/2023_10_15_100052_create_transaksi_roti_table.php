@@ -12,16 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         if (!Schema::hasTable('transaksi_roti')) {
-        Schema::create('transaksi_roti', function (Blueprint $table) {
-            $table->id();
-            $table->integer('id_transaksi')->nullable();
-            $table->bigInteger('kode_roti')->nullable();
-            $table->integer('id_penjualan');
-            $table->integer('jumlah_roti');
-            $table->primary('id_transaksi_roti');
-            $table->foreign('id_penjualan')->references('id_penjualan')->on('datapenjualan');
-            $table->foreign('id_transaksi')->references('id_transaksi')->on('transaksi');
-        });
+            Schema::create('transaksi_roti', function (Blueprint $table) {
+                $table->bigIncrements('id_transaksi_roti');
+                $table->unsignedBigInteger('id_transaksi')->nullable();
+                $table->bigInteger('kode_roti')->nullable();
+                $table->unsignedBigInteger('id_penjualan');
+                $table->integer('jumlah_roti');
+            });
         }
     }
 
