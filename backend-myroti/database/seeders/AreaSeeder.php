@@ -19,6 +19,30 @@ class AreaSeeder extends Seeder
         ],
         [
             'area_distribusi' => 'Ciwaruga',
+        ],
+        [
+            'area_distribusi' => 'Jatinangor',
+        ],
+        [
+            'area_distribusi' => 'Dago',
+        ],
+        [
+            'area_distribusi' => 'Antapani',
+        ],
+        [
+            'area_distribusi' => 'Cibaduyut',
+        ],
+        [
+            'area_distribusi' => 'Rancaekek',
+        ],
+        [
+            'area_distribusi' => 'Ujung Berung',
+        ],
+        [
+            'area_distribusi' => 'Cibiru',
+        ],
+        [
+            'area_distribusi' => 'Siliwangi',
         ]
         ]);
     }

@@ -15,11 +15,57 @@ class TransaksiSeeder extends Seeder
     public function run(): void
     {
         DB::table('transaksi')->insert([
+        [
             'kode_lapak' => '5',
             'kode_roti' => '1',
             'jumlah_roti' => 10,
-            'id_kurir' => 3,
+            'id_kurir' => 9,
             'tanggal_pengiriman' => now(),
+        ],
+        [
+            'kode_lapak' => '5',
+            'kode_roti' => '2',
+            'jumlah_roti' => 20,
+            'id_kurir' => 9,
+            'tanggal_pengiriman' => now(),
+        ],
+        [
+            'kode_lapak' => '5',
+            'kode_roti' => '2',
+            'jumlah_roti' => 10,
+            'id_kurir' => 9,
+            'tanggal_pengiriman' => now()->subDays(1)->toDateTimeString(),
+        ],
+        [
+            'kode_lapak' => '1',
+            'kode_roti' => '1',
+            'jumlah_roti' => 12,
+            'id_kurir' => 1,
+            'tanggal_pengiriman' => now()->subDays(1)->toDateTimeString(),
+        ],
+        [
+            'kode_lapak' => '1',
+            'kode_roti' => '2',
+            'jumlah_roti' => 19,
+            'id_kurir' => 1,
+            'tanggal_pengiriman' => now()->subDays(1)->toDateTimeString(),
+        ],
+        [
+            'kode_lapak' => '10',
+            'kode_roti' => '1',
+            'jumlah_roti' => 30,
+            'id_kurir' => 15,
+            'tanggal_pengiriman' => now()->subDays(10)->toDateTimeString(),
+        ],
+        [
+            'kode_lapak' => '10',
+            'kode_roti' => '2',
+            'jumlah_roti' => 10,
+            'id_kurir' => 15,
+            'tanggal_pengiriman' => now()->subDays(10)->toDateTimeString(),
+        ],
+
+
         ]);
     }
 }

@@ -19,16 +19,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 //         URUTAN SEEDER
-
-// -AreaSeeder
-// -UserSeeder
-// -LapakSeeder
-// -RotiSeeder
-// -TransaksiSeeder
-// -KoordinatorSeeder
-// -DataPenjualanSeeder
-        $this->call(AreaSeeder::class);
-        $this->call(UserSeeder::class);
+        // $this->call(AreaSeeder::class);
+        // $this->call(UserSeeder::class);
         $this->call(LapakSeeder::class);
         $this->call(RotiSeeder::class);
         $this->call(TransaksiSeeder::class);
