@@ -1,27 +1,67 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { Card, Input, Button, Typography, Alert } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import CekLogin from "../../auth/CekLogin";
-import login from "../../assets/loginn.png";
+import login from "../../assets/login.png";
 import logo from "../../assets/logo.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin === 1) {
       navigate("/admin");
     } else if (cekLogin === 2) {
-      navigate("/koordinator");
+      navigate("/koor");
     }else{
       
     }
   }, []);
+
+  useEffect(() => {
+    // Setelah alert muncul, atur timer untuk menyembunyikannya dalam 3 detik
+    if (open) {
+      const timer = setTimeout(() => {
+        setOpen(false);
+      }, 5000); // 5000 milidetik (5 detik)
+      
+      // Membersihkan timer jika komponen unmount atau jika alert ditutup sebelum timer selesai
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [open]);
+
+  function Icon() {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="h-6 w-6"
+      >
+        <path
+          fillRule="evenodd"
+          d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+          clipRule="evenodd"
+        />
+      </svg>
+    );
+  }
+
+  
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = async () => {
     try {
@@ -30,85 +70,92 @@ const LoginForm = () => {
         password: password,
       });
       if (response.data.response === 200) {
-        setMessage(response.data.message);
+        const newUserType = response.data.user.user_type;
         localStorage.setItem(
           "dataLogin",
           JSON.stringify({
             username: username,
             password: password,
-            user_type: response.data.user.user_type,
+            user_type: newUserType,
           })
         );
-        if (response.data.user.user_type === "admin") {
+        if (newUserType === "admin") {
           navigate("/admin");
-        } else if (response.data.user.user_type === "kurir") {
+        } else if (newUserType === "kurir") {
           navigate("/kurir");
-        } else if (response.data.user.user_type === "koordinator") {
+        } else if (newUserType === "koordinator") {
           navigate("/koordinator");
         }
       } else {
-        setMessage("Login failed");
+        setOpen(true);
       }
     } catch (error) {
-      console.error(error);
-      setMessage("Login failed");
+      setOpen(true);
     }
   };
 
   return (
-    <div className="flex h-screen bg-red-200">
-      <div className="flex-2 lg:hidden">
-        <img src={login} alt="Big" className=" w-full h-full" />
-      </div>
+    <Card className="m-20 rounded-lg">
+      <div className="flex">
+        <div className=" flex flex-2 w-6/12 h-full" >
+          <img src={login} alt="Big" className="w-full h-full bg-red-200 border-gray-500 rounded-lg"/>
+        </div>
 
-      <div className="flex flex-1 justify-end items-center">
-        <div className="h-full w-90 sm:w-3/4 bg-white">
-          <Card
-            color="transparent"
-            shadow={false}
-            className="border border-solid border-gray-300 px-8 py-5 h-200"
-          >
-            <img src={logo} alt="Big" className="h-44 object-cover m-auto " />
-            <Typography
-              variant="h3"
-              color="blue-gray"
-              className="text-center mt-20"
-            >
-              Login
-            </Typography>
-            <form className="mt-7">
-              <div className="mb-4 flex flex-col gap-6">
-                <Input
-                  size="lg"
-                  label="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-                <Input
-                  type="password"
-                  size="lg"
-                  label="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <Button className="mt-6" fullWidth onClick={handleLogin}>
-                Login
-              </Button>
-            </form>
-            {message && (
+        <div className="flex flex-1 justify-center items-center">
+          <div className="h-full w-5/12">
+              <img src={logo} alt="Big" className="h-44 object-cover m-auto mt-10" />
               <Typography
-                variant="body"
-                color="red"
-                className="text-center mt-4"
+                variant="h3"
+                color="blue-gray"
+                className="text-center mt-10 font-serif"
               >
-                {message}
+                Login!
               </Typography>
+              <form className="mt-7">
+                <div className="mb-4 flex flex-col gap-6 relative">
+                  <Input
+                    label="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      label="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <span
+                      onClick={togglePasswordVisibility}
+                      className="absolute top-1/2 right-2 transform -translate-y-1/2 cursor-pointer"
+                    >
+                      <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                    </span>
+                  </div>
+                </div>
+                <Button className="mt-6 bg-red-100 hover:bg-red-200 rounded-full" fullWidth onClick={handleLogin}>
+                  Login
+                </Button>
+              </form>
+              {open && (
+              <Alert
+                style={{
+                  position: "absolute",
+                  top: "10px", // Sesuaikan posisi dari atas
+                  right: "10px", // Sesuaikan posisi dari kanan
+                  width: "300px", // Tentukan lebar alert
+                  zIndex: 9999,
+                }}
+                icon={<Icon />}
+                className="rounded-none border-l-4 border-[#eb4034] bg-[#eb4034]/10 font-medium text-[#eb4034]"
+              >
+                Username or password is incorrect.
+              </Alert>
             )}
-          </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

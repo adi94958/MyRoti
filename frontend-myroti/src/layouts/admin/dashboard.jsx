@@ -11,7 +11,7 @@ export default function Dashboard() {
   useEffect(() => {
     const cekLogin = CekLogin();  
     if (cekLogin !== 1) {
-      navigate("/koordinator");
+      navigate("/koor");
     }
     handleData();
   }, []);
