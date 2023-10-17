@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('lapak', function (Blueprint $table) {
-            $table->foreignId('id_kurir')->constrained('kurirs', 'id_kurir');
-            $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
-        });
+        if (!Schema::hasTable('datapenjualan')) {
+            Schema::table('datapenjualan', function (Blueprint $table){
+                $table->foreignId('id_transaksi')->constrained('transaksi', 'id_transaksi');
+            });
+        }
     }
-
     /**
      * Reverse the migrations.
      */

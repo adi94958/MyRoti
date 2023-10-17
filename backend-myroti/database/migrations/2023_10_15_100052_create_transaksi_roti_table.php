@@ -14,8 +14,8 @@ return new class extends Migration
         if (!Schema::hasTable('transaksi_roti')) {
             Schema::create('transaksi_roti', function (Blueprint $table) {
                 $table->bigIncrements('id_transaksi_roti');
-                $table->unsignedBigInteger('id_transaksi')->nullable();
-                $table->bigInteger('kode_roti')->nullable();
+                $table->foreignId('id_transaksi')->constrained('transaksi', 'id_transaksi');
+                $table->foreignId('kode_roti')->constrained('dataroti', 'kode_roti');
                 $table->unsignedBigInteger('id_penjualan');
                 $table->integer('jumlah_roti');
             });

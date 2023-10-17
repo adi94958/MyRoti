@@ -18,7 +18,7 @@ export default function Header({ toggleSidebar }) {
           </span>
         </div>
         <div className="flex justify-end items-center flex-1">
-          <h1 className="text-2xl font-sherif text-white pr-8">Hey, {user.username}</h1>
+          <h1 className="text-2xl font-sherif text-white pr-8">Hi, {user.username}</h1>
         </div>
       </div>
     </div>

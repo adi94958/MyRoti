@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class LapakSeeder extends Seeder
 {
@@ -14,27 +15,77 @@ class LapakSeeder extends Seeder
      */
     public function run(): void
     {
-
-        DB::table('dataroti')->insert([
-            'nama_roti' => 'Croissant',
-            'stok_roti' => 10,
-            'rasa_roti' => 'Strawberry',
-            'harga_satuan_roti' => 10000,
-        ]);
-
         DB::table('lapak')->insert([
+        [
             'nama_lapak' => 'Lapak A',
-            'id_area_distribusi' => 1, 
+            'area_id' => 1,
             'alamat_lapak' => 'Alamat Lapak A',
-            'created_at' => date('Y-m-d', strtotime('-1 day')),
-        ]);
-
-        DB::table('lapak')->insert([
+            'created_at' => Carbon::now()->subDays(1)->toDateTimeString(),
+            'id_kurir' => 1,
+        ],
+        [
             'nama_lapak' => 'Lapak B',
-            'id_area_distribusi' => 2, 
+            'area_id' => 2,
             'alamat_lapak' => 'Alamat Lapak B',
-            'created_at' => now(),
+            'created_at' => Carbon::now()->subDays(2)->toDateTimeString(),
+            'id_kurir' => 3,
+        ],
+        [
+            'nama_lapak' => 'Lapak C',
+            'area_id' => 3,
+            'alamat_lapak' => 'Alamat Lapak C',
+            'created_at' => Carbon::now()->subDays(3)->toDateTimeString(),
+            'id_kurir' => 5,
+        ],
+        [
+            'nama_lapak' => 'Lapak D',
+            'area_id' => 4,
+            'alamat_lapak' => 'Alamat Lapak D',
+            'created_at' => Carbon::now()->subDays(4)->toDateTimeString(),
+            'id_kurir' => 7,
+        ],
+        [
+            'nama_lapak' => 'Lapak E',
+            'area_id' => 5,
+            'alamat_lapak' => 'Alamat Lapak E',
+            'created_at' => Carbon::now()->subDays(5)->toDateTimeString(),
+            'id_kurir' => 9,
+        ],
+        [
+            'nama_lapak' => 'Lapak F',
+            'area_id' => 6,
+            'alamat_lapak' => 'Alamat Lapak F',
+            'created_at' => Carbon::now()->subDays(6)->toDateTimeString(),
+            'id_kurir' => 11,
+        ],
+        [
+            'nama_lapak' => 'Lapak G',
+            'area_id' => 7,
+            'alamat_lapak' => 'Alamat Lapak G',
+            'created_at' => Carbon::now()->subDays(7)->toDateTimeString(),
+            'id_kurir' => 12,
+        ],
+        [
+            'nama_lapak' => 'Lapak H',
+            'area_id' => 8,
+            'alamat_lapak' => 'Alamat Lapak H',
+            'created_at' => Carbon::now()->subDays(8)->toDateTimeString(),
+            'id_kurir' => 13,
+        ],
+        [
+            'nama_lapak' => 'Lapak I',
+            'area_id' => 9,
+            'alamat_lapak' => 'Alamat Lapak I',
+            'created_at' => Carbon::now()->subDays(9)->toDateTimeString(),
+            'id_kurir' => 14,
+        ],
+        [
+            'nama_lapak' => 'Lapak J',
+            'area_id' => 10,
+            'alamat_lapak' => 'Alamat Lapak J',
+            'created_at' => Carbon::now()->subDays(10)->toDateTimeString(),
+            'id_kurir' => 15,
+        ]
         ]);
-        
     }
 }

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         if (Schema::hasTable('areadistribusi')) {
             Schema::create('kurirs', function (Blueprint $table) {
-                $table->id();
+                $table->id('id_kurir');
                 $table->string('username')->unique();
                 $table->string('password');
                 $table->string('nama', 50);
                 $table->string('user_type');
-                $table->foreignId('area_id')->constrained(table: 'areadistribusi', indexName: 'area_id');;
+                $table->foreignId('area_id')->constrained(table: 'areadistribusi', indexName: 'area_id');
                 $table->timestamps();
     
                 //$table->foreign('area')->references('id')->on('area_distribusi');

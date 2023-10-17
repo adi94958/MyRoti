@@ -64,27 +64,27 @@ export default function Pemilik() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koordinator");
+      navigate("/koor");
     }
   }, []);
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-8 flex items-center justify-between gap-8">
+        <div className="mb-3 flex items-center justify-between gap-8">
           <div>
             <Typography className="text-4xl font-serif" color="blue-gray">
               Akun Pemilik
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button className="flex items-center gap-3" size="sm">
-              <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+            <Button className="flex items-center gap-3 rounded-full" size="sm">
+                <UserPlusIcon strokeWidth={2} className="h-6 w-5" /> Add member
             </Button>
           </div>
         </div>
       </CardHeader>
-      <CardBody className="overflow-scroll px-0">
-        <table className="w-full min-w-max table-auto text-left">
+      <CardBody className="overflow-scroll px-2 py-3">
+        <table className="w-full min-w-max table-auto text-left border border-blue-gray-100">
           <thead>
             <tr>
               <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 flex justify-center">
@@ -116,7 +116,7 @@ export default function Pemilik() {
                   color="blue-gray"
                   className="font-normal leading-none opacity-70"
                 >
-                  action
+                  Action
                 </Typography>
               </th>
             </tr>
