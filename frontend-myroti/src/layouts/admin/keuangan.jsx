@@ -64,7 +64,7 @@ export default function Keuangan() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
   }, []);
   return (

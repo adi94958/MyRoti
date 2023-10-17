@@ -30,7 +30,7 @@ export default function RegisKurir() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
   }, []);
   useEffect(() => {

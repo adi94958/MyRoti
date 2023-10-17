@@ -24,7 +24,7 @@ export default function EditKurir() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
     setNama(kurir.nama);
     setUsername(kurir.username);

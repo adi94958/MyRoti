@@ -4,7 +4,7 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import CekLogin from "../../auth/CekLogin";
 import login from "../../assets/loginn.png";
-import logo from "../../assets//logo.png";
+import logo from "../../assets/logo.png";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -17,7 +17,7 @@ const LoginForm = () => {
     if (cekLogin === 1) {
       navigate("/admin");
     } else if (cekLogin === 2) {
-      navigate("/koor");
+      navigate("/koordinator");
     }else{
       
     }
@@ -30,7 +30,6 @@ const LoginForm = () => {
         password: password,
       });
       if (response.data.response === 200) {
-        const newUserType = response.data.user.user_type;
         setMessage(response.data.message);
         localStorage.setItem(
           "dataLogin",

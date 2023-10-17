@@ -11,7 +11,7 @@ export default function Layout() {
     const cekLogin = CekLogin();
     console.log(cekLogin)
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
   }, []);
   const toggleSidebar = () => {

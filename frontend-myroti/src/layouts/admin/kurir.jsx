@@ -21,7 +21,7 @@ export default function Kurir() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
     handleData();
   }, []);
