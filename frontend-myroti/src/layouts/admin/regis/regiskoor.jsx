@@ -23,8 +23,14 @@ export default function RegisKoor() {
       if (password.length >= 4 && password.length <= 15) {
         if (nama.length >= 4 && nama.length <= 50) {
           setIsValidate(false);
+        } else {
+          setIsValidate(true);
         }
+      } else {
+        setIsValidate(true);
       }
+    } else {
+      setIsValidate(true);
     }
   }, [nama, username, password]);
 
@@ -55,66 +61,66 @@ export default function RegisKoor() {
   return (
     <div className="flex justify-center items-center h-screen">
       <Card color="transparent" shadow={false}>
-      <div className="flex justify-center">
-        <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
-          <Typography variant="h4" className="mb-4" color="blue-gray">
-            Regis Akun Koordinator
-          </Typography>
-          <div className="mb-4 flex flex-col gap-3">
-            <Input
-              color="blue"
-              size="lg"
-              label="Name"
-              defaultValue={nama}
-              onChange={(e) => setNama(e.target.value)}
-            />
-            <p className="pl-1 text-sm text-blue-gray-300">
-              Nama Minimal 4 Karakter Maksimal 50 Karakter
-            </p>
-            <Input
-              color="blue"
-              size="lg"
-              label="Username"
-              defaultValue={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <p className="pl-1 text-sm text-blue-gray-300">
-              Username Minimal 4 Karakter Maksimal 25 Karakter
-            </p>
-            <Input
-              color="blue"
-              type="password"
-              size="lg"
-              label="Password"
-              defaultValue={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <p className="pl-1 text-sm text-blue-gray-300">
-              Password Minimal 4 Karakter Maksimal 15 Karakter
-            </p>
-          </div>
-          <div className="flex justify-between">
-            <Button
-              variant="outlined"
-              className="w-40 mt-2"
-              color="red"
-              fullWidth
-              onClick={handleCancel}
-            >
-              Batal
-            </Button>
-            <Button
-              variant="outlined"
-              className="w-40 mt-2"
-              color="blue"
-              fullWidth
-              disabled={isValidate}
-              onClick={handleRegister}
-            >
-              Regis
-            </Button>
-          </div>
-        </form>
+        <div className="flex justify-center">
+          <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
+            <Typography variant="h4" className="mb-4 text-center font-serif" color="blue-gray">
+                Registrasi Akun Koordinator
+            </Typography>
+            <div className="mb-4 mt-4 flex flex-col gap-3">
+              <Input
+                color="blue"
+                size="lg"
+                label="Name"
+                defaultValue={nama}
+                onChange={(e) => setNama(e.target.value)}
+              />
+              <p className="pl-1 text-sm text-blue-gray-300">
+                Nama Minimal 4 Karakter Maksimal 50 Karakter
+              </p>
+              <Input
+                color="blue"
+                size="lg"
+                label="Username"
+                defaultValue={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <p className="pl-1 text-sm text-blue-gray-300">
+                Username Minimal 4 Karakter Maksimal 25 Karakter
+              </p>
+              <Input
+                color="blue"
+                type="password"
+                size="lg"
+                label="Password"
+                defaultValue={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <p className="pl-1 text-sm text-blue-gray-300">
+                Password Minimal 4 Karakter Maksimal 15 Karakter
+              </p>
+            </div>
+            <div className="flex justify-between">
+              <Button
+                variant="outlined"
+                className="w-40 mt-2 hover:bg-red-700 hover:text-white"
+                color="red"
+                fullWidth
+                onClick={handleCancel}
+              >
+                Batal
+              </Button>
+              <Button
+                variant="outlined"
+                className="w-40 mt-2 hover:bg-blue-700 hover:text-white"
+                color="blue"
+                fullWidth
+                disabled={isValidate}
+                onClick={handleRegister}
+              >
+                Daftar
+              </Button>
+            </div>
+          </form>
         </div>
       </Card>
     </div>

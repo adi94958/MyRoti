@@ -8,6 +8,8 @@ use App\Models\Koordinator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 class AuthenticationController extends Controller
 {
@@ -21,11 +23,32 @@ class AuthenticationController extends Controller
         $user = null;
 
         if ($admin = Admin::where('username', $request->username)->first()) {
-            $user = $admin;
+            $decryptedPassword = Crypt::decryptString($admin->password);
+            if ($request->password == $decryptedPassword) {
+                $user = $admin;
+            } else {
+                return response()->json([
+                    'message' => 'Invalid password'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
         } elseif ($koordinator = Koordinator::where('username', $request->username)->first()) {
-            $user = $koordinator;
+            $decryptedPassword = Crypt::decryptString($koordinator->password);
+            if ($request->password == $decryptedPassword) {
+                $user = $koordinator;
+            } else {
+                return response()->json([
+                    'message' => 'Invalid password'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
         } elseif ($kurir = Kurir::where('username', $request->username)->first()) {
-            $user = $kurir;
+            $decryptedPassword = Crypt::decryptString($kurir->password);
+            if ($request->password == $decryptedPassword) {
+                $user = $kurir;
+            } else {
+                return response()->json([
+                    'message' => 'Invalid password'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
         } else {
             return response()->json([
                 'message' => 'Invalid credentials'

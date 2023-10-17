@@ -5,14 +5,15 @@ import { useNavigate } from "react-router-dom";
 import CekLogin from "../../../auth/CekLogin";
 
 const options = [
-  "kadal",
-  "Ayam",
-  "Bebek",
-  "Kudanil",
-  "kadal",
-  "Ayam",
-  "Bebek",
-  "Kudanil",
+  "Andir",
+  "Astana Anyar",
+  "Antapani",
+  "Arcamanik",
+  "Babakan Ciparay",
+  "Bandung Kidul",
+  "Bandung Kulon",
+  "Bandung Wetan",
+  "Batununggal",
 ];
 
 export default function RegisKurir() {
@@ -39,9 +40,17 @@ export default function RegisKurir() {
         if (nama.length >= 4 && nama.length <= 50) {
           if (isArea === true) {
             setIsValidate(false);
+          } else {
+            setIsValidate(true);
           }
+        } else {
+          setIsValidate(true);
         }
+      } else {
+        setIsValidate(true);
       }
+    } else {
+      setIsValidate(true);
     }
   }, [nama, username, password, isArea]);
 
@@ -93,10 +102,10 @@ export default function RegisKurir() {
       <Card color="transparent" shadow={false}>
         <div className="flex justify-center">
           <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
-            <Typography variant="h4" className="mb-4" color="blue-gray">
-              Regis Akun Kurir
+            <Typography variant="h4" className="mb-4 text-center font-serif" color="blue-gray">
+              Registrasi Akun Kurir
             </Typography>
-            <div className="mb-4 flex flex-col gap-2">
+            <div className="mb-4 mt-4 flex flex-col gap-3">
               <Input
                 color="blue"
                 size="lg"
@@ -133,9 +142,9 @@ export default function RegisKurir() {
                   <Button
                     type="button"
                     onClick={toggleDropdown}
-                    className="border rounded-lg p-2 w-96 focus:outline-none"
+                    className="border rounded-lg p-2 w-96 h-12 focus:outline-none"
                   >
-                    {area || "Pilih Area"}
+                    {area || "-- Pilih Area --"}
                   </Button>
                 </div>
                 {isOpen && (
@@ -164,7 +173,7 @@ export default function RegisKurir() {
               <div className="flex justify-between">
                 <Button
                   variant="outlined"
-                  className="w-40 mt-2"
+                  className="w-40 mt-2 hover:bg-red-700 hover:text-white"
                   color="red"
                   fullWidth
                   onClick={handleCancel}
@@ -173,13 +182,13 @@ export default function RegisKurir() {
                 </Button>
                 <Button
                   variant="outlined"
-                  className="w-40 mt-2"
+                  className="w-40 mt-2 hover:bg-blue-700 hover:text-white"
                   color="blue"
                   fullWidth
                   disabled={isValidate}
                   onClick={handleRegister}
                 >
-                  Regis
+                  Daftar
                 </Button>
               </div>
             </div>

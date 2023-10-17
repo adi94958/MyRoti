@@ -70,8 +70,8 @@ export default function Koordinator() {
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
             <Link to="/admin/koordinator/regis">
-              <Button className="flex items-center gap-3" size="sm">
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+              <Button className="flex items-center gap-3 rounded-full" size="sm">
+                <UserPlusIcon strokeWidth={2} className="h-6 w-5" /> Add member
               </Button>
             </Link>
           </div>
@@ -110,7 +110,7 @@ export default function Koordinator() {
                   color="blue-gray"
                   className="font-normal leading-none opacity-70"
                 >
-                  action
+                  Action
                 </Typography>
               </th>
             </tr>
