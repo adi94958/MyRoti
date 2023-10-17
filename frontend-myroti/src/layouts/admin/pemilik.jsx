@@ -1,4 +1,4 @@
-import { PencilIcon, UserPlusIcon , TrashIcon} from "@heroicons/react/24/solid";
+import { PencilIcon, UserPlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -8,24 +8,12 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
- 
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
- 
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import CekLogin from "../../auth/CekLogin";
+
 const TABLE_HEAD = ["Nama", "Username", "Password"];
- 
+
 const TABLE_ROWS = [
   {
     id: 1,
@@ -70,15 +58,21 @@ const TABLE_ROWS = [
     password: "123adi",
   },
 ];
- 
-export default function Pemilik() {
 
+export default function Pemilik() {
+  const navigate = useNavigate;
+  useEffect(() => {
+    const cekLogin = CekLogin();
+    if (cekLogin !== 1) {
+      navigate("/koor");
+    }
+  }, []);
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
-            <Typography variant="h5" color="blue-gray">
+            <Typography className="text-4xl font-serif" color="blue-gray">
               Akun Pemilik
             </Typography>
           </div>
@@ -93,15 +87,15 @@ export default function Pemilik() {
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
-                <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 flex justify-center">
-                    <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
-                    >
-                    No
-                    </Typography>
-                </th> 
+              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 flex justify-center">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-normal leading-none opacity-70"
+                >
+                  No
+                </Typography>
+              </th>
               {TABLE_HEAD.map((head) => (
                 <th
                   key={head}
@@ -116,77 +110,71 @@ export default function Pemilik() {
                   </Typography>
                 </th>
               ))}
-                <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 flex justify-center">
-                    <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
-                    >
-                    action
-                    </Typography>
-                </th> 
+              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 flex justify-center">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-normal leading-none opacity-70"
+                >
+                  action
+                </Typography>
+              </th>
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(
-              ({ id, name, username, password }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
- 
-                return (
-                  <tr key={name}>
-                    <td className={classes}>
-                        <div className="flex justify-center">
-                            <Typography>
-                                {id}
-                            </Typography>
-                        </div>
-                    </td>
-                    <td className={classes}>
-                        <Typography>
-                            {name}
-                        </Typography>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {username}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
+            {TABLE_ROWS.map(({ id, name, username, password }, index) => {
+              const isLast = index === TABLE_ROWS.length - 1;
+              const classes = isLast
+                ? "p-4"
+                : "p-4 border-b border-blue-gray-50";
+
+              return (
+                <tr key={name}>
+                  <td className={classes}>
+                    <div className="flex justify-center">
+                      <Typography>{id}</Typography>
+                    </div>
+                  </td>
+                  <td className={classes}>
+                    <Typography>{name}</Typography>
+                  </td>
+                  <td className={classes}>
+                    <div className="flex flex-col">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {username}
+                      </Typography>
+                    </div>
+                  </td>
+                  <td className={classes}>
                     <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {password}
-                        </Typography>                        
-                    </td>
-                    <td className={classes}>
-                        <div className="flex justify-center">
-                            <Tooltip content="Delete User">
-                                <IconButton variant="text">
-                                <TrashIcon className="h-4 w-4" />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip content="Edit User">
-                                <IconButton variant="text">
-                                <PencilIcon className="h-4 w-4" />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      {password}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <div className="flex justify-center">
+                      <Tooltip content="Delete User">
+                        <IconButton variant="text">
+                          <TrashIcon className="h-4 w-4" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip content="Edit User">
+                        <IconButton variant="text">
+                          <PencilIcon className="h-4 w-4" />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </CardBody>
