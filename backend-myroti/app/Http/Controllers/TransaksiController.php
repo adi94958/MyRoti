@@ -32,69 +32,82 @@ class TransaksiController extends Controller
         $lapak = Lapak::where('kode_lapak', $kode_lapak)->first();
         // Validasi input
         $request->validate([
-            'kode_roti' => 'required',
-            'jumlah_roti' => 'required',
+            'kode_roti.*' => 'required',
+            'jumlah_roti.*' => 'required',
         ]);
-
-        
-        $roti = Roti::where('kode_roti', $request->kode_roti)->first();
-
-
+    
         // Buat koordinator baru
         if ($lapak) {
             // Dapatkan 'id_kurir' dari 'lapak'
             $id_kurir = $lapak->id_kurir;
+            $transaksiData = [];
+            $rotiNotFound = [];
 
-            if($roti) {
-                 // Simpan data ke tabel 'transaksi' termasuk 'id_kurir' yang telah ditemukan
-                Transaksi::create([
-                    'kode_lapak' => $lapak->kode_lapak,
-                    'kode_roti' => $roti->kode_roti,
-                    'jumlah_roti' => $request->jumlah_roti,
-                    'id_kurir' => $id_kurir,
-                ]);
+            // Iterasi melalui semua kode_roti dan jumlah_roti yang diberikan
+            foreach ($request->kode_roti as $key => $kode_roti) {
+                $jumlah_roti = $request->jumlah_roti[$key];
 
-                $roti->stok_roti -= $request->jumlah_roti;
-                $roti->save();
+                // Cari Roti berdasarkan kode_roti
+                $roti = Roti::where('kode_roti', $kode_roti)->first();
 
-                return response()->json(['message' => 'Transaksi berhasil dibuat']);
+                if ($roti) {
+                    // Simpan data ke tabel 'transaksi' termasuk 'id_kurir' yang telah ditemukan
+                    $transaksiData[] = [
+                        'kode_lapak' => $lapak->kode_lapak,
+                        'kode_roti' => $roti->kode_roti,
+                        'jumlah_roti' => $jumlah_roti, // Perbaikan: Menggunakan variabel $jumlah_roti
+                        'id_kurir' => $id_kurir,
+                    ];
 
+                    $roti->stok_roti -= $jumlah_roti; // Perbaikan: Menggunakan variabel $jumlah_roti
+                    $roti->save();
+                } else {
+                    $rotiNotFound[] = $kode_roti;
+                }
             }
 
-            return response()->json(['message' => 'Roti tidak ditemukan']);
-        
-           
+            Transaksi::insert($transaksiData);
+
+            if (!empty($rotiNotFound)) {
+                return response()->json(['message' => 'Beberapa kode roti tidak ditemukan: ' . implode(', ', $rotiNotFound)]);
+            } else {
+                return response()->json(['message' => 'Transaksi berhasil dibuat']);
+            }
+        } else {
+            return response()->json(['message' => 'Lapak tidak ditemukan']);
         }
-        return response()->json(['message' => 'Lapak tidak ditemukan']);
     }
+
 
     public function deleteTransaksi($id_transaksi)
-{
-    $transaksi = Transaksi::find($id_transaksi);
+    {
 
-    if (!$transaksi) {
-        return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+        $transaksi = Transaksi::find($id_transaksi);
+
+        if (!$transaksi) {
+            return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+        }
+
+        // Temukan data penjualan yang terkait dengan transaksi
+        $dataPenjualan = DataPenjualan::where('id_transaksi', $id_transaksi)->get();
+
+        // Hapus data penjualan terlebih dahulu
+        foreach ($dataPenjualan as $penjualan) {
+            $penjualan->delete();
+        }
+
+        // Kembalikan jumlah roti yang dibeli dalam transaksi ke stok awal
+        $roti = Roti::where('kode_roti', $transaksi->kode_roti)->first();
+        if ($roti) {
+            $roti->stok_roti += $transaksi->jumlah_roti;
+            $roti->save();
+        }
+
+        // Hapus transaksi dari database
+        $transaksi->delete();
+
+        return response()->json(['message' => 'Transaksi dan data penjualan terkait berhasil dihapus']);
     }
-
-    // Temukan data penjualan yang terkait dengan transaksi
-    $dataPenjualan = DataPenjualan::where('id_transaksi', $id_transaksi)->get();
-
-    // Hapus data penjualan terlebih dahulu
-    foreach ($dataPenjualan as $penjualan) {
-        $penjualan->delete();
-    }
-
-    // Kembalikan jumlah roti yang dibeli dalam transaksi ke stok awal
-    $roti = Roti::where('kode_roti', $transaksi->kode_roti)->first();
-    if ($roti) {
-        $roti->stok_roti += $transaksi->jumlah_roti;
-        $roti->save();
-    }
-
-    // Hapus transaksi dari database
-    $transaksi->delete();
-
-    return response()->json(['message' => 'Transaksi dan data penjualan terkait berhasil dihapus']);
-}
+        
 
 }
