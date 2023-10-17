@@ -39,25 +39,25 @@ class UserSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]
         ]);
-        DB::table('kurirs')->insert([
-            [
-                'username' => 'kurir',
-                'password' => Crypt::encryptString('kurir'),
-                'nama' => 'Adrian',
-                'area' => 'Bandung Barat',
-                'user_type' => 'kurir',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'username' => 'kurir2',
-                'password' => Crypt::encryptString('kurir2'),
-                'nama' => 'Fadel',
-                'area' => 'Cimahi',
-                'user_type' => 'kurir',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        ]);
+        // DB::table('kurirs')->insert([
+        //     [
+        //         'username' => 'kurir',
+        //         'password' => Crypt::encryptString('kurir'),
+        //         'nama' => 'Adrian',
+        //         'area_id' => 'Bandung Barat',
+        //         'user_type' => 'kurir',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'username' => 'kurir2',
+        //         'password' => Crypt::encryptString('kurir2'),
+        //         'nama' => 'Fadel',
+        //         'area' => 'Cimahi',
+        //         'user_type' => 'kurir',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]
+        // ]);
     }
 }

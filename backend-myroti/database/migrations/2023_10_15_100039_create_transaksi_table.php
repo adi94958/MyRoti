@@ -13,12 +13,12 @@ return new class extends Migration
     {
         if (!Schema::hasTable('transaksi')) {
             Schema::create('transaksi', function (Blueprint $table) {  
-                $table->bigIncrements('id_transaksi');
-                $table->string('username', 225)->collation('C');       
-                $table->bigInteger('kode_lapak')->nullable();
+                $table->bigIncrements('id_transaksi');       
+                $table->foreignId('kode_lapak')->constrained('lapak', 'kode_lapak');
+                $table->string('kode_roti');
+                $table->integer('jumlah_roti');  
                 $table->timestamp('tanggal_pengiriman')->default(now());
-                $table->string('status', 225)->collation('C');
-                $table->text('bukti_pengiriman')->collation('C');      
+                   
             });
         }
 

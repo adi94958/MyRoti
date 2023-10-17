@@ -11,18 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kurirs', function (Blueprint $table) {
-            $table->id();
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->string('nama', 50);
-            $table->string('area');
-            $table->string('user_type');
-            //$table->unsignedBigInteger('area');
-            $table->timestamps();
-
-            //$table->foreign('area')->references('id')->on('area_distribusi');
-        });
+        if (Schema::hasTable('areadistribusi')) {
+            Schema::create('kurirs', function (Blueprint $table) {
+                $table->id();
+                $table->string('username')->unique();
+                $table->string('password');
+                $table->string('nama', 50);
+                $table->string('user_type');
+                $table->foreignId('area_id')->constrained(table: 'areadistribusi', indexName: 'area_id');;
+                $table->timestamps();
+    
+                //$table->foreign('area')->references('id')->on('area_distribusi');
+            });
+        }
     }
 
     /**
@@ -32,4 +33,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('kurirs');
     }
+
+
 };

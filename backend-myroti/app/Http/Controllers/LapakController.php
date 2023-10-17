@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lapak;
+use App\Models\Kurir;
+use App\Models\Area_Distribusi;
 use Illuminate\Http\Request;
+
 
 class LapakController extends Controller
 {
     public function readDataLapak()
     {
-        $datas = Lapak::select('kode_lapak', 'nama_lapak', 'area', 'alamat_lapak')->get();
+        $datas = Lapak::select('kode_lapak', 'id_kurir', 'nama_lapak', 'area_id', 'alamat_lapak')->get();
       
         return response()->json($datas, 200);
     }
@@ -19,19 +22,30 @@ class LapakController extends Controller
         // Validasi input
         $request->validate([
             'nama_lapak' => 'required',
-            'area' => 'required',
+            'area_id' => 'required',
+            'id_kurir' => 'required',
             'alamat_lapak' => 'required'
         ]);
 
-        // Buat koordinator baru
-        Lapak::create([
+        $kurir = Kurir::find($request->id_kurir);
+        $area = Area_Distribusi::find($request->area_id);
 
-            'nama_lapak' => $request->nama_lapak,
-            'area' => $request->area,
-            'alamat_lapak' => $request->alamat_lapak
-        ]);
+        if($area){
+            if($kurir){
+                Lapak::create([
+                    'nama_lapak' => $request->nama_lapak,
+                    'area_id' => $area->id,
+                    'id_kurir' => $kurir->id,
+                    'alamat_lapak' => $request->alamat_lapak
+                ]);
+                return response()->json(['message' => 'Lapak berhasil didaftarkan']);
 
-        return response()->json(['message' => 'Lapak berhasil didaftarkan']);
+            }
+            return response()->json(['message' => 'Kurir tidak ditemukan']);
+
+        }
+
+        return response()->json(['message' => 'Area tidak ditemukan']);
     }
 
     public function updateLapak(Request $request, $kode_lapak)
@@ -44,14 +58,16 @@ class LapakController extends Controller
 
         $request->validate([
             'nama_lapak' => 'required',
-            'area' =>'required',
+            'id_kurir' => 'required',
+            'area_id' =>'required',
             'alamat_lapak' => 'required'
         ]);
 
 
         $lapak->update([
             'nama_lapak' => $request->nama_lapak,
-            'area' => $request->area,
+            'id_kurir' => $request->id_kurir,
+            'area_id' => $request->area,
             'alamat_lapak' => $request->alamat_lapak
         ]);
 

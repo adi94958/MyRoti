@@ -8,7 +8,7 @@ use App\Http\Controllers\DataKoordinatorController;
 use App\Http\Controllers\LapakController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataRotiController;
-
+use App\Http\Controllers\TransaksiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,5 +46,8 @@ Route::get('/koordinator/dataroti', [DataRotiController::class, 'readDataRoti'])
 Route::post('/koordinator/dataroti/registrasi', [DataRotiController::class, 'registerRoti']);
 Route::put('/koordinator/dataroti/update/{id}', [DataRotiController::class, 'updateRoti']);
 Route::delete('/koordinator/dataroti/delete/{id}', [DataRotiController::class, 'deleteRoti']);
+
+Route::get('/koordinator/transaksi', [TransaksiController::class, 'lapakTransaksi']);
+Route::post('/koordinator/transaksi/create/{id}', [TransaksiController::class, 'createTransaksi']);
 
 // Kurir routes here

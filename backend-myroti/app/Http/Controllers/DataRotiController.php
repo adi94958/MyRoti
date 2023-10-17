@@ -36,9 +36,9 @@ class DataRotiController extends Controller
         return response()->json(['message' => 'DataRoti berhasil didaftarkan']);
     }
 
-    public function updateRoti(Request $request, $kode_lapak)
+    public function updateRoti(Request $request, $kode_roti)
     {
-        $roti = Roti::find($kode_lapak);
+        $roti = Roti::find($kode_roti);
 
         if (!$roti) {
             return response()->json(['message' => 'Data roti tidak ditemukan'], 404);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Kurir;
 use App\Models\Koordinator;
+use App\Models\Area_Distribusi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -12,7 +13,7 @@ class DataKurirController extends Controller
 {
     public function readDataKurir()
     {
-        $datas = Kurir::select('id','username', 'password', 'nama', 'area')->get();
+        $datas = Kurir::select('id','username', 'password', 'nama', 'area_id')->get();
         foreach ($datas as $data) {
             $data->password = Crypt::decryptString($data->password);
         }
@@ -27,21 +28,30 @@ class DataKurirController extends Controller
             'password' => 'required|string',
             'nama' => 'required',
             'user_type' =>'required',
-            'area' => 'required'
+            'area_id' => 'required'
         ], [
             'username.unique' => 'Username sudah digunakan.',
         ]);
 
-        // Buat koordinator baru
-        Kurir::create([
-            'username' => $request->username,
-            'password' => Crypt::encryptString($request->password),
-            'nama' => $request->nama,
-            'user_type' => $request->user_type,
-            'area' => $request->area
-        ]);
+        $area = Area_Distribusi::find($request->area_id);
 
-        return response()->json(['message' => 'Kurir berhasil didaftarkan']);
+        if($area){
+             // Buat koordinator baru
+            Kurir::create([
+                'username' => $request->username,
+                'password' => Crypt::encryptString($request->password),
+                'nama' => $request->nama,
+                'user_type' => $request->user_type,
+                'area_id' => $area->id
+            ]);
+
+            return response()->json(['message' => 'Kurir berhasil didaftarkan']);
+
+        }
+
+        return response()->json(['message' => 'area tidak ditemukan']);
+
+       
     }
 
     public function updateKurir(Request $request, $id)
@@ -57,7 +67,7 @@ class DataKurirController extends Controller
             'password' => 'required',
             'nama' => 'required',
             'user_type' =>'required',
-            'area' => 'required'
+            'area_id' => 'required'
         ]);
 
          // Memastikan username tidak ada yang sama di tabel admin, kurir, dan koordinator
@@ -74,7 +84,7 @@ class DataKurirController extends Controller
             'password' => Crypt::encryptString($request->password),
             'nama' => $request->nama,
             'user_type' => $request->user_type,
-            'area' => $request->area
+            'area_id' => $request->area
         ]);
 
         return response()->json(['message' => 'Kurir berhasil diperbarui']);

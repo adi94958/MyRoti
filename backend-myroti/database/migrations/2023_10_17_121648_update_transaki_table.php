@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lapak', function (Blueprint $table) {
-            $table->bigIncrements('kode_lapak');
-            $table->string('nama_lapak', 50);
-            $table->string('alamat_lapak', 100);
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::table('transaksi', function (Blueprint $table) {  
+            $table->integer('id_kurir');             
         });
     }
 
@@ -25,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lapak');
+        //
     }
 };
