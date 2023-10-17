@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('lapak', function (Blueprint $table) {
-            $table->foreignId('id_kurir')->constrained('kurirs', 'id_kurir');
-            $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
-        });
+        if (!Schema::hasTable('transaksi_roti')) {
+            Schema::table('transaksi_roti', function (Blueprint $table) {
+                $table->foreignId('id_penjualan')->constrained('datapenjualan', 'id_penjualan');
+            });
+        }
     }
 
     /**

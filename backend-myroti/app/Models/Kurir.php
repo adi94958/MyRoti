@@ -23,12 +23,12 @@ class Kurir extends Authenticatable
 
     public function Area_Distribusi(): BelongsTo
     {
-        return $this->belongsTo(Area_Distribusi::class);
+        return $this->belongsTo(Area_Distribusi::class, 'area_id','area_id');
     }
 
     public function Lapak(): HasOne
     {
-        return $this->hasOne(Lapak::class, 'id_kurir', 'id');
+        return $this->hasOne(Lapak::class, 'id_kurir', 'id_kurir');
     }
 
 }

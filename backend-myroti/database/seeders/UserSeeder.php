@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -14,50 +13,33 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('admins')->insert([
-            'username' => 'admin',
-            'password' => Crypt::encryptString('admin'),
-            'user_type' => 'admin',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-        DB::table('koordinators')->insert([
-            [
-            'username' => 'koordinator',
-            'password' => Crypt::encryptString('koordinator'),
-            'nama' => 'Adi',
-            'user_type' => 'koordinator',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ],
-        [
-            'username' => 'koordinator2',
-            'password' => Crypt::encryptString('koordiantor2'),
-            'nama' => 'Alya',
-            'user_type' => 'koordinator',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]
-        ]);
-        // DB::table('kurirs')->insert([
-        //     [
-        //         'username' => 'kurir',
-        //         'password' => Crypt::encryptString('kurir'),
-        //         'nama' => 'Adrian',
-        //         'area_id' => 'Bandung Barat',
-        //         'user_type' => 'kurir',
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ],
-        //     [
-        //         'username' => 'kurir2',
-        //         'password' => Crypt::encryptString('kurir2'),
-        //         'nama' => 'Fadel',
-        //         'area' => 'Cimahi',
-        //         'user_type' => 'kurir',
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ]
+        // DB::table('admins')->insert([
+        //     'username' => 'admin2',
+        //     'password' => Crypt::encryptString('admin2'),
+        //     'user_type' => 'admin',
+        //     'created_at' => Carbon::now(),
+        //     'updated_at' => Carbon::now(),
         // ]);
+
+        DB::table('kurirs')->insert([
+            [
+                'username' => 'kurir',
+                'password' => Crypt::encryptString('kurir'),
+                'nama' => 'Adrian',
+                'area_id' => '1',
+                'user_type' => 'kurir',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'username' => 'kurir2',
+                'password' => Crypt::encryptString('kurir2'),
+                'nama' => 'Fadel',
+                'area_id' => '2',
+                'user_type' => 'kurir',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
     }
 }
