@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use App\Models\Lapak;
 use App\Models\Roti;
+use App\Models\DataPenjualan;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
@@ -19,7 +20,7 @@ class TransaksiController extends Controller
     public function lapakTransaksi()
     {
         $datas = Lapak::select('kode_lapak', 'nama_lapak')
-        ->join('areadistribusi', 'lapak.area_id', '=', 'id') // Lakukan join dengan tabel area
+        ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id') // Lakukan join dengan tabel area
         ->select('lapak.nama_lapak','areadistribusi.area_distribusi') // Pilih kolom yang Anda inginkan
         ->get();
       
@@ -67,5 +68,33 @@ class TransaksiController extends Controller
         return response()->json(['message' => 'Lapak tidak ditemukan']);
     }
 
-    
+    public function deleteTransaksi($id_transaksi)
+{
+    $transaksi = Transaksi::find($id_transaksi);
+
+    if (!$transaksi) {
+        return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+    }
+
+    // Temukan data penjualan yang terkait dengan transaksi
+    $dataPenjualan = DataPenjualan::where('id_transaksi', $id_transaksi)->get();
+
+    // Hapus data penjualan terlebih dahulu
+    foreach ($dataPenjualan as $penjualan) {
+        $penjualan->delete();
+    }
+
+    // Kembalikan jumlah roti yang dibeli dalam transaksi ke stok awal
+    $roti = Roti::where('kode_roti', $transaksi->kode_roti)->first();
+    if ($roti) {
+        $roti->stok_roti += $transaksi->jumlah_roti;
+        $roti->save();
+    }
+
+    // Hapus transaksi dari database
+    $transaksi->delete();
+
+    return response()->json(['message' => 'Transaksi dan data penjualan terkait berhasil dihapus']);
+}
+
 }
