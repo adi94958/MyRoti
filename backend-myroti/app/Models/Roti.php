@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Roti extends Model
 {
@@ -17,4 +18,10 @@ class Roti extends Model
         'rasa_roti',
         'harga_satuan_roti',
     ];
+
+    public function Transaksi(): BelongsTo
+    {
+        return $this->belongsTo(Transaksi::class, 'kode_roti', 'kode_roti');
+    }
+
 }

@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Lapak;
 use Illuminate\Http\Request;
+use App\Models\Area_Distribusi;
 
 class LapakController extends Controller
 {
     public function readDataLapak()
     {
-        $datas = Lapak::select('kode_lapak', 'nama_lapak', 'area', 'alamat_lapak')->get();
+        $datas = Lapak::select('kode_lapak', 'id_kurir', 'nama_lapak', 'area_id', 'alamat_lapak')->get();
       
         return response()->json($datas, 200);
     }
@@ -19,15 +20,18 @@ class LapakController extends Controller
         // Validasi input
         $request->validate([
             'nama_lapak' => 'required',
-            'area' => 'required',
+            'id_kurir' => 'required',
+            'area_id' => 'required',
             'alamat_lapak' => 'required'
         ]);
 
-        // Buat koordinator baru
-        Lapak::create([
+        $areas = Area_Distribusi::all();
+        return view('lapak.create', compact('areas'));
 
+        Lapak::create([
             'nama_lapak' => $request->nama_lapak,
-            'area' => $request->area,
+            'id_kurir' => $request->id_kurir,
+            'area_id' => $request->area_id,
             'alamat_lapak' => $request->alamat_lapak
         ]);
 
@@ -44,13 +48,15 @@ class LapakController extends Controller
 
         $request->validate([
             'nama_lapak' => 'required',
-            'area' =>'required',
+            'id_kurir' => 'required',
+            'area_id' =>'required',
             'alamat_lapak' => 'required'
         ]);
 
 
         $lapak->update([
             'nama_lapak' => $request->nama_lapak,
+            'id_kurir' => $request->id_kurir,
             'area' => $request->area,
             'alamat_lapak' => $request->alamat_lapak
         ]);

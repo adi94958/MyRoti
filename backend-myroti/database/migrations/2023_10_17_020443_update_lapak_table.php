@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('areadistribusi', function (Blueprint $table) {
-            $table->id();
-            $table->string('area_distribusi', 50);
-            $table->timestamps();
+        Schema::table('lapak', function (Blueprint $table) {
+            $table->foreignId('id_kurir')->constrained(table: 'kurirs');
+            $table->foreignId('area_id')->constrained(table: 'areadistribusi');
         });
     }
 
@@ -23,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('areadistribusi');
+        //
     }
 };

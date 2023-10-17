@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Kurir extends Authenticatable
 {
@@ -14,6 +17,17 @@ class Kurir extends Authenticatable
         'password', 
         'nama',
         'user_type',
-        'area'
+        'area_id'
     ];
+
+    public function Area_Distribusi(): BelongsTo
+    {
+        return $this->belongsTo(Area_Distribusi::class);
+    }
+
+    public function Lapak(): HasOne
+    {
+        return $this->hasOne(Lapak::class);
+    }
+
 }
