@@ -6,19 +6,20 @@ import CekLogin from "../../auth/CekLogin";
 import login from "../../assets/loginn.png";
 import logo from "../../assets//logo.png";
 
-
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-    const cekLogin=CekLogin()
-    if (cekLogin === 1){
-      navigate("/admin")
-    }else     if (cekLogin === 2){
-      navigate("/koor")
+    const cekLogin = CekLogin();
+    if (cekLogin === 1) {
+      navigate("/admin");
+    } else if (cekLogin === 2) {
+      navigate("/koor");
+    }else{
+      
     }
   }, []);
 
@@ -36,7 +37,7 @@ const LoginForm = () => {
           JSON.stringify({
             username: username,
             password: password,
-            user_type: response.data.user.user_type
+            user_type: response.data.user.user_type,
           })
         );
         if (response.data.user.user_type === "admin") {
@@ -69,7 +70,11 @@ const LoginForm = () => {
             className="border border-solid border-gray-300 px-8 py-5 h-200"
           >
             <img src={logo} alt="Big" className="h-44 object-cover m-auto " />
-            <Typography variant="h3" color="blue-gray" className="text-center mt-20">
+            <Typography
+              variant="h3"
+              color="blue-gray"
+              className="text-center mt-20"
+            >
               Login
             </Typography>
             <form className="mt-7">

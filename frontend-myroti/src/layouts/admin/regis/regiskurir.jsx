@@ -4,7 +4,16 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import CekLogin from "../../../auth/CekLogin";
 
-const options = ["kadal", "Ayam", "Bebek", "Kudanil","kadal", "Ayam", "Bebek", "Kudanil"];
+const options = [
+  "kadal",
+  "Ayam",
+  "Bebek",
+  "Kudanil",
+  "kadal",
+  "Ayam",
+  "Bebek",
+  "Kudanil",
+];
 
 export default function RegisKurir() {
   const [nama, setNama] = useState("");

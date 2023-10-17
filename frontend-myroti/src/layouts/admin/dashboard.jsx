@@ -9,7 +9,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const cekLogin = CekLogin();
+    const cekLogin = CekLogin();  
     if (cekLogin !== 1) {
       navigate("/koor");
     }
@@ -26,9 +26,6 @@ export default function Dashboard() {
         console.error("Error:", error);
       });
   }
-
-  // Remove dashboardInside function
-
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-4xl font-serif">Dashboard</h1>
