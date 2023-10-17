@@ -16,7 +16,7 @@ export default function EditKoor() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
     setNama(koor.nama);
     setUsername(koor.username);
