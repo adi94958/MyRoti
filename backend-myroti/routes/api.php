@@ -47,7 +47,7 @@ Route::post('/koordinator/dataroti/registrasi', [DataRotiController::class, 'reg
 Route::put('/koordinator/dataroti/update/{id}', [DataRotiController::class, 'updateRoti']);
 Route::delete('/koordinator/dataroti/delete/{id}', [DataRotiController::class, 'deleteRoti']);
 
-Route::get('/koordinator/transaksi', [TransaksiController::class, 'readTransaksi']);
-Route::post('/koordinator/transaksi/create', [TransaksiController::class, 'createTransaksi']);
+Route::get('/koordinator/transaksi', [TransaksiController::class, 'lapakTransaksi']);
+Route::post('/koordinator/transaksi/create/{id}', [TransaksiController::class, 'createTransaksi']);
 
 // Kurir routes here
