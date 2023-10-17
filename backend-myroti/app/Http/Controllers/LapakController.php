@@ -27,11 +27,13 @@ class LapakController extends Controller
             'alamat_lapak' => 'required'
         ]);
 
-        $kurir = Kurir::find($request->id_kurir);
+        $kurir = Kurir::where('id', $request->id_kurir)->first();
         $area = Area_Distribusi::find($request->area_id);
 
         if($area){
-            if($kurir){
+            $area_kurir = $kurir->area_id;
+
+            if($area = $area_kurir){
                 Lapak::create([
                     'nama_lapak' => $request->nama_lapak,
                     'area_id' => $area->id,
@@ -41,7 +43,7 @@ class LapakController extends Controller
                 return response()->json(['message' => 'Lapak berhasil didaftarkan']);
 
             }
-            return response()->json(['message' => 'Kurir tidak ditemukan']);
+            return response()->json(['message' => 'Kurir dan Lapak tidak sesuai']);
 
         }
 
