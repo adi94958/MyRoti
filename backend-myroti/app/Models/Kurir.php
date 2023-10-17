@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Kurir extends Authenticatable
 {
     use HasFactory, HasApiTokens;
+    protected $table = 'kurirs';
     protected $fillable = [
         'username', 
         'password', 
@@ -27,7 +28,7 @@ class Kurir extends Authenticatable
 
     public function Lapak(): HasOne
     {
-        return $this->hasOne(Lapak::class);
+        return $this->hasOne(Lapak::class, 'id_kurir', 'id');
     }
 
 }

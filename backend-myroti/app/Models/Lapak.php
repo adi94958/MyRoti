@@ -17,13 +17,14 @@ class Lapak extends Model
     protected $fillable = [
         'nama_lapak', 
         'area_id',
+        'id_kurir',
         'alamat_lapak',
     ];
 
     //hubungan PK ke FK
     public function Area_Distribusi(): BelongsTo
     {
-        return $this->belongsTo(Area_Distribusi::class);
+        return $this->belongsTo(Area_Distribusi::class, 'area_id', 'id');
     }
 
     public function Transaksi(): HasMany
@@ -34,6 +35,6 @@ class Lapak extends Model
     
     public function Kurir(): BelongsTo
     {
-        return $this->belongsTo(Kurir::class, 'id_kurir');
+        return $this->belongsTo(Kurir::class, 'id_kurir', 'id');
     }
 }

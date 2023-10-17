@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Area_Distribusi extends Model
 {
     use HasFactory;
+
+    protected $table = 'areadistribusi';
     protected $fillable = [
         'area_distribusi'
     ];
@@ -16,5 +18,10 @@ class Area_Distribusi extends Model
     public function Kurir(): HasOne
     {
         return $this->hasOne(Kurir::class);
+    }
+
+    public function Lapak(): HasOne
+    {
+        return $this->hasOne(Lapak::class);
     }
 }

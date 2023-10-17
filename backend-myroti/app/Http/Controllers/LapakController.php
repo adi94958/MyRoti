@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lapak;
-use Illuminate\Http\Request;
+use App\Models\Kurir;
 use App\Models\Area_Distribusi;
+use Illuminate\Http\Request;
+
 
 class LapakController extends Controller
 {
@@ -20,22 +22,30 @@ class LapakController extends Controller
         // Validasi input
         $request->validate([
             'nama_lapak' => 'required',
-            'id_kurir' => 'required',
             'area_id' => 'required',
+            'id_kurir' => 'required',
             'alamat_lapak' => 'required'
         ]);
 
-        $areas = Area_Distribusi::all();
-        return view('lapak.create', compact('areas'));
+        $kurir = Kurir::find($request->id_kurir);
+        $area = Area_Distribusi::find($request->area_id);
 
-        Lapak::create([
-            'nama_lapak' => $request->nama_lapak,
-            'id_kurir' => $request->id_kurir,
-            'area_id' => $request->area_id,
-            'alamat_lapak' => $request->alamat_lapak
-        ]);
+        if($area){
+            if($kurir){
+                Lapak::create([
+                    'nama_lapak' => $request->nama_lapak,
+                    'area_id' => $area->id,
+                    'id_kurir' => $kurir->id,
+                    'alamat_lapak' => $request->alamat_lapak
+                ]);
+                return response()->json(['message' => 'Lapak berhasil didaftarkan']);
 
-        return response()->json(['message' => 'Lapak berhasil didaftarkan']);
+            }
+            return response()->json(['message' => 'Kurir tidak ditemukan']);
+
+        }
+
+        return response()->json(['message' => 'Area tidak ditemukan']);
     }
 
     public function updateLapak(Request $request, $kode_lapak)
@@ -57,7 +67,7 @@ class LapakController extends Controller
         $lapak->update([
             'nama_lapak' => $request->nama_lapak,
             'id_kurir' => $request->id_kurir,
-            'area' => $request->area,
+            'area_id' => $request->area,
             'alamat_lapak' => $request->alamat_lapak
         ]);
 
