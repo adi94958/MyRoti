@@ -18,11 +18,11 @@ class Area_Distribusi extends Model
 
     public function Kurir(): HasOne
     {
-        return $this->hasOne(Kurir::class, 'area_id', 'area_id');
+        return $this->hasOne(Kurir::class, 'area_id', 'id');
     }
 
     public function Lapak(): HasOne
     {
-        return $this->hasOne(Lapak::class, 'area_id', 'area_id');
+        return $this->hasOne(Lapak::class, 'area_id', 'id');
     }
 }

@@ -68,15 +68,19 @@ class LapakController extends Controller
             'alamat_lapak' => 'required'
         ]);
 
+        $area = Area_Distribusi::where('id', $request->area_id)->first();
 
-        $lapak->update([
-            'nama_lapak' => $request->nama_lapak,
-            'id_kurir' => $request->id_kurir,
-            'area_id' => $request->area,
-            'alamat_lapak' => $request->alamat_lapak
-        ]);
-
-        return response()->json(['message' => 'Lapak berhasil diperbarui']);
+        if($area){
+            $lapak->update([
+                'nama_lapak' => $request->nama_lapak,
+                'id_kurir' => $request->id_kurir,
+                'area_id' => $area->id,
+                'alamat_lapak' => $request->alamat_lapak
+            ]);
+    
+            return response()->json(['message' => 'Lapak berhasil diperbarui']);
+        }
+        
     }
 
     public function deleteLapak($kode_lapak)

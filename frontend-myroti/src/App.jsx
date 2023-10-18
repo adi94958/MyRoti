@@ -11,6 +11,8 @@ import RegisKurir from "./layouts/admin/regis/regiskurir";
 import EditKoor from "./layouts/admin/edit/editkoor";
 import EditKurir from "./layouts/admin/edit/editkurir";
 import Login from "./layouts/login/login"
+import LayoutKoor from "./layouts/Koor/layoutKoor"
+import Distribusi from "./layouts/Koor/distribusi";
 
 export default function App() {
   return (
@@ -28,6 +30,9 @@ export default function App() {
             <Route path="/admin/kurir/regis" element={<RegisKurir />} />
             <Route path="/admin/koordinator/edit" element={<EditKoor />} />
             <Route path="/admin/kurir/edit" element={<EditKurir />} />
+          <Route path="/koordinator" element={<LayoutKoor />}>
+            <Route index element ={<Distribusi />} />
+          </Route>
       </Routes>
     </Router>
   );

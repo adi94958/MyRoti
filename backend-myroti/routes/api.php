@@ -10,7 +10,11 @@ use App\Http\Controllers\LapakController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataRotiController;
 use App\Http\Controllers\TransaksiController;
+<<<<<<< HEAD
 use App\Http\Controllers\DataPemilikController;
+=======
+use App\Http\Controllers\DataKeuanganController;
+>>>>>>> 782c05d6e49c848edaee40343a48ef1b2bd97488
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +40,12 @@ Route::get('/kurir', [DataKurirController::class, 'readDataKurir']);
 Route::post('/kurir/registrasi', [DataKurirController::class, 'registerKurir']);
 Route::put('/kurir/update/{id}', [DataKurirController::class, 'updateKurir']);
 Route::delete('/kurir/delete/{id}', [DataKurirController::class, 'deleteKurir']);
+
+Route::get('/keuangan', [DataKeuanganController::class, 'readDataKeuangan']);
+Route::post('/keuangan/registrasi', [DataKeuanganController::class, 'registerKeuangan']);
+Route::put('/keuangan/update/{id}', [DataKeuanganController::class, 'updateKeuangan']);
+Route::delete('/keuangan/delete/{id}', [DataKeuanganController::class, 'deleteKeuangan']);
+
 
 // Koordinator routes here
 Route::get('/dashboard/koordinator', [DashboardController::class, 'koordinatorDashboard']);

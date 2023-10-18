@@ -14,6 +14,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('keuangans')->insert([
+            'username' => 'keuangan',
+            'password' => Crypt::encryptString('keuangan'),
+            'nama' => 'Adrian',
+            'user_type' => 'keuangan',
+            'created_at' => Carbon::now()->subDays(15),
+            'updated_at' => Carbon::now(),
+        ]);
         DB::table('admins')->insert([
             'username' => 'admin2',
             'password' => Crypt::encryptString('admin2'),
