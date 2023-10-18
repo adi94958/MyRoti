@@ -28,12 +28,11 @@ class LapakController extends Controller
         ]);
 
         $kurir = Kurir::where('id', $request->id_kurir)->first();
-        $area = Area_Distribusi::find($request->area_id);
+        $area = Area_Distribusi::where('id', $request->area_id)->first();
 
         if($area){
-            $area_kurir = $kurir->area_id;
 
-            if($area = $area_kurir){
+            if($kurir){
                 Lapak::create([
                     'nama_lapak' => $request->nama_lapak,
                     'area_id' => $area->id,
