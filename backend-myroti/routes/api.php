@@ -54,5 +54,10 @@ Route::delete('/koordinator/transaksi/delete/{id_transaksi}', [TransaksiControll
 
 Route::get('/area', [AreaController::class, 'readArea']);
 
+Route::get('/pemilik', [DataPemilikController::class, 'readDataPemilik']);
+Route::post('/pemilik/registrasi', [DataPemilikController::class, 'registerPemilik']);
+Route::put('/pemilik/update/{id}', [DataPemilikController::class, 'updatePemilik']);
+Route::delete('/pemilik/delete/{id}', [DataPemilikController::class, 'deletePemilik']);
+
 
 // Kurir routes here
