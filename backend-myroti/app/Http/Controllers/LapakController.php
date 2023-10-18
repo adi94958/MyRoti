@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lapak;
 use App\Models\Kurir;
 use App\Models\Area_Distribusi;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 
@@ -89,6 +90,12 @@ class LapakController extends Controller
 
         if (!$lapak) {
             return response()->json(['message' => 'Lapak tidak ditemukan'], 404);
+        }
+
+        $transaksi = Transaksi::where('kode_lapak', $kode_lapak)->get();
+
+        foreach ($transaksi as $transaksi1) {
+            $transaksi1->delete();
         }
 
         $lapak->delete();
