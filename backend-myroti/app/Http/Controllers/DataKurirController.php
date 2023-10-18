@@ -85,15 +85,21 @@ class DataKurirController extends Controller
             return response()->json(['message' => 'Username sudah digunakan pada tabel lain'], 422);
         }
 
-        $kurir->update([
-            'username' => $request->username,
-            'password' => Crypt::encryptString($request->password),
-            'nama' => $request->nama,
-            'user_type' => $request->user_type,
-            'area_id' => $request->area
-        ]);
+        $area = Area_Distribusi::where('id', $request->area_id)->first();
 
-        return response()->json(['message' => 'Kurir berhasil diperbarui']);
+        if($kurir){
+            $kurir->update([
+                'username' => $request->username,
+                'password' => Crypt::encryptString($request->password),
+                'nama' => $request->nama,
+                'user_type' => $request->user_type,
+                'area_id' => $area->id
+            ]);
+    
+            return response()->json(['message' => 'Kurir berhasil diperbarui']);
+        }
+
+        
     }
 
     public function deleteKurir($id)
