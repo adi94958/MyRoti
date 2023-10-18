@@ -60,6 +60,7 @@ Route::put('/koordinator/dataroti/update/{id}', [DataRotiController::class, 'upd
 Route::delete('/koordinator/dataroti/delete/{id}', [DataRotiController::class, 'deleteRoti']);
 
 Route::get('/koordinator/transaksi', [TransaksiController::class, 'lapakTransaksi']);
+Route::get('/koordinator/listtransaksi', [TransaksiController::class, 'readTransaksi']);
 Route::post('/koordinator/transaksi/create/{id}', [TransaksiController::class, 'createTransaksi']);
 Route::delete('/koordinator/transaksi/delete/{id_transaksi}', [TransaksiController::class, 'deleteTransaksi']);
 

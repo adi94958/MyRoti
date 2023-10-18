@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Http\Controllers\LapakController;
 use App\Models\Kurir;
 use App\Models\Koordinator;
 use App\Models\Area_Distribusi;
+use App\Models\Transaksi;
+use App\Models\Lapak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -110,8 +113,21 @@ class DataKurirController extends Controller
             return response()->json(['message' => 'Kurir tidak ditemukan'], 404);
         }
 
+        $lapaks = Lapak::where('id_kurir', $id)->get();
+
+        foreach ($lapaks as $lapak) {
+            $transaksi = Transaksi::where('kode_lapak', $lapak->kode_lapak)->get();
+
+            foreach ($transaksi as $transaksi1) {
+                $transaksi1->delete();
+            }
+
+            $lapak->delete();
+        }
+
         $kurir->delete();
 
         return response()->json(['message' => 'Kurir berhasil dihapus']);
     }
+
 }
