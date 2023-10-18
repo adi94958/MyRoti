@@ -13,10 +13,16 @@ class DataKurirController extends Controller
 {
     public function readDataKurir()
     {
-        $datas = Kurir::select('id','username', 'password', 'nama', 'area_id')->get();
+        
+        $datas = Kurir::select('id','username', 'password', 'nama', 'area_id')
+            ->join('areadistribusi', 'kurirs.area_id', '=', 'areadistribusi.id')
+            ->select('kurirs.id','kurirs.username','kurirs.password', 'kurirs.nama', 'kurirs.user_type','areadistribusi.area_distribusi')
+            ->get();
+
         foreach ($datas as $data) {
             $data->password = Crypt::decryptString($data->password);
         }
+
         return response()->json($datas, 200);
     }
 
