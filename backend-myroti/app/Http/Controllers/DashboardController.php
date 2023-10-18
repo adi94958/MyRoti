@@ -30,24 +30,19 @@ class DashboardController extends Controller
     public function koordinatorDashboard()
 {
     //misal $tanggalDistribusi = '2023-10-10'; 
-    $tanggalDistribusi = now()->subDay(1)->toDateString();
+    $tanggalDistribusi = now()->subDays(2)->toDateString();
     $tanggal = now()->toDateString();
     //setoran harian
     $totalPenjualanHarian = DataPenjualan::whereDate('tanggal_pengiriman', $tanggal)->sum('uang_setoran');
     
     //total pengiriman roti hari itu
-    $totalPengirimanHariIni = TransaksiRoti::whereHas('transaksi', function ($query) use ($tanggalDistribusi) {
-        $query->whereDate('tanggal_pengiriman', $tanggalDistribusi);
-    })->sum('jumlah_roti');
+    $totalPengirimanHariIni = Transaksi::whereDate('tanggal_pengiriman', $tanggalDistribusi)->sum('jumlah_roti');
+    
 
     //total roti terjual hari itu
-    $totalRotiDidistribusikan = TransaksiRoti::whereHas('transaksi', function ($query) use ($tanggalDistribusi) {
-        $query->whereDate('tanggal_pengiriman', $tanggalDistribusi);
-    })->sum('jumlah_roti');
+    $totalRotiDidistribusikan = Transaksi::whereDate('tanggal_pengiriman', $tanggalDistribusi)->sum('jumlah_roti');
     
-    $totalRotiBasi = DataPenjualan::whereHas('transaksiRoti.transaksi', function ($query) use ($tanggalDistribusi) {
-        $query->whereDate('tanggal_pengiriman', $tanggalDistribusi);
-    })->sum('roti_basi');
+    $totalRotiBasi = DataPenjualan::whereDate('tanggal_pengiriman', $tanggalDistribusi)->sum('roti_basi');
 
     $totalRotiTerjual = $totalRotiDidistribusikan - $totalRotiBasi;
 
