@@ -39,7 +39,7 @@ class DataKurirController extends Controller
             'username.unique' => 'Username sudah digunakan.',
         ]);
 
-        $area = Area_Distribusi::find($request->area_id);
+        $area = Area_Distribusi::where('id', $request->area_id)->first();
 
         if($area){
              // Buat koordinator baru
