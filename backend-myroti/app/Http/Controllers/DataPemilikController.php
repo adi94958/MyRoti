@@ -10,7 +10,7 @@ class DataPemilikController extends Controller
 {
     public function readDataPemilik()
     {
-        $datas = Pemilik::select('id', 'username', 'password', 'nama')->get();
+        $datas = Pemilik::select('id_pemilik', 'username', 'password', 'nama',)->get();
         foreach ($datas as $data) {
             $data->password = Crypt::decryptString($data->password);
         }
@@ -24,6 +24,7 @@ class DataPemilikController extends Controller
             'username' => 'required|unique:pemiliks', // Pastikan Anda telah mengganti nama tabel sesuai dengan nama yang sesuai
             'password' => 'required',
             'nama' => 'required',
+            'user_type' => 'required'
         ], [
             'username.unique' => 'Username sudah digunakan.',
         ]);
@@ -33,6 +34,7 @@ class DataPemilikController extends Controller
             'username' => $request->username,
             'password' => Crypt::encryptString($request->password),
             'nama' => $request->nama,
+            'user_type' => $request->user_type
         ]);
 
         return response()->json(['message' => 'Pemilik berhasil didaftarkan']);
@@ -50,12 +52,14 @@ class DataPemilikController extends Controller
             'username' => 'required|unique:pemiliks,username,' . $pemilik->id, // Pastikan Anda telah mengganti nama tabel sesuai dengan nama yang sesuai
             'password' => 'required',
             'nama' => 'required',
+            'user_type' => 'required'
         ]);
 
         $pemilik->update([
             'username' => $request->username,
             'password' => Crypt::encryptString($request->password),
             'nama' => $request->nama,
+            'user_type' => $request->user_type
         ]);
 
         return response()->json(['message' => 'Pemilik berhasil diperbarui']);

@@ -9,10 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('pemiliks', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_pemilik');
+            $table->string('username')->unique();
+            $table->string('password');
+            $table->string('nama');
+            $table->string('user_type')->nullable();
             $table->timestamps();
         });
     }

@@ -9,6 +9,8 @@ use Laravel\Sanctum\HasApiTokens;
 class Pemilik extends Authenticatable
 {
     use HasFactory, HasApiTokens;
+    protected $table = 'pemiliks';
+    protected $primaryKey = 'id_pemilik';
     protected $fillable = [
         'username', 
         'password', 

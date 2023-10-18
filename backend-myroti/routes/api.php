@@ -10,6 +10,7 @@ use App\Http\Controllers\LapakController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataRotiController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\DataPemilikController;
 
 /*
 |--------------------------------------------------------------------------
