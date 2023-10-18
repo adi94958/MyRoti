@@ -13,6 +13,7 @@ class Kurir extends Authenticatable
 {
     use HasFactory, HasApiTokens;
     protected $table = 'kurirs';
+    protected $primaryKey = 'id_kurir';
     protected $fillable = [
         'username', 
         'password', 
