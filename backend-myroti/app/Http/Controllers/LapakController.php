@@ -12,8 +12,12 @@ class LapakController extends Controller
 {
     public function readDataLapak()
     {
-        $datas = Lapak::select('kode_lapak', 'id_kurir', 'nama_lapak', 'area_id', 'alamat_lapak')->get();
-      
+        $datas = Lapak::select('kode_lapak','nama_lapak', 'id_kurir', 'area_id', 'alamat_lapak')
+            ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.id')
+            ->join('kurirs', 'lapak.id_kurir', '=', 'kurirs.id')
+            ->select('lapak.kode_lapak','lapak.nama_lapak', 'kurirs.nama', 'areadistribusi.area_distribusi', 'lapak.alamat_lapak')
+            ->get();
+
         return response()->json($datas, 200);
     }
 
