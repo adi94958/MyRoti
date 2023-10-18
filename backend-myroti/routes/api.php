@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AreaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataKurirController;
@@ -50,6 +51,8 @@ Route::delete('/koordinator/dataroti/delete/{id}', [DataRotiController::class, '
 Route::get('/koordinator/transaksi', [TransaksiController::class, 'lapakTransaksi']);
 Route::post('/koordinator/transaksi/create/{id}', [TransaksiController::class, 'createTransaksi']);
 Route::delete('/koordinator/transaksi/delete/{id_transaksi}', [TransaksiController::class, 'deleteTransaksi']);
+
+Route::get('/area', [AreaController::class, 'readArea']);
 
 
 // Kurir routes here
