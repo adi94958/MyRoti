@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Roti;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class DataRotiController extends Controller
@@ -62,12 +63,18 @@ class DataRotiController extends Controller
         return response()->json(['message' => 'Data roti berhasil diperbarui']);
     }
 
-    public function deleteLapak($kode_roti)
+    public function deleteRoti($kode_roti)
     {
         $roti = Roti::find($kode_roti);
 
         if (!$roti) {
             return response()->json(['message' => 'Data roti tidak ditemukan'], 404);
+        }
+
+        $transaksi = Transaksi::where('kode_roti', $kode_roti)->get();
+
+        foreach ($transaksi as $transaksi1) {
+            $transaksi1->delete();
         }
 
         $roti->delete();
