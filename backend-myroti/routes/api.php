@@ -10,11 +10,8 @@ use App\Http\Controllers\LapakController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataRotiController;
 use App\Http\Controllers\TransaksiController;
-<<<<<<< HEAD
-use App\Http\Controllers\DataPemilikController;
-=======
 use App\Http\Controllers\DataKeuanganController;
->>>>>>> 782c05d6e49c848edaee40343a48ef1b2bd97488
+use App\Http\Controllers\DataPemilikController;
 
 /*
 |--------------------------------------------------------------------------
