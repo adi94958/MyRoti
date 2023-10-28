@@ -12,23 +12,23 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import CekLogin from "../../auth/CekLogin";
 
-const TABLE_HEAD = ["Nama", "Username", "Password", "Area"];
+const TABLE_HEAD = ["Nama Lapak", "Alamat", "Area Lapak", "Nama Kurir"];
 
-export default function Kurir() {
+export default function Lapak() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const cekLogin = CekLogin();
-    if (cekLogin !== 1) {
-      navigate("/koordinator");
+    if (cekLogin !== 2) {
+        navigate("/admin");
     }
     handleData();
   }, []);
 
   function handleData() {
     axios
-      .get("http://localhost:8000/api/kurir")
+      .get("http://localhost:8000/api/koordinator/lapak")
       .then((response) => {
         setData(response.data);
       })
@@ -38,8 +38,9 @@ export default function Kurir() {
   }
 
   function handleDelete(id) {
+    console.log(id)
     axios
-      .delete(`http://localhost:8000/api/kurir/delete/${id}`)
+      .delete(`http://localhost:8000/api/koordinator/lapak/delete/${id}`)
       .then(handleData)
       .catch((error) => {
         console.error("Error:", error);
@@ -48,31 +49,31 @@ export default function Kurir() {
 
   function handleEdit(item) {
     localStorage.setItem(
-      "dataKurir",
+      "dataLapak",
       JSON.stringify({
-        id: item.id,
-        nama: item.nama,
-        username: item.username,
-        password: item.password,
-        area: item.area_distribusi,
+        kode_lapak: item.kode_lapak,
+        nama_lapak: item.nama_lapak,
+        alamat_lapak: item.alamat_lapak,
+        kurir: item.nama,
+        area: item.area_distribusi
       })
     );
-    navigate("/admin/kurir/edit");
+    navigate("/koordinator/data_lapak/edit");
   }
 
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-8 flex items-center justify-between gap-8">
+        <div className="mb-3 flex items-center justify-between gap-8">
           <div>
-            <Typography className="text-4xl font-serif" color="blue-gray">
-              Akun Kurir
+            <Typography color="blue-gray" className="text-4xl font-serif">
+              Data Lapak
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Link to="/admin/kurir/regis">
+            <Link to="/koordinator/data_lapak/regis">
               <Button className="flex items-center gap-3" size="sm">
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+                <UserPlusIcon strokeWidth={2} className="h-4 w-5" /> Add Lapak
               </Button>
             </Link>
           </div>
@@ -111,7 +112,7 @@ export default function Kurir() {
                   color="blue-gray"
                   className="font-normal leading-none opacity-70"
                 >
-                  action
+                  Action
                 </Typography>
               </th>
             </tr>
@@ -124,14 +125,11 @@ export default function Kurir() {
                 : "p-4 border-b border-blue-gray-50";
 
               return (
-                <tr key={item.id}>
+                <tr key={item.kode_lapak}>
                   <td className={classes}>
                     <div className="flex justify-center">
                       <Typography>{index + 1}</Typography>
                     </div>
-                  </td>
-                  <td className={classes}>
-                    <Typography>{item.nama}</Typography>
                   </td>
                   <td className={classes}>
                     <div className="flex flex-col">
@@ -140,7 +138,7 @@ export default function Kurir() {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {item.username}
+                        {item.nama_lapak}
                       </Typography>
                     </div>
                   </td>
@@ -150,7 +148,7 @@ export default function Kurir() {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {item.password}
+                      {item.alamat_lapak}
                     </Typography>
                   </td>
                   <td className={classes}>
@@ -163,10 +161,19 @@ export default function Kurir() {
                     </Typography>
                   </td>
                   <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      {item.nama}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
                     <div className="flex justify-center">
                       <IconButton
                         variant="text"
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleDelete(item.kode_lapak)}
                       >
                         <TrashIcon className="h-4 w-4" />
                       </IconButton>

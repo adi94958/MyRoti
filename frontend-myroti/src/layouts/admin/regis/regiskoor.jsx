@@ -14,7 +14,7 @@ export default function RegisKoor() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
   }, []);
 
@@ -63,8 +63,12 @@ export default function RegisKoor() {
       <Card color="transparent" shadow={false}>
         <div className="flex justify-center">
           <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
-            <Typography variant="h4" className="mb-4 text-center font-serif" color="blue-gray">
-                Registrasi Akun Koordinator
+            <Typography
+              variant="h4"
+              className="mb-4 text-center font-serif"
+              color="blue-gray"
+            >
+              Registrasi Akun Koordinator
             </Typography>
             <div className="mb-4 mt-4 flex flex-col gap-3">
               <Input

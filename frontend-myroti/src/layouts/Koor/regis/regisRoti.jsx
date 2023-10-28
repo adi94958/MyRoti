@@ -4,25 +4,35 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import CekLogin from "../../../auth/CekLogin";
 
-export default function RegisKeuangan() {
-  const [nama, setNama] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function RegisRoti() {
+  const [kode_roti, setKodeRoti] = useState("");
+  const [nama_roti, setNamaRoti] = useState("");
+  const [stok_roti, setStokRoti] = useState("");
+  const [rasa_roti, setRasaRoti] = useState("");
+  const [harga_satuan_roti, setHargaSatuanRoti] = useState("");
   const [isValidate, setIsValidate] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const cekLogin = CekLogin();
-    if (cekLogin !== 1) {
-      navigate("/koordinator");
+    if (cekLogin !== 2) {
+        navigate("/admin");
     }
   }, []);
 
   useEffect(() => {
-    if (username.length >= 4 && username.length <= 25) {
-      if (password.length >= 4 && password.length <= 15) {
-        if (nama.length >= 4 && nama.length <= 50) {
-          setIsValidate(false);
+    if (kode_roti.length != null) {
+      if (nama_roti.length != null) {
+        if (stok_roti.length != null) {
+            if (rasa_roti.length != null) {
+                if (harga_satuan_roti.length != null) {
+                    setIsValidate(false);
+                } else {
+                    setIsValidate(true);
+                }
+            } else {
+                setIsValidate(true);
+            }
         } else {
           setIsValidate(true);
         }
@@ -32,21 +42,22 @@ export default function RegisKeuangan() {
     } else {
       setIsValidate(true);
     }
-  }, [nama, username, password]);
+  }, [kode_roti, nama_roti, stok_roti, rasa_roti, harga_satuan_roti]);
 
   const handleRegister = () => {
     const data = {
-      nama: nama,
-      username: username,
-      password: password,
-      user_type: "keuangan",
+      nama_roti: nama_roti,
+      stok_roti: stok_roti,
+      rasa_roti: rasa_roti,
+      harga_satuan_roti: harga_satuan_roti,
     };
 
     axios
-      .post("http://localhost:8000/api/keuangan/registrasi", data)
+      .post("http://localhost:8000/api/koordinator/dataroti/registrasi", data)
       .then((response) => {
         console.log(response.data.message);
-        navigate("/admin/keuangan");
+        navigate("/koordinator/data_roti");
+        // Optionally, you can redirect the user or perform other actions here
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -54,7 +65,7 @@ export default function RegisKeuangan() {
   };
 
   function handleCancel() {
-    navigate("/admin/keuangan");
+    navigate("/koordinator/data_roti");
   }
 
   return (
@@ -62,45 +73,38 @@ export default function RegisKeuangan() {
       <Card color="transparent" shadow={false}>
         <div className="flex justify-center">
           <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
-            <Typography
-              variant="h4"
-              className="mb-4 text-center font-serif"
-              color="blue-gray"
-            >
-              Registrasi Akun Keuangan
+            <Typography variant="h4" className="mb-4 text-center font-serif" color="blue-gray">
+                Tambah Data Roti
             </Typography>
             <div className="mb-4 mt-4 flex flex-col gap-3">
               <Input
                 color="blue"
                 size="lg"
-                label="Name"
-                defaultValue={nama}
-                onChange={(e) => setNama(e.target.value)}
+                label="Nama Roti"
+                defaultValue={nama_roti}
+                onChange={(e) => setNamaRoti(e.target.value)}
               />
-              <p className="pl-1 text-sm text-blue-gray-300">
-                Nama Minimal 4 Karakter Maksimal 50 Karakter
-              </p>
               <Input
                 color="blue"
                 size="lg"
-                label="Username"
-                defaultValue={username}
-                onChange={(e) => setUsername(e.target.value)}
+                label="Stok Roti"
+                defaultValue={stok_roti}
+                onChange={(e) => setStokRoti(e.target.value)}
               />
-              <p className="pl-1 text-sm text-blue-gray-300">
-                Username Minimal 4 Karakter Maksimal 25 Karakter
-              </p>
               <Input
                 color="blue"
-                type="password"
                 size="lg"
-                label="Password"
-                defaultValue={password}
-                onChange={(e) => setPassword(e.target.value)}
+                label="Rasa Roti"
+                defaultValue={rasa_roti}
+                onChange={(e) => setRasaRoti(e.target.value)}
               />
-              <p className="pl-1 text-sm text-blue-gray-300">
-                Password Minimal 4 Karakter Maksimal 15 Karakter
-              </p>
+              <Input
+                color="blue"
+                size="lg"
+                label="Harga Satuan Roti"
+                defaultValue={harga_satuan_roti}
+                onChange={(e) => setHargaSatuanRoti(e.target.value)}
+              />
             </div>
             <div className="flex justify-between">
               <Button

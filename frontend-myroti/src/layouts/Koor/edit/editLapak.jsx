@@ -4,61 +4,66 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import CekLogin from "../../../auth/CekLogin";
 
-const options = [
-  "Andir",
-  "Astana Anyar",
-  "Antapani",
-  "Arcamanik",
-  "Babakan Ciparay",
-  "Bandung Kidul",
-  "Bandung Kulon",
-  "Bandung Wetan",
-  "Batununggal",
-];
-
-export default function RegisKurir() {
-  const [nama, setNama] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function EditLapak() {
+  const [namaLapak, setNamaLapak] = useState("");
+  const [alamatLapak, setAlamatLapak] = useState("");
 
   const [area, setArea] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isValidate, setIsValidate] = useState(true);
+  const [isOpenKurir, setIsOpenKurir] = useState(false);
+  const [searchTermKurir, setSearchTermKurir] = useState("");
+
+  const [isKurir, setIsKurir] = useState(false);
   const [isArea, setIsArea] = useState(false);
   const [areaPilihan, setAreaPilihan] = useState("");
+  const [kurirPilihan, setKurirPilihan] = useState("");
   const [Options, setOptions] = useState([]);
+  const [selectedCourier, setSelectedCourier] = useState(null); // New state for selected courier
+  const [courierOptions, setCourierOptions] = useState([]);
+
+  const lapak = JSON.parse(localStorage.getItem("dataLapak"));
 
   const navigate = useNavigate();
   useEffect(() => {
     const cekLogin = CekLogin();
-    if (cekLogin !== 1) {
-      navigate("/koordinator");
+    if (cekLogin !== 2) {
+      navigate("/admin");
     }
-    handleData();
+    setNamaLapak(lapak.nama_lapak);
+    setAlamatLapak(lapak.alamat_lapak);
+    setKurirPilihan(lapak.kurir);
+    setAreaPilihan(lapak.area);
+    console.log(namaLapak)
+    handleDataArea();
+    handleDataCouriers(); 
   }, []);
 
   useEffect(() => {
-    if (username.length >= 4 && username.length <= 25) {
-      if (password.length >= 4 && password.length <= 15) {
-        if (nama.length >= 4 && nama.length <= 50) {
-          if (isArea === true) {
-            setIsValidate(false);
-          } else {
-            setIsValidate(true);
-          }
-        } else {
-          setIsValidate(true);
-        }
+    if (namaLapak.length > 0 && namaLapak.length <= 25) {
+      if (alamatLapak.length > 0 && alamatLapak.length <= 15) {
+        setIsValidate(false);
       } else {
         setIsValidate(true);
       }
     } else {
       setIsValidate(true);
     }
-  }, [nama, username, password, isArea]);
+  }, [namaLapak, alamatLapak, isKurir, isArea]);
 
-  function handleData() {
+  function handleDataCouriers() {
+    axios
+      .get("http://localhost:8000/api/kurir") // Replace with the actual API endpoint for couriers
+      .then((response) => {
+        setCourierOptions(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function handleDataArea() {
     axios
       .get("http://localhost:8000/api/area")
       .then((response) => {
@@ -68,21 +73,20 @@ export default function RegisKurir() {
         console.error("Error:", error);
       });
   }
-  const handleRegister = () => {
+
+  const handleEdit = () => {
     const data = {
-      nama: nama,
-      username: username,
-      password: password,
+      nama_lapak: namaLapak,
+      alamat_lapak: alamatLapak,
       area_id: area,
-      user_type: "kurir",
+      id_kurir: selectedCourier,
     };
-    console.log(data);
 
     axios
-      .post("http://localhost:8000/api/kurir/registrasi", data)
+      .put("http://localhost:8000/api/koordinator/lapak/registrasi", data)
       .then((response) => {
         console.log(response.data.message);
-        navigate("/admin/kurir");
+        navigate("/koordinator/data_lapak");
         setIsValidate(false);
       })
       .catch((error) => {
@@ -94,8 +98,16 @@ export default function RegisKurir() {
     setIsOpen(!isOpen);
   };
 
+  const toggleDropdownKurir = () => {
+    setIsOpenKurir(!isOpen);
+  };
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleSearchChangeKurir = (e) => {
+    setSearchTermKurir(e.target.value);
   };
 
   const handleSelectOption = (option) => {
@@ -106,8 +118,16 @@ export default function RegisKurir() {
     setIsArea(true);
   };
 
+  const handleSelectCourier = (courier) => {
+    setSelectedCourier(courier.id);
+    setKurirPilihan(courier.nama);
+    setIsOpenKurir(false);
+    setIsKurir(true);
+  };
+
   function handleCancel() {
-    navigate("/admin/kurir");
+    localStorage.removeItem("dataKoor");
+    navigate("/koordinator/data_lapak");
   }
   return (
     <div className="flex justify-center items-center h-screen">
@@ -119,40 +139,58 @@ export default function RegisKurir() {
               className="mb-4 text-center font-serif"
               color="blue-gray"
             >
-              Registrasi Akun Kurir
+              Edit Lapak
             </Typography>
             <div className="mb-4 mt-4 flex flex-col gap-3">
               <Input
                 color="blue"
                 size="lg"
-                label="Name"
-                defaultValue={nama}
-                onChange={(e) => setNama(e.target.value)}
+                label="Nama Lapak"
+                defaultValue={namaLapak}
+                onChange={(e) => setNamaLapak(e.target.value)}
               />
-              <p className="pl-1 text-sm text-blue-gray-300">
-                Nama Minimal 4 Karakter Maksimal 50 Karakter
-              </p>
               <Input
                 color="blue"
                 size="lg"
-                label="Username"
-                defaultValue={username}
-                onChange={(e) => setUsername(e.target.value)}
+                label="Alamat Lapak"
+                defaultValue={alamatLapak}
+                onChange={(e) => setAlamatLapak(e.target.value)}
               />
-              <p className="pl-1 text-sm text-blue-gray-300">
-                Username Minimal 4 Karakter Maksimal 25 Karakter
-              </p>
-              <Input
-                color="blue"
-                type="password"
-                size="lg"
-                label="Password"
-                defaultValue={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <p className="pl-1 text-sm text-blue-gray-300">
-                Password Minimal 4 Karakter Maksimal 15 Karakter
-              </p>
+              <div className="relative">
+                <div className="flex flex-auto">
+                  <Button
+                    type="button"
+                    onClick={toggleDropdownKurir}
+                    className="border rounded-lg p-2 w-96 h-12 focus:outline-none"
+                  >
+                    {kurirPilihan||"-- Pilih Kurir --"}
+                  </Button>
+                </div>
+                {isOpenKurir && (
+                  <div className="absolute flex flex-col w-full mt-2 left-0 bg-white border rounded-lg shadow-lg z-10">
+                    <Input
+                      type="text"
+                      label="Search"
+                      className="border-b p-2 w-full"
+                      value={searchTermKurir}
+                      onChange={handleSearchChangeKurir}
+                    />
+                    <ul className="max-h-36 overflow-auto">
+                      {courierOptions
+        
+                        .map((kurir, index) => (
+                          <li
+                            key={index}
+                            onClick={() => handleSelectCourier(kurir)}
+                            className="cursor-pointer p-2 hover:bg-gray-100"
+                          >
+                            {kurir.nama}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
               <div className="relative">
                 <div className="flex flex-auto">
                   <Button
@@ -202,9 +240,9 @@ export default function RegisKurir() {
                   color="blue"
                   fullWidth
                   disabled={isValidate}
-                  onClick={handleRegister}
+                  onClick={handleEdit}
                 >
-                  Daftar
+                  Edit
                 </Button>
               </div>
             </div>

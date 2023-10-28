@@ -16,20 +16,24 @@ export default function EditKurir() {
   const [isOpen, setIsOpen] = useState(false);
   const [isValidate, setIsValidate] = useState(false);
   const [isArea, setIsArea] = useState(false);
+  const [areaPilihan, setAreaPilihan] = useState("");
+  const [Options, setOptions] = useState([]);
 
   const navigate = useNavigate();
 
   const kurir = JSON.parse(localStorage.getItem("dataKurir"));
 
+
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
     setNama(kurir.nama);
     setUsername(kurir.username);
     setPassword(kurir.password);
     setArea(kurir.area);
+    handleData();
   }, []);
 
   useEffect(() => {
@@ -43,14 +47,23 @@ export default function EditKurir() {
       }
     }
   }, [nama, username, password, isArea]);
-
+  function handleData() {
+    axios
+      .get("http://localhost:8000/api/area")
+      .then((response) => {
+        setOptions(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
   const handleEdit = () => {
     // Create a data object to send to the API
     const data = {
       nama: nama,
       username: username,
       password: password,
-      area: area,
+      area_id: area,
       user_type: "kurir",
     }; 
 
@@ -77,14 +90,12 @@ export default function EditKurir() {
   };
 
   const handleSelectOption = (option) => {
-    setArea(option);
+    console.log(option.id)
+    setArea(option.id);
+    setAreaPilihan(option.area_distribusi)
     setIsOpen(false);
     setIsArea(true);
   };
-
-  const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   function handleCancel() {
     localStorage.removeItem("dataKurir");
@@ -96,7 +107,11 @@ export default function EditKurir() {
       <Card color="transparent" shadow={false}>
         <div className="flex justify-center">
           <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
-            <Typography variant="h4" className="mb-4" color="blue-gray">
+          <Typography
+              variant="h4"
+              className="mb-4 text-center font-serif"
+              color="blue-gray"
+            >
               Regis Akun Kurir
             </Typography>
             <div className="mb-4 flex flex-col gap-2">
@@ -138,7 +153,7 @@ export default function EditKurir() {
                     onClick={toggleDropdown}
                     className="border rounded-lg p-2 w-96 focus:outline-none"
                   >
-                    {area || "Pilih Area"}
+                    {areaPilihan || "Pilih Area"}
                   </Button>
                 </div>
                 {isOpen && (
@@ -151,13 +166,13 @@ export default function EditKurir() {
                       onChange={handleSearchChange}
                     />
                     <ul className="max-h-36 overflow-auto">
-                      {filteredOptions.map((option, index) => (
+                      {Options.map((option, index) => (
                         <li
                           key={index}
                           onClick={() => handleSelectOption(option)}
                           className="cursor-pointer p-2 hover:bg-gray-100"
                         >
-                          {option}
+                          {option.area_distribusi}
                         </li>
                       ))}
                     </ul>
@@ -167,7 +182,7 @@ export default function EditKurir() {
               <div className="flex justify-between">
                 <Button
                   variant="outlined"
-                  className="w-40 mt-2"
+                  className="w-40 mt-2  hover:bg-red-700 hover:text-white"
                   color="red"
                   fullWidth
                   onClick={handleCancel}
@@ -176,7 +191,7 @@ export default function EditKurir() {
                 </Button>
                 <Button
                   variant="outlined"
-                  className="w-40 mt-2"
+                  className="w-40 mt-2 hover:bg-blue-700 hover:text-white"
                   color="blue"
                   fullWidth
                   disabled={isValidate}

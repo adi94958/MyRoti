@@ -9,12 +9,6 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     icon: <HiOutlineViewGrid />,
   },
   {
-    key: "kurir",
-    label: "Data Kurir",
-    path: "/koordinator/data_kurir",
-    icon: <HiOutlineCube />,
-  },
-  {
     key: "Lapak",
     label: "Data Lapak",
     path: "/koordinator/data_lapak",

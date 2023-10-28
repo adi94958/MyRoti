@@ -4,23 +4,23 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import CekLogin from "../../../auth/CekLogin";
 
-export default function EditKoor() {
+export default function EditPemilik() {
   const [nama, setNama] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isValidate, setIsValidate] = useState(true);
   const navigate = useNavigate();
 
-  const koor = JSON.parse(localStorage.getItem("dataKoor"));
+  const pemilik = JSON.parse(localStorage.getItem("dataPemilik"));
 
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
       navigate("/koordinator");
     }
-    setNama(koor.nama);
-    setUsername(koor.username);
-    setPassword(koor.password);
+    setNama(pemilik.nama);
+    setUsername(pemilik.username);
+    setPassword(pemilik.password);
   }, []);
 
   useEffect(() => {
@@ -40,21 +40,19 @@ export default function EditKoor() {
   }, [nama, username, password]);
 
   const handleEdit = () => {
-    // Create a data object to send to the API
     const data = {
       nama: nama,
       username: username,
       password: password,
-      user_type: "koordinator", // Assuming user_type is 'koordinator'
+      user_type: "pemilik",
     };
 
-    // Make a POST request to your Laravel API endpoint
     axios
-      .put(`http://localhost:8000/api/koordinator/update/${koor.id}`, data)
+      .put(`http://localhost:8000/api/pemilik/update/${pemilik.id}`, data)
       .then((response) => {
         console.log(response.data.message);
-        localStorage.removeItem("dataKoor");
-        navigate("/admin/koordinator");
+        localStorage.removeItem("dataPemilik");
+        navigate("/admin/pemilik");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -62,8 +60,8 @@ export default function EditKoor() {
   };
 
   function handleCancel() {
-    localStorage.removeItem("dataKoor");
-    navigate("/admin/koordinator");
+    localStorage.removeItem("dataPemilik");
+    navigate("/admin/pemilik");
   }
 
   return (
@@ -76,7 +74,7 @@ export default function EditKoor() {
               className="mb-4 text-center font-serif"
               color="blue-gray"
             >
-            Edit Akun Koordinator
+            Edit Akun Pemilik
           </Typography>
           <div className="mb-4 flex flex-col gap-3">
             <Input
