@@ -18,8 +18,8 @@ class DataKurirController extends Controller
     {
         
         $datas = Kurir::select('id','username', 'password', 'nama', 'area_id')
-            ->join('areadistribusi', 'kurirs.area_id', '=', 'areadistribusi.id')
-            ->select('kurirs.id','kurirs.username','kurirs.password', 'kurirs.nama', 'kurirs.user_type','areadistribusi.area_distribusi')
+            ->join('areadistribusi', 'kurirs.area_id', '=', 'areadistribusi.area_id')
+            ->select('kurirs.id_kurir','kurirs.username','kurirs.password', 'kurirs.nama', 'kurirs.user_type','areadistribusi.area_distribusi')
             ->get();
 
         foreach ($datas as $data) {
@@ -35,11 +35,12 @@ class DataKurirController extends Controller
         $request->validate([
             'username' => 'required|unique:koordinators|unique:admins|unique:kurirs',
             'password' => 'required|string',
-            'nama' => 'required',
+            'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' =>'required',
             'area_id' => 'required'
         ], [
             'username.unique' => 'Username sudah digunakan.',
+            'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
 
         $area = Area_Distribusi::where('id', $request->area_id)->first();

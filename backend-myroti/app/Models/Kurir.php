@@ -13,7 +13,7 @@ class Kurir extends Authenticatable
 {
     use HasFactory, HasApiTokens;
     protected $table = 'kurirs';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_kurir';
     protected $fillable = [
         'username', 
         'password', 
@@ -24,12 +24,12 @@ class Kurir extends Authenticatable
 
     public function Area_Distribusi(): BelongsTo
     {
-        return $this->belongsTo(Area_Distribusi::class, 'area_id','id');
+        return $this->belongsTo(Area_Distribusi::class, 'area_id','area_id');
     }
 
     public function Lapak(): HasOne
     {
-        return $this->hasOne(Lapak::class, 'id_kurir', 'id');
+        return $this->hasOne(Lapak::class, 'id_kurir', 'id_kurir');
     }
 
 }

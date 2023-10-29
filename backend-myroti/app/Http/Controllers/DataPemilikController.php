@@ -23,10 +23,11 @@ class DataPemilikController extends Controller
         $request->validate([
             'username' => 'required|unique:pemiliks', // Pastikan Anda telah mengganti nama tabel sesuai dengan nama yang sesuai
             'password' => 'required',
-            'nama' => 'required',
+            'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' => 'required'
         ], [
             'username.unique' => 'Username sudah digunakan.',
+            'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
 
         // Buat pemilik baru
