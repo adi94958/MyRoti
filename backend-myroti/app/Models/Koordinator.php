@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 class Koordinator extends Authenticatable
 {
     use HasFactory, HasApiTokens;
+    protected $table = 'koordinators';
     protected $fillable = [
         'username', 
         'password', 
