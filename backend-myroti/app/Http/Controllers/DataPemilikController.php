@@ -50,10 +50,12 @@ class DataPemilikController extends Controller
         }
 
         $request->validate([
-            'username' => 'required|unique:pemiliks,username,' . $pemilik->id, // Pastikan Anda telah mengganti nama tabel sesuai dengan nama yang sesuai
+            'username' => 'required|unique:pemiliks,username,' . $pemilik->id_pemilik . ',id_pemilik', 
             'password' => 'required',
-            'nama' => 'required',
+            'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' => 'required'
+        ],[
+            'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
 
         $pemilik->update([

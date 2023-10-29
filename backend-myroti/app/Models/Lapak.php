@@ -35,6 +35,6 @@ class Lapak extends Model
     
     public function Kurir(): BelongsTo
     {
-        return $this->belongsTo(Kurir::class, 'id_kurir', 'id');
+        return $this->belongsTo(Kurir::class, 'id_kurir', 'id_kurir');
     }
 }
