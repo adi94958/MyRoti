@@ -26,7 +26,7 @@ class DataKeuanganController extends Controller
     {
         // Validasi input
         $request->validate([
-            'username' => 'required|unique:koordinators|unique:admins|unique:kurirs',
+            'username' => 'required|unique:koordinators|unique:admins|unique:kurirs|unique:pemiliks|unique:keuangans',
             'password' => 'required',
             'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' =>'required',

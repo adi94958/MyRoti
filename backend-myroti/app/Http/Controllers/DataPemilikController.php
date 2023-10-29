@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pemilik;
+use App\Models\Kurir;
+use App\Models\Koordinator;
+use App\Models\Admin;
+use App\Models\Keuangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -21,7 +25,7 @@ class DataPemilikController extends Controller
     {
         // Validasi input
         $request->validate([
-            'username' => 'required|unique:pemiliks', // Pastikan Anda telah mengganti nama tabel sesuai dengan nama yang sesuai
+            'username' => 'required|unique:pemiliks|unique:kurirs|unique:keuangans|unique:admins|unique:koordinators', // Pastikan Anda telah mengganti nama tabel sesuai dengan nama yang sesuai
             'password' => 'required',
             'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' => 'required'
@@ -57,6 +61,17 @@ class DataPemilikController extends Controller
         ],[
             'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
+
+        // Memastikan username tidak ada yang sama di tabel admin, kurir, dan koordinator
+        if (
+            Admin::where('username', $request->username)->exists() ||
+            Kurir::where('username', $request->username)->exists() ||
+            Koordinator::where('username', $request->username)->exists() ||
+            Pemilik::where('username', $request->username)->where('id_pemilik', '<>', $pemilik->id_pemilik)->exists() ||
+            Keuangan::where('username', $request->username)->exists()
+        ) {
+            return response()->json(['message' => 'Username sudah digunakan pada tabel lain'], 422);
+        }
 
         $pemilik->update([
             'username' => $request->username,

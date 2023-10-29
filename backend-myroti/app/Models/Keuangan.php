@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Keuangan extends Model
 {
     use HasFactory, HasApiTokens;
+    protected $table = 'keuangans';
     protected $fillable = [
         'username', 
         'password', 
