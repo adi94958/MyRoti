@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { PencilIcon, UserPlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
   Card,
@@ -6,80 +8,72 @@ import {
   Button,
   CardBody,
   IconButton,
-  Tooltip,
 } from "@material-tailwind/react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CekLogin from "../../auth/CekLogin";
 
 const TABLE_HEAD = ["Nama", "Username", "Password"];
 
-const TABLE_ROWS = [
-  {
-    id: 1,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-  },
-  {
-    id: 2,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-  },
-  {
-    id: 3,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-  },
-  {
-    id: 4,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-  },
-  {
-    id: 5,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-  },
-  {
-    id: 6,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-  },
-  {
-    id: 7,
-    name: "Muhammad Adi",
-    username: "adi123",
-    password: "123adi",
-  },
-];
-
 export default function Pemilik() {
-  const navigate = useNavigate;
+  const [data, setData] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
+    handleData();
   }, []);
+
+  function handleData() {
+    axios
+      .get("http://localhost:8000/api/pemilik")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function handleDelete(id) {
+    axios
+      .delete(`http://localhost:8000/api/pemilik/delete/${id}`)
+      .then(handleData)
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function handleEdit(item) {
+    localStorage.setItem(
+      "dataPemilik",
+      JSON.stringify({
+        id: item.id,
+        nama: item.nama,
+        username: item.username,
+        password: item.password,
+      })
+    );
+    navigate("/admin/pemilik/edit");
+  }
+
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-3 flex items-center justify-between gap-8">
           <div>
-            <Typography className="text-4xl font-serif" color="blue-gray">
+            <Typography color="blue-gray" className="text-4xl font-serif">
               Akun Pemilik
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button className="flex items-center gap-3 rounded-full" size="sm">
-                <UserPlusIcon strokeWidth={2} className="h-6 w-5" /> Add member
-            </Button>
+            <Link to="/admin/pemilik/regis">
+              <Button className="flex items-center gap-3" size="sm">
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+              </Button>
+            </Link>
           </div>
         </div>
       </CardHeader>
@@ -116,27 +110,27 @@ export default function Pemilik() {
                   color="blue-gray"
                   className="font-normal leading-none opacity-70"
                 >
-                  Action
+                  action
                 </Typography>
               </th>
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(({ id, name, username, password }, index) => {
-              const isLast = index === TABLE_ROWS.length - 1;
+            {data.map((item, index) => {
+              const isLast = index === data.length - 1;
               const classes = isLast
                 ? "p-4"
                 : "p-4 border-b border-blue-gray-50";
 
               return (
-                <tr key={name}>
+                <tr key={item.id}>
                   <td className={classes}>
                     <div className="flex justify-center">
-                      <Typography>{id}</Typography>
+                      <Typography>{index + 1}</Typography>
                     </div>
                   </td>
                   <td className={classes}>
-                    <Typography>{name}</Typography>
+                    <Typography>{item.nama}</Typography>
                   </td>
                   <td className={classes}>
                     <div className="flex flex-col">
@@ -145,7 +139,7 @@ export default function Pemilik() {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {username}
+                        {item.username}
                       </Typography>
                     </div>
                   </td>
@@ -155,21 +149,23 @@ export default function Pemilik() {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {password}
+                      {item.password}
                     </Typography>
                   </td>
                   <td className={classes}>
                     <div className="flex justify-center">
-                      <Tooltip content="Delete User">
-                        <IconButton variant="text">
-                          <TrashIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip content="Edit User">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
+                      <IconButton
+                        variant="text"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </IconButton>
+                      <IconButton
+                        variant="text"
+                        onClick={() => handleEdit(item)}
+                      >
+                        <PencilIcon className="h-4 w-4" />
+                      </IconButton>
                     </div>
                   </td>
                 </tr>

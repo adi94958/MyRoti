@@ -20,20 +20,18 @@ const LoginForm = () => {
     if (cekLogin === 1) {
       navigate("/admin");
     } else if (cekLogin === 2) {
-      navigate("/koor");
-    }else{
-      
+      navigate("/koordinator");
+    } else {
+      // Handle other cases if needed
     }
   }, []);
 
   useEffect(() => {
-    // Setelah alert muncul, atur timer untuk menyembunyikannya dalam 3 detik
     if (open) {
       const timer = setTimeout(() => {
         setOpen(false);
-      }, 5000); // 5000 milidetik (5 detik)
-      
-      // Membersihkan timer jika komponen unmount atau jika alert ditutup sebelum timer selesai
+      }, 5000); // Hide alert after 5 seconds
+
       return () => {
         clearTimeout(timer);
       };
@@ -56,8 +54,6 @@ const LoginForm = () => {
       </svg>
     );
   }
-
-  
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -97,53 +93,53 @@ const LoginForm = () => {
   return (
     <Card className="m-20 rounded-lg">
       <div className="flex">
-        <div className=" flex flex-2 w-6/12 h-full" >
-          <img src={login} alt="Big" className="w-full h-full bg-red-200 border-gray-500 rounded-lg"/>
+        <div className="flex flex-2 w-6/12 h-full">
+          <img src={login} alt="Big" className="w-full h-full bg-red-200 border-gray-500 rounded-lg" />
         </div>
 
         <div className="flex flex-1 justify-center items-center">
           <div className="h-full w-5/12">
-              <img src={logo} alt="Big" className="h-44 object-cover m-auto mt-10" />
-              <Typography
-                variant="h3"
-                color="blue-gray"
-                className="text-center mt-10 font-serif"
-              >
-                Login!
-              </Typography>
-              <form className="mt-7">
-                <div className="mb-4 flex flex-col gap-6 relative">
+            <img src={logo} alt="Big" className="h-44 object-cover m-auto mt-10" />
+            <Typography
+              variant="h3"
+              color="blue-gray"
+              className="text-center mt-10 font-serif"
+            >
+              Login!
+            </Typography>
+            <form className="mt-7">
+              <div className="mb-4 flex flex-col gap-6 relative">
+                <Input
+                  label="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <div className="relative">
                   <Input
-                    label="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    type={showPassword ? 'text' : 'password'}
+                    label="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? 'text' : 'password'}
-                      label="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <span
-                      onClick={togglePasswordVisibility}
-                      className="absolute top-1/2 right-2 transform -translate-y-1/2 cursor-pointer"
-                    >
-                      <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                    </span>
-                  </div>
+                  <span
+                    onClick={togglePasswordVisibility}
+                    className="absolute top-1/2 right-2 transform -translate-y-1/2 cursor-pointer"
+                  >
+                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                  </span>
                 </div>
-                <Button className="mt-6 bg-red-100 hover:bg-red-200 rounded-full" fullWidth onClick={handleLogin}>
-                  Login
-                </Button>
-              </form>
-              {open && (
+              </div>
+              <Button className="mt-6 bg-red-100 hover:bg-red-200 rounded-full" fullWidth onClick={handleLogin}>
+                Login
+              </Button>
+            </form>
+            {open && (
               <Alert
                 style={{
                   position: "absolute",
-                  top: "10px", // Sesuaikan posisi dari atas
-                  right: "10px", // Sesuaikan posisi dari kanan
-                  width: "300px", // Tentukan lebar alert
+                  top: "10px",
+                  right: "10px",
+                  width: "300px",
                   zIndex: 9999,
                 }}
                 icon={<Icon />}

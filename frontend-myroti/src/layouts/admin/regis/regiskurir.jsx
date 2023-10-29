@@ -26,14 +26,18 @@ export default function RegisKurir() {
   const [isOpen, setIsOpen] = useState(false);
   const [isValidate, setIsValidate] = useState(true);
   const [isArea, setIsArea] = useState(false);
+  const [areaPilihan, setAreaPilihan] = useState("");
+  const [Options, setOptions] = useState([]);
 
   const navigate = useNavigate();
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
+    handleData();
   }, []);
+
   useEffect(() => {
     if (username.length >= 4 && username.length <= 25) {
       if (password.length >= 4 && password.length <= 15) {
@@ -54,14 +58,25 @@ export default function RegisKurir() {
     }
   }, [nama, username, password, isArea]);
 
+  function handleData() {
+    axios
+      .get("http://localhost:8000/api/area")
+      .then((response) => {
+        setOptions(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
   const handleRegister = () => {
     const data = {
       nama: nama,
       username: username,
       password: password,
-      area: area,
+      area_id: area,
       user_type: "kurir",
     };
+    console.log(data);
 
     axios
       .post("http://localhost:8000/api/kurir/registrasi", data)
@@ -84,25 +99,26 @@ export default function RegisKurir() {
   };
 
   const handleSelectOption = (option) => {
-    setArea(option);
+    console.log(option.id);
+    setArea(option.id);
+    setAreaPilihan(option.area_distribusi);
     setIsOpen(false);
     setIsArea(true);
   };
 
-  const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   function handleCancel() {
     navigate("/admin/kurir");
   }
-
   return (
     <div className="flex justify-center items-center h-screen">
       <Card color="transparent" shadow={false}>
         <div className="flex justify-center">
           <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
-            <Typography variant="h4" className="mb-4 text-center font-serif" color="blue-gray">
+            <Typography
+              variant="h4"
+              className="mb-4 text-center font-serif"
+              color="blue-gray"
+            >
               Registrasi Akun Kurir
             </Typography>
             <div className="mb-4 mt-4 flex flex-col gap-3">
@@ -144,7 +160,7 @@ export default function RegisKurir() {
                     onClick={toggleDropdown}
                     className="border rounded-lg p-2 w-96 h-12 focus:outline-none"
                   >
-                    {area || "-- Pilih Area --"}
+                    {areaPilihan || "-- Pilih Area --"}
                   </Button>
                 </div>
                 {isOpen && (
@@ -157,13 +173,13 @@ export default function RegisKurir() {
                       onChange={handleSearchChange}
                     />
                     <ul className="max-h-36 overflow-auto">
-                      {filteredOptions.map((option, index) => (
+                      {Options.map((option, index) => (
                         <li
                           key={index}
                           onClick={() => handleSelectOption(option)}
                           className="cursor-pointer p-2 hover:bg-gray-100"
                         >
-                          {option}
+                          {option.area_distribusi}
                         </li>
                       ))}
                     </ul>
@@ -173,7 +189,7 @@ export default function RegisKurir() {
               <div className="flex justify-between">
                 <Button
                   variant="outlined"
-                  className="w-40 mt-2 hover:bg-red-700 hover:text-white"
+                  className="w-40 mt-2  hover:bg-red-700 hover:text-white"
                   color="red"
                   fullWidth
                   onClick={handleCancel}

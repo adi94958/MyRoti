@@ -1,30 +1,131 @@
-import {
-    Card,
-    Input,
-    Checkbox,
-    Button,
-    Typography,
-  } from "@material-tailwind/react";
-  import { Link } from "react-router-dom";
-   
-  export default function RegisKeuangan() {
-    return (
-      <Card color="transparent" shadow={false}>
-        <Typography variant="h4" color="blue-gray">
-          Tambah Akun Koordinator
-        </Typography>
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-          <div className="mb-4 flex flex-col gap-6">
-            <Input size="lg" label="Name" />
-            <Input size="lg" label="Username" />
-            <Input type="password" size="lg" label="Password" />
-          </div>
-          <Link to="/admin/keuangan">
-            <Button className="mt-6" fullWidth>
-                Register
-            </Button>
-          </Link>
-        </form>
-      </Card>
-    );
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
+import CekLogin from "../../../auth/CekLogin";
+
+export default function RegisKeuangan() {
+  const [nama, setNama] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isValidate, setIsValidate] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const cekLogin = CekLogin();
+    if (cekLogin !== 1) {
+      navigate("/koordinator");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (username.length >= 4 && username.length <= 25) {
+      if (password.length >= 4 && password.length <= 15) {
+        if (nama.length >= 4 && nama.length <= 50) {
+          setIsValidate(false);
+        } else {
+          setIsValidate(true);
+        }
+      } else {
+        setIsValidate(true);
+      }
+    } else {
+      setIsValidate(true);
+    }
+  }, [nama, username, password]);
+
+  const handleRegister = () => {
+    const data = {
+      nama: nama,
+      username: username,
+      password: password,
+      user_type: "keuangan",
+    };
+
+    axios
+      .post("http://localhost:8000/api/keuangan/registrasi", data)
+      .then((response) => {
+        console.log(response.data.message);
+        navigate("/admin/keuangan");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  function handleCancel() {
+    navigate("/admin/keuangan");
   }
+
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <Card color="transparent" shadow={false}>
+        <div className="flex justify-center">
+          <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
+            <Typography
+              variant="h4"
+              className="mb-4 text-center font-serif"
+              color="blue-gray"
+            >
+              Registrasi Akun Keuangan
+            </Typography>
+            <div className="mb-4 mt-4 flex flex-col gap-3">
+              <Input
+                color="blue"
+                size="lg"
+                label="Name"
+                defaultValue={nama}
+                onChange={(e) => setNama(e.target.value)}
+              />
+              <p className="pl-1 text-sm text-blue-gray-300">
+                Nama Minimal 4 Karakter Maksimal 50 Karakter
+              </p>
+              <Input
+                color="blue"
+                size="lg"
+                label="Username"
+                defaultValue={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <p className="pl-1 text-sm text-blue-gray-300">
+                Username Minimal 4 Karakter Maksimal 25 Karakter
+              </p>
+              <Input
+                color="blue"
+                type="password"
+                size="lg"
+                label="Password"
+                defaultValue={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <p className="pl-1 text-sm text-blue-gray-300">
+                Password Minimal 4 Karakter Maksimal 15 Karakter
+              </p>
+            </div>
+            <div className="flex justify-between">
+              <Button
+                variant="outlined"
+                className="w-40 mt-2 hover:bg-red-700 hover:text-white"
+                color="red"
+                fullWidth
+                onClick={handleCancel}
+              >
+                Batal
+              </Button>
+              <Button
+                variant="outlined"
+                className="w-40 mt-2 hover:bg-blue-700 hover:text-white"
+                color="blue"
+                fullWidth
+                disabled={isValidate}
+                onClick={handleRegister}
+              >
+                Daftar
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Card>
+    </div>
+  );
+}

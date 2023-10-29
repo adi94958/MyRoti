@@ -21,7 +21,7 @@ export default function Kurir() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
     handleData();
   }, []);
@@ -54,7 +54,7 @@ export default function Kurir() {
         nama: item.nama,
         username: item.username,
         password: item.password,
-        area: item.area,
+        area: item.area_distribusi,
       })
     );
     navigate("/admin/kurir/edit");
@@ -63,7 +63,7 @@ export default function Kurir() {
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-3 flex items-center justify-between gap-8">
+        <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography className="text-4xl font-serif" color="blue-gray">
               Akun Kurir
@@ -71,8 +71,8 @@ export default function Kurir() {
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
             <Link to="/admin/kurir/regis">
-              <Button className="flex items-center gap-3 rounded-full" size="sm">
-                <UserPlusIcon strokeWidth={2} className="h-6 w-5" /> Add member
+              <Button className="flex items-center gap-3" size="sm">
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
               </Button>
             </Link>
           </div>
@@ -111,7 +111,7 @@ export default function Kurir() {
                   color="blue-gray"
                   className="font-normal leading-none opacity-70"
                 >
-                  Action
+                  action
                 </Typography>
               </th>
             </tr>
@@ -159,7 +159,7 @@ export default function Kurir() {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {item.area}
+                      {item.area_distribusi}
                     </Typography>
                   </td>
                   <td className={classes}>

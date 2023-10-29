@@ -13,6 +13,17 @@ import EditKurir from "./layouts/admin/edit/editkurir";
 import Login from "./layouts/login/login"
 import LayoutKoor from "./layouts/Koor/layoutKoor"
 import Distribusi from "./layouts/Koor/distribusi";
+import Transaksi from "./layouts/Koor/transaksi/item";
+import Roti from "./layouts/Koor/roti";
+import EditRoti from "./layouts/Koor/edit/editRoti";
+import RegisRoti from "./layouts/Koor/regis/regisRoti";
+import RegisKeuangan from "./layouts/admin/regis/regisKeuangan";
+import EditKeuangan from "./layouts/admin/edit/editKeuangan";
+import RegisPemilik from "./layouts/admin/regis/regisPemilik";
+import EditPemilik from "./layouts/admin/edit/editPemilik";
+import Lapak from "./layouts/Koor/lapak";
+import RegisLapak from "./layouts/Koor/regis/regisLapak";
+import EditLapak from "./layouts/Koor/edit/editLapak";
 
 export default function App() {
   return (
@@ -30,9 +41,20 @@ export default function App() {
             <Route path="/admin/kurir/regis" element={<RegisKurir />} />
             <Route path="/admin/koordinator/edit" element={<EditKoor />} />
             <Route path="/admin/kurir/edit" element={<EditKurir />} />
+            <Route path="/admin/keuangan/regis" element={< RegisKeuangan/>} />
+            <Route path="/admin/keuangan/edit" element={<EditKeuangan />} />
+            <Route path="/admin/pemilik/regis" element={< RegisPemilik/>} />
+            <Route path="/admin/pemilik/edit" element={<EditPemilik />} />
           <Route path="/koordinator" element={<LayoutKoor />}>
             <Route index element ={<Distribusi />} />
+            <Route path="/koordinator/data_roti" element={<Roti />} />
+            <Route path="/koordinator/data_lapak" element={<Lapak />} />
           </Route>
+            <Route path="/koordinator/transaksi" element={<Transaksi />}/>
+            <Route path="/koordinator/data_roti/edit" element={<EditRoti />} />
+            <Route path="/koordinator/data_roti/regis" element={<RegisRoti />} />
+            <Route path="/koordinator/data_lapak/regis" element={<RegisLapak />} />
+            <Route path="/koordinator/data_lapak/edit" element={<EditLapak />} />
       </Routes>
     </Router>
   );

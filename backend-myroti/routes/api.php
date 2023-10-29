@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataRotiController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DataKeuanganController;
+use App\Http\Controllers\DataPemilikController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,11 @@ Route::post('/koordinator/transaksi/create/{id}', [TransaksiController::class, '
 Route::delete('/koordinator/transaksi/delete/{id_transaksi}', [TransaksiController::class, 'deleteTransaksi']);
 
 Route::get('/area', [AreaController::class, 'readArea']);
+
+Route::get('/pemilik', [DataPemilikController::class, 'readDataPemilik']);
+Route::post('/pemilik/registrasi', [DataPemilikController::class, 'registerPemilik']);
+Route::put('/pemilik/update/{id}', [DataPemilikController::class, 'updatePemilik']);
+Route::delete('/pemilik/delete/{id}', [DataPemilikController::class, 'deletePemilik']);
 
 
 // Kurir routes here

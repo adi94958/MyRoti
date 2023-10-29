@@ -16,7 +16,7 @@ export default function EditKoor() {
   useEffect(() => {
     const cekLogin = CekLogin();
     if (cekLogin !== 1) {
-      navigate("/koor");
+      navigate("/koordinator");
     }
     setNama(koor.nama);
     setUsername(koor.username);
@@ -28,8 +28,14 @@ export default function EditKoor() {
       if (password.length >= 4 && password.length <= 15) {
         if (nama.length >= 4 && nama.length <= 50) {
           setIsValidate(false);
+        }else{
+          setIsValidate(true);
         }
+      }else{
+        setIsValidate(true);
       }
+    }else{
+      setIsValidate(true);
     }
   }, [nama, username, password]);
 
@@ -65,7 +71,11 @@ export default function EditKoor() {
       <Card color="transparent" shadow={false}>
       <div className="flex justify-center">
         <form className="w-80 max-w-screen-lg sm:w-96 p-6 bg-white  rounded-lg md:shadow-lg md:border">
-          <Typography variant="h4" className="mb-4" color="blue-gray">
+        <Typography
+              variant="h4"
+              className="mb-4 text-center font-serif"
+              color="blue-gray"
+            >
             Edit Akun Koordinator
           </Typography>
           <div className="mb-4 flex flex-col gap-3">
@@ -104,7 +114,7 @@ export default function EditKoor() {
           <div className="flex justify-between">
             <Button
               variant="outlined"
-              className="w-40 mt-2"
+              className="w-40 mt-2 hover:bg-red-700 hover:text-white"
               color="red"
               fullWidth
               onClick={handleCancel}
@@ -113,7 +123,7 @@ export default function EditKoor() {
             </Button>
             <Button
               variant="outlined"
-              className="w-40 mt-2"
+              className="w-40 mt-2 hover:bg-blue-700 hover:text-white"
               color="blue"
               fullWidth
               disabled={isValidate}
