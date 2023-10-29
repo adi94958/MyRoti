@@ -35,11 +35,12 @@ class DataKurirController extends Controller
         $request->validate([
             'username' => 'required|unique:koordinators|unique:admins|unique:kurirs',
             'password' => 'required|string',
-            'nama' => 'required',
+            'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' =>'required',
             'area_id' => 'required'
         ], [
             'username.unique' => 'Username sudah digunakan.',
+            'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
 
         $area = Area_Distribusi::where('id', $request->area_id)->first();

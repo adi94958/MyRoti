@@ -26,10 +26,11 @@ class DataKoordinatorController extends Controller
         $request->validate([
             'username' => 'required|unique:koordinators|unique:admins|unique:kurirs',
             'password' => 'required',
-            'nama' => 'required',
+            'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' =>'required',
         ], [
             'username.unique' => 'Username sudah digunakan.',
+            'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
 
         // Buat koordinator baru
