@@ -24,7 +24,7 @@ class Lapak extends Model
     //hubungan PK ke FK
     public function Area_Distribusi(): BelongsTo
     {
-        return $this->belongsTo(Area_Distribusi::class, 'area_id', 'id');
+        return $this->belongsTo(Area_Distribusi::class, 'area_id', 'area_id');
     }
 
     public function Transaksi(): HasMany

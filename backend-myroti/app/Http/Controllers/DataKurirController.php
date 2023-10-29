@@ -18,8 +18,8 @@ class DataKurirController extends Controller
     {
         
         $datas = Kurir::select('id','username', 'password', 'nama', 'area_id')
-            ->join('areadistribusi', 'kurirs.area_id', '=', 'areadistribusi.id')
-            ->select('kurirs.id','kurirs.username','kurirs.password', 'kurirs.nama', 'kurirs.user_type','areadistribusi.area_distribusi')
+            ->join('areadistribusi', 'kurirs.area_id', '=', 'areadistribusi.area_id')
+            ->select('kurirs.id_kurir','kurirs.username','kurirs.password', 'kurirs.nama', 'kurirs.user_type','areadistribusi.area_distribusi')
             ->get();
 
         foreach ($datas as $data) {

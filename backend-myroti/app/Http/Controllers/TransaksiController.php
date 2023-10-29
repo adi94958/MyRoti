@@ -32,7 +32,7 @@ class TransaksiController extends Controller
         $lapakDalamTransaksi = Transaksi::distinct()->pluck('kode_lapak')->toArray();
 
         $datas = Lapak::select('kode_lapak', 'nama_lapak')
-            ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.id')
+            ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
             ->select('lapak.kode_lapak','lapak.nama_lapak', 'areadistribusi.area_distribusi')
             ->whereNotIn('kode_lapak', $lapakDalamTransaksi) // Tambahkan ini untuk mengabaikan lapak dalam transaksi
             ->get();
