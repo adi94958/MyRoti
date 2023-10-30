@@ -32,16 +32,16 @@ class LapakController extends Controller
             'alamat_lapak' => 'required'
         ]);
 
-        $kurir = Kurir::where('id', $request->id_kurir)->first();
-        $area = Area_Distribusi::where('id', $request->area_id)->first();
+        $kurir = Kurir::where('id_kurir', $request->id_kurir)->first();
+        $area = Area_Distribusi::where('area_id', $request->area_id)->first();
 
         if($area){
 
             if($kurir){
                 Lapak::create([
                     'nama_lapak' => $request->nama_lapak,
-                    'area_id' => $area->id,
-                    'id_kurir' => $kurir->id,
+                    'area_id' => $area->area_id,
+                    'id_kurir' => $kurir->id_kurir,
                     'alamat_lapak' => $request->alamat_lapak
                 ]);
                 return response()->json(['message' => 'Lapak berhasil didaftarkan']);
@@ -69,13 +69,13 @@ class LapakController extends Controller
             'alamat_lapak' => 'required'
         ]);
 
-        $area = Area_Distribusi::where('id', $request->area_id)->first();
+        $area = Area_Distribusi::where('area_id', $request->area_id)->first();
 
         if($area){
             $lapak->update([
                 'nama_lapak' => $request->nama_lapak,
                 'id_kurir' => $request->id_kurir,
-                'area_id' => $area->id,
+                'area_id' => $area->area_id,
                 'alamat_lapak' => $request->alamat_lapak
             ]);
     
