@@ -19,7 +19,7 @@ class DataKurirController extends Controller
     public function readDataKurir()
     {
         
-        $datas = Kurir::select('id','username', 'password', 'nama', 'area_id')
+        $datas = Kurir::select('id_kurir','username', 'password', 'nama', 'area_id')
             ->join('areadistribusi', 'kurirs.area_id', '=', 'areadistribusi.area_id')
             ->select('kurirs.id_kurir','kurirs.username','kurirs.password', 'kurirs.nama', 'kurirs.user_type','areadistribusi.area_distribusi')
             ->get();
@@ -45,7 +45,7 @@ class DataKurirController extends Controller
             'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
 
-        $area = Area_Distribusi::where('id', $request->area_id)->first();
+        $area = Area_Distribusi::where('area_id', $request->area_id)->first();
 
         if($area){
              // Buat koordinator baru
@@ -54,7 +54,7 @@ class DataKurirController extends Controller
                 'password' => Crypt::encryptString($request->password),
                 'nama' => $request->nama,
                 'user_type' => $request->user_type,
-                'area_id' => $area->id
+                'area_id' => $area->area_id
             ]);
 
             return response()->json(['message' => 'Kurir berhasil didaftarkan']);
