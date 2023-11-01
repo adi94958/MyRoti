@@ -28,7 +28,7 @@ class AuthenticationController extends Controller
                 $user = $admin;
             } else {
                 return response()->json([
-                    'message' => 'Invalid password'
+                    'message' => 'Password salah'
                 ], Response::HTTP_UNAUTHORIZED);
             }
         } elseif ($koordinator = Koordinator::where('username', $request->username)->first()) {
@@ -37,7 +37,7 @@ class AuthenticationController extends Controller
                 $user = $koordinator;
             } else {
                 return response()->json([
-                    'message' => 'Invalid password'
+                    'message' => 'Password salah'
                 ], Response::HTTP_UNAUTHORIZED);
             }
         } elseif ($kurir = Kurir::where('username', $request->username)->first()) {
@@ -46,19 +46,19 @@ class AuthenticationController extends Controller
                 $user = $kurir;
             } else {
                 return response()->json([
-                    'message' => 'Invalid password'
+                    'message' => 'Password salah'
                 ], Response::HTTP_UNAUTHORIZED);
             }
         } else {
             return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Akun tidak ditemukan'
             ], Response::HTTP_NOT_FOUND);
         }
 
         Auth::login($user);
-        $datas = $user::select('username', 'user_type')->first();
+        $datas = $user;
         return response()->json([
-            'message' => 'Successfully logged in',
+            'message' => 'Berhasil masuk',
             'user' => $datas,
             'response' => 200   
         ]);
@@ -70,7 +70,7 @@ class AuthenticationController extends Controller
         Auth::logout();
 
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'Berhasil logout'
         ], Response::HTTP_OK);
     }
 }

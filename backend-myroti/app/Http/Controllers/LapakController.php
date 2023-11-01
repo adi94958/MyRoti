@@ -73,7 +73,7 @@ class LapakController extends Controller
             $lapak->update([
                 'nama_lapak' => $request->nama_lapak,
                 'id_kurir' => $request->id_kurir,
-                'area_id' => $request->area_id,
+                'area_id' => $area->area_id,
                 'alamat_lapak' => $request->alamat_lapak
             ]);
 

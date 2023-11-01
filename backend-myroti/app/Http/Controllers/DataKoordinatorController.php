@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Kurir;
 use App\Models\Koordinator;
+use App\Models\Pemilik;
+use App\Models\Keuangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -24,7 +26,7 @@ class DataKoordinatorController extends Controller
     {
         // Validasi input
         $request->validate([
-            'username' => 'required|unique:koordinators|unique:admins|unique:kurirs',
+            'username' => 'required|unique:koordinators|unique:admins|unique:kurirs|unique:keuangans|unique:kurirs',
             'password' => 'required',
             'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' =>'required',
@@ -56,14 +58,18 @@ class DataKoordinatorController extends Controller
         $request->validate([
             'username' => 'required|unique:koordinators,username,' . $koordinator->id,
             'password' => 'required',
-            'nama' => 'required',
+            'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' =>'required',
+        ],[
+            'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
 
          // Memastikan username tidak ada yang sama di tabel admin, kurir, dan koordinator
          if (
             Admin::where('username', $request->username)->exists() ||
             Kurir::where('username', $request->username)->exists() ||
+            Pemilik::where('username', $request->username)->exists() ||
+            Keuangan::where('username', $request->username)->exists() ||
             Koordinator::where('username', $request->username)->where('id', '<>', $koordinator->id)->exists()
         ) {
             return response()->json(['message' => 'Username sudah digunakan pada tabel lain'], 422);

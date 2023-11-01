@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Kurir;
 use App\Models\Keuangan;
 use App\Models\Koordinator;
+use App\Models\Pemilik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -25,7 +26,7 @@ class DataKeuanganController extends Controller
     {
         // Validasi input
         $request->validate([
-            'username' => 'required|unique:koordinators|unique:admins|unique:kurirs',
+            'username' => 'required|unique:koordinators|unique:admins|unique:kurirs|unique:pemiliks|unique:keuangans',
             'password' => 'required',
             'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' =>'required',
@@ -35,7 +36,7 @@ class DataKeuanganController extends Controller
         ]);
 
         // Buat koordinator baru
-        Koordinator::create([
+        Keuangan::create([
             'username' => $request->username,
             'password' => Crypt::encryptString($request->password),
             'nama' => $request->nama,   
@@ -57,8 +58,10 @@ class DataKeuanganController extends Controller
         $request->validate([
             'username' => 'required|unique:keuangans,username,' . $keuangan->id,
             'password' => 'required',
-            'nama' => 'required',
+            'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
             'user_type' =>'required',
+        ], [
+            'nama.regex' => 'Nama hanya boleh diisi dengan huruf.',
         ]);
 
          // Memastikan username tidak ada yang sama di tabel admin, kurir, dan koordinator
@@ -66,6 +69,7 @@ class DataKeuanganController extends Controller
             Admin::where('username', $request->username)->exists() ||
             Kurir::where('username', $request->username)->exists() ||
             Koordinator::where('username', $request->username)->exists() ||
+            Pemilik::where('username', $request->username)->exists() ||
             Keuangan::where('username', $request->username)->where('id', '<>', $keuangan->id)->exists()
 
         ) {
