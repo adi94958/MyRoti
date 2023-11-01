@@ -110,10 +110,10 @@ const FormPengiriman = () => {
     if (!isNaN(jumlahRoti) && jumlahRoti > 0) {
       // Memeriksa apakah jumlah roti yang dimasukkan tidak melebihi stok roti
       if (jumlahRoti <= inputDataRoti.stok_roti) {
-        setFormData({
-          ...inputDataRoti,
-          stok_roti: inputDataRoti.jumlah_roti - inputDataRoti.stok_roti,
-        })
+        // setFormData({
+        //   ...inputDataRoti,
+        //   stok_roti: inputDataRoti.jumlah_roti - inputDataRoti.stok_roti,
+        // })
         setDataArray([...dataArray, inputDataRoti])
         console.log('data array:', dataArray)
         //console.log(inputDataRoti)
