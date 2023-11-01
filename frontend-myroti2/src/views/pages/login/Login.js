@@ -47,12 +47,20 @@ const Login = () => {
       const infoLogin = response.data.user
       console.log(response)
       if (infoLogin.user_type === 'admin') {
-        Swal.fire({
+        const Toast = Swal.mixin({
+          toast: true,
           position: 'top-end',
-          icon: 'success',
-          title: `Login Berhasil`,
           showConfirmButton: false,
-          timer: 1500,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          },
+        })
+        Toast.fire({
+          icon: 'success',
+          title: 'Signed in Successfully',
         })
         localStorage.setItem(
           `dataLogin`,
@@ -62,12 +70,20 @@ const Login = () => {
           }),
         )
       } else {
-        Swal.fire({
+        const Toast = Swal.mixin({
+          toast: true,
           position: 'top-end',
-          icon: 'success',
-          title: `Login Berhasil, Selamat Datang ${infoLogin.nama}`,
           showConfirmButton: false,
-          timer: 1500,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          },
+        })
+        Toast.fire({
+          icon: 'success',
+          title: 'Signed in Successfully',
         })
         localStorage.setItem(
           `dataLogin`,
@@ -86,12 +102,20 @@ const Login = () => {
           error.message ||
           error.toString()
 
-        Swal.fire({
+        const Toast = Swal.mixin({
+          toast: true,
           position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          },
+        })
+        Toast.fire({
           icon: 'error',
           title: `${resMessage}`,
-          showConfirmButton: false,
-          timer: 1500,
         })
       }
     }

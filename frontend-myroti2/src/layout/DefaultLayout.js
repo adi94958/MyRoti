@@ -20,7 +20,7 @@ const DefaultLayout = () => {
         navigate('/admin')
       } else if (infoLogin.user_type === 'koordinator') {
         setSidebar(navKoordinator)
-        navigate('/admin')
+        navigate('/koordinator')
       } else if (infoLogin.user_type === 'kurir') {
         navigate('/admin')
       } else if (infoLogin.user_type === 'keuangan') {

@@ -42,18 +42,18 @@ import {
 } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
-const KelolaDataDataRoti = () => {
+const Lapak = () => {
   const [searchText, setSearchText] = useState('') //State untuk seatch
-  const [dataRoti, setDataRoti] = useState([])
+  const [dataLapak, setDataLapak] = useState([])
   const navigate = useNavigate()
 
   useEffect(() => {
     // Menggunakan Axios untuk mengambil data dari API
     axios
-      .get('http://localhost:8000/api/koordinator/dataroti')
+      .get('http://localhost:8000/api/koordinator/lapak')
       .then((response) => {
         console.log(response.data)
-        setDataRoti(response.data)
+        setDataLapak(response.data)
       })
       .catch((error) => {
         // Handle error jika terjadi kesalahan saat mengambil data dari API
@@ -63,21 +63,23 @@ const KelolaDataDataRoti = () => {
 
   function handleEdit(data) {
     localStorage.setItem(
-      'lsDataRoti',
+      'lsDataLapak',
       JSON.stringify({
-        kode_roti: data.kode_roti,
-        nama_roti: data.nama_roti,
-        stok_roti: data.stok_roti,
-        rasa_roti: data.rasa_roti,
-        harga_satuan_roti: data.harga_satuan_roti,
+        kode_lapak: data.kode_lapak,
+        nama_lapak: data.nama_lapak,
+        nama_kurir: data.nama,
+        id_kurir: data.id_kurir,
+        area: data.area_distribusi,
+        area_id: data.area_id,
+        alamat: data.alamat_lapak,
       }),
     )
-    navigate('/roti/update')
+    navigate('/lapak/update')
   }
 
   const handleDelete = (data) => {
     Swal.fire({
-      title: `Apakah anda yakin ingin menghapus ${data.nama_roti}?`,
+      title: `Apakah anda yakin ingin menghapus ${data.nama_lapak}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -86,10 +88,10 @@ const KelolaDataDataRoti = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:8000/api/koordinator/dataroti/delete/${data.kode_roti}`)
+          .delete(`http://localhost:8000/api/koordinator/lapak/delete/${data.kode_lapak}`)
           .then((response) => {
             Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
-            window.location.href = '/roti'
+            window.location.href = '/lapak'
           })
           .catch((error) => {
             // Handle error jika terjadi kesalahan saat menghapus data
@@ -99,30 +101,31 @@ const KelolaDataDataRoti = () => {
     })
   }
 
-  const filteredData = dataRoti.filter((user) => {
+  const filteredData = dataLapak.filter((user) => {
     return (
       searchText === '' ||
-      user.kode_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.nama_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.stok_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.rasa_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.harga_satuan_roti.toLowerCase().includes(searchText.toLowerCase())
+      user.kode_lapak.toLowerCase().includes(searchText.toLowerCase()) ||
+      user.nama_lapak.toLowerCase().includes(searchText.toLowerCase()) ||
+      user.nama_kurir.toLowerCase().includes(searchText.toLowerCase()) ||
+      user.area.toLowerCase().includes(searchText.toLowerCase()) ||
+      user.alamat_lapak.toLowerCase().includes(searchText.toLowerCase())
     )
   })
+
   return (
     <div>
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader>Data Roti</CCardHeader>
+            <CCardHeader>Data Lapak</CCardHeader>
             <CCardBody>
               <CForm className="mb-3">
                 <CRow>
                   <CCol md={8} xs={6}>
-                    <Link to="/roti/tambah">
+                    <Link to="/lapak/tambah">
                       <CButton variant="outline">
                         <CIcon icon={cilUserPlus} className="mx-8" />
-                        Tambah Roti
+                        Tambah Lapak
                       </CButton>
                     </Link>
                   </CCol>
@@ -131,11 +134,11 @@ const KelolaDataDataRoti = () => {
               <CTable striped bordered responsive>
                 <CTableHead>
                   <CTableRow>
-                    <CTableHeaderCell>Kode Roti</CTableHeaderCell>
-                    <CTableHeaderCell>Nama Roti</CTableHeaderCell>
-                    <CTableHeaderCell>Stok Roti</CTableHeaderCell>
-                    <CTableHeaderCell>Rasa Roti</CTableHeaderCell>
-                    <CTableHeaderCell>Harga Satuan</CTableHeaderCell>
+                    {/* <CTableHeaderCell>Kode Lapak</CTableHeaderCell> */}
+                    <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Kecamatan</CTableHeaderCell>
+                    <CTableHeaderCell>Alamat</CTableHeaderCell>
+                    <CTableHeaderCell>Nama Kurir</CTableHeaderCell>
                     <CTableHeaderCell>Aksi</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -149,11 +152,11 @@ const KelolaDataDataRoti = () => {
                   ) : (
                     filteredData.map((user) => (
                       <CTableRow key={user.id}>
-                        <CTableDataCell>{user.kode_roti}</CTableDataCell>
-                        <CTableDataCell>{user.nama_roti}</CTableDataCell>
-                        <CTableDataCell>{user.stok_roti}</CTableDataCell>
-                        <CTableDataCell>{user.rasa_roti}</CTableDataCell>
-                        <CTableDataCell>{user.harga_satuan_roti}</CTableDataCell>
+                        {/* <CTableDataCell>{user.kode_lapak}</CTableDataCell> */}
+                        <CTableDataCell>{user.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>{user.area_distribusi}</CTableDataCell>
+                        <CTableDataCell>{user.alamat_lapak}</CTableDataCell>
+                        <CTableDataCell>{user.nama}</CTableDataCell>
                         <CTableDataCell>
                           <CCol>
                             <CButton
@@ -188,5 +191,4 @@ const KelolaDataDataRoti = () => {
     </div>
   )
 }
-
-export default KelolaDataDataRoti
+export default Lapak
