@@ -1,5 +1,5 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil' // Import useRecoilState
 import {
   CContainer,
@@ -18,10 +18,18 @@ import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
 import sidebarShow from '../recoil/sidebarRecoil' // Import the Recoil atom
 
-const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
-
 const AppHeader = () => {
-  const [showSidebar, setShowSidebar] = useRecoilState(sidebarShow) // Use useRecoilState to access the Recoil state
+  const [showSidebar, setShowSidebar] = useRecoilState(sidebarShow)
+  const [Login, setLogin] = useState([])
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
+    setLogin(infoLogin)
+    if (infoLogin === null) {
+      navigate('/login')
+    }
+  }, [])
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -42,7 +50,7 @@ const AppHeader = () => {
         </CHeaderNav>
         <CHeaderNav>
           <CNavItem>
-            <span className="bigger-text">{infoLogin.nama}</span>
+            <span className="bigger-text">{Login.nama}</span>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="">
