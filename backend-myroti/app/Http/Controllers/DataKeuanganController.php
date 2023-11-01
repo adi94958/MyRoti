@@ -36,7 +36,7 @@ class DataKeuanganController extends Controller
         ]);
 
         // Buat koordinator baru
-        Koordinator::create([
+        Keuangan::create([
             'username' => $request->username,
             'password' => Crypt::encryptString($request->password),
             'nama' => $request->nama,   
