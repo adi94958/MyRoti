@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -12,13 +12,9 @@ import {
   CForm,
   CFormInput,
   CInputGroup,
-  CInputGroupText,
   CRow,
   CSpinner,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { Link } from 'react-router-dom'
-import { cilShortText } from '@coreui/icons'
 
 const dataRoti = JSON.parse(localStorage.getItem('lsDataRoti'))
 
@@ -29,6 +25,7 @@ const FormUpdateRoti = () => {
   const [harga_satuan_roti, setHarga] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     setNama(dataRoti.nama_roti)
@@ -75,6 +72,12 @@ const FormUpdateRoti = () => {
       setLoading(false)
     }
   }
+
+  function handleCancel() {
+    localStorage.removeItem('lsDataRoti')
+    navigate('/roti')
+  }
+
   return (
     <>
       <CCard>
@@ -136,11 +139,15 @@ const FormUpdateRoti = () => {
             <CRow>
               <CCol xs={10}></CCol>
               <CCol md={1}>
-                <Link to={`/roti`}>
-                  <CButton color="secondary" variant="outline" className="ms-2" title="Back">
-                    Back
-                  </CButton>
-                </Link>
+                <CButton
+                  color="secondary"
+                  variant="outline"
+                  className="ms-2"
+                  title="Back"
+                  onClick={handleCancel}
+                >
+                  Back
+                </CButton>
               </CCol>
               <CCol xs={1}>
                 {loading ? (
