@@ -15,7 +15,7 @@ class Lapak extends Model
     protected $table = 'lapak';
     protected $primaryKey = 'kode_lapak';
     protected $fillable = [
-        'nama_lapak', 
+        'nama_lapak',
         'area_id',
         'id_kurir',
         'alamat_lapak',
@@ -32,9 +32,9 @@ class Lapak extends Model
         return $this->hasMany(Transaksi::class, 'kode_lapak', 'kode_lapak');
     }
 
-    
+
     public function Kurir(): BelongsTo
     {
-        return $this->belongsTo(Kurir::class, 'id_kurir', 'id');
+        return $this->belongsTo(Kurir::class, 'id_kurir', 'id_kurir');
     }
 }

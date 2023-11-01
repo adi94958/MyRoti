@@ -16,10 +16,10 @@ class DataKurirController extends Controller
 {
     public function readDataKurir()
     {
-        
-        $datas = Kurir::select('id','username', 'password', 'nama', 'area_id')
+
+        $datas = Kurir::select('id', 'username', 'password', 'nama', 'area_id')
             ->join('areadistribusi', 'kurirs.area_id', '=', 'areadistribusi.area_id')
-            ->select('kurirs.id_kurir','kurirs.username','kurirs.password', 'kurirs.nama', 'kurirs.user_type','areadistribusi.area_distribusi')
+            ->select('kurirs.id_kurir', 'kurirs.username', 'kurirs.password', 'kurirs.nama', 'kurirs.user_type', 'areadistribusi.area_distribusi', 'areadistribusi.area_id')
             ->get();
 
         foreach ($datas as $data) {
@@ -36,7 +36,7 @@ class DataKurirController extends Controller
             'username' => 'required|unique:koordinators|unique:admins|unique:kurirs',
             'password' => 'required|string',
             'nama' => 'required|regex:/^[a-zA-Z\s]+$/',
-            'user_type' =>'required',
+            'user_type' => 'required',
             'area_id' => 'required'
         ], [
             'username.unique' => 'Username sudah digunakan.',
@@ -45,8 +45,8 @@ class DataKurirController extends Controller
 
         $area = Area_Distribusi::where('id', $request->area_id)->first();
 
-        if($area){
-             // Buat koordinator baru
+        if ($area) {
+            // Buat koordinator baru
             Kurir::create([
                 'username' => $request->username,
                 'password' => Crypt::encryptString($request->password),
@@ -56,12 +56,9 @@ class DataKurirController extends Controller
             ]);
 
             return response()->json(['message' => 'Kurir berhasil didaftarkan']);
-
         }
 
         return response()->json(['message' => 'area tidak ditemukan']);
-
-       
     }
 
     public function updateKurir(Request $request, $id)
@@ -76,12 +73,12 @@ class DataKurirController extends Controller
             'username' => 'required|unique:kurirs,username,' . $kurir->id,
             'password' => 'required',
             'nama' => 'required',
-            'user_type' =>'required',
+            'user_type' => 'required',
             'area_id' => 'required'
         ]);
 
-         // Memastikan username tidak ada yang sama di tabel admin, kurir, dan koordinator
-         if (
+        // Memastikan username tidak ada yang sama di tabel admin, kurir, dan koordinator
+        if (
             Admin::where('username', $request->username)->exists() ||
             Kurir::where('username', $request->username)->where('id', '<>', $kurir->id)->exists() ||
             Koordinator::where('username', $request->username)->exists()
@@ -91,7 +88,7 @@ class DataKurirController extends Controller
 
         $area = Area_Distribusi::where('id', $request->area_id)->first();
 
-        if($kurir){
+        if ($kurir) {
             $kurir->update([
                 'username' => $request->username,
                 'password' => Crypt::encryptString($request->password),
@@ -99,11 +96,9 @@ class DataKurirController extends Controller
                 'user_type' => $request->user_type,
                 'area_id' => $area->id
             ]);
-    
+
             return response()->json(['message' => 'Kurir berhasil diperbarui']);
         }
-
-        
     }
 
     public function deleteKurir($id)
@@ -130,5 +125,4 @@ class DataKurirController extends Controller
 
         return response()->json(['message' => 'Kurir berhasil dihapus']);
     }
-
 }

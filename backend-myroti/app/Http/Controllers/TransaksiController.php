@@ -13,7 +13,7 @@ class TransaksiController extends Controller
     public function readTransaksi()
     {
         $datas = Transaksi::select('id_transaksi', 'kode_lapak', 'kode_roti', 'jumlah_roti', 'id_kurir')->get();
-      
+
         return response()->json($datas, 200);
     }
 
@@ -23,7 +23,7 @@ class TransaksiController extends Controller
     //     ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id') // Lakukan join dengan tabel area
     //     ->select('lapak.nama_lapak','areadistribusi.area_distribusi') // Pilih kolom yang Anda inginkan
     //     ->get();
-      
+
     //     return response()->json($datas, 200);
     // }
 
@@ -32,8 +32,9 @@ class TransaksiController extends Controller
         $lapakDalamTransaksi = Transaksi::distinct()->pluck('kode_lapak')->toArray();
 
         $datas = Lapak::select('kode_lapak', 'nama_lapak')
-            ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
-            ->select('lapak.kode_lapak','lapak.nama_lapak', 'areadistribusi.area_distribusi')
+            //->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
+            ->join('kurirs', 'lapak.id_kurir', '=', 'kurirs.id_kurir')
+            ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'kurirs.nama')
             ->whereNotIn('kode_lapak', $lapakDalamTransaksi) // Tambahkan ini untuk mengabaikan lapak dalam transaksi
             ->get();
 
@@ -49,7 +50,7 @@ class TransaksiController extends Controller
             'kode_roti.*' => 'required',
             'jumlah_roti.*' => 'required',
         ]);
-    
+
         // Buat koordinator baru
         if ($lapak) {
 
@@ -101,7 +102,7 @@ class TransaksiController extends Controller
     //         'kode_roti.*' => 'required',
     //         'jumlah_roti.*' => 'required',
     //     ]);
-    
+
     //     // Buat koordinator baru
     //     if ($lapak) {
     //         // Dapatkan 'id_kurir' dari 'lapak'
@@ -174,6 +175,4 @@ class TransaksiController extends Controller
 
         return response()->json(['message' => 'Transaksi dan data penjualan terkait berhasil dihapus']);
     }
-        
-
 }

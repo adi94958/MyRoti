@@ -13,10 +13,10 @@ class LapakController extends Controller
 {
     public function readDataLapak()
     {
-        $datas = Lapak::select('kode_lapak','nama_lapak', 'id_kurir', 'area_id', 'alamat_lapak')
+        $datas = Lapak::select('kode_lapak', 'nama_lapak', 'id_kurir', 'area_id', 'alamat_lapak')
             ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
             ->join('kurirs', 'lapak.id_kurir', '=', 'kurirs.id_kurir')
-            ->select('lapak.kode_lapak','lapak.nama_lapak', 'kurirs.nama', 'areadistribusi.area_distribusi', 'lapak.alamat_lapak')
+            ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'kurirs.nama', 'areadistribusi.area_distribusi', 'lapak.alamat_lapak', 'lapak.area_id', 'lapak.id_kurir')
             ->get();
 
         return response()->json($datas, 200);
@@ -32,23 +32,21 @@ class LapakController extends Controller
             'alamat_lapak' => 'required'
         ]);
 
-        $kurir = Kurir::where('id', $request->id_kurir)->first();
-        $area = Area_Distribusi::where('id', $request->area_id)->first();
+        $kurir = Kurir::where('id_kurir', $request->id_kurir)->first();
+        $area = Area_Distribusi::where('area_id', $request->area_id)->first();
 
-        if($area){
+        if ($area) {
 
-            if($kurir){
+            if ($kurir) {
                 Lapak::create([
                     'nama_lapak' => $request->nama_lapak,
-                    'area_id' => $area->id,
-                    'id_kurir' => $kurir->id,
+                    'area_id' => $area->area_id,
+                    'id_kurir' => $kurir->id_kurir,
                     'alamat_lapak' => $request->alamat_lapak
                 ]);
                 return response()->json(['message' => 'Lapak berhasil didaftarkan']);
-
             }
             return response()->json(['message' => 'Kurir dan Lapak tidak sesuai']);
-
         }
 
         return response()->json(['message' => 'Area tidak ditemukan']);
@@ -65,23 +63,22 @@ class LapakController extends Controller
         $request->validate([
             'nama_lapak' => 'required',
             'id_kurir' => 'required',
-            'area_id' =>'required',
+            'area_id' => 'required',
             'alamat_lapak' => 'required'
         ]);
 
-        $area = Area_Distribusi::where('id', $request->area_id)->first();
+        $area = Area_Distribusi::where('area_id', $request->area_id)->first();
 
-        if($area){
+        if ($area) {
             $lapak->update([
                 'nama_lapak' => $request->nama_lapak,
                 'id_kurir' => $request->id_kurir,
-                'area_id' => $area->id,
+                'area_id' => $request->area_id,
                 'alamat_lapak' => $request->alamat_lapak
             ]);
-    
+
             return response()->json(['message' => 'Lapak berhasil diperbarui']);
         }
-        
     }
 
     public function deleteLapak($kode_lapak)

@@ -76,28 +76,27 @@ const KelolaDataDataRoti = () => {
   }
 
   const handleDelete = (data) => {
-    // Menggunakan Axios untuk mengirim permintaan DELETE
-    axios
-      .delete(`http://localhost:8000/api/koordinator/dataroti/delete/${data.kode_roti}`)
-      .then((response) => {
-        Swal.fire({
-          title: `Apakah anda yakin ingin menghapus ${data.nama_roti}?`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Delete',
-        }).then((result) => {
-          if (result.isConfirmed) {
+    Swal.fire({
+      title: `Apakah anda yakin ingin menghapus ${data.nama_roti}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Delete',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:8000/api/koordinator/dataroti/delete/${data.kode_roti}`)
+          .then((response) => {
             Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
             window.location.href = '/roti'
-          }
-        })
-      })
-      .catch((error) => {
-        // Handle error jika terjadi kesalahan saat menghapus data
-        console.error('Error deleting data:', error)
-      })
+          })
+          .catch((error) => {
+            // Handle error jika terjadi kesalahan saat menghapus data
+            console.error('Error deleting data:', error)
+          })
+      }
+    })
   }
 
   const filteredData = dataRoti.filter((user) => {
