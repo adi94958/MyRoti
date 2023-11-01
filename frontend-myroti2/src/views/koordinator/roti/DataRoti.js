@@ -92,7 +92,6 @@ const KelolaDataDataRoti = () => {
             window.location.href = '/roti'
           })
           .catch((error) => {
-            // Handle error jika terjadi kesalahan saat menghapus data
             console.error('Error deleting data:', error)
           })
       }

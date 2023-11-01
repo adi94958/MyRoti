@@ -17,16 +17,14 @@ const DefaultLayout = () => {
     } else {
       if (infoLogin.user_type === 'admin') {
         setSidebar(navAdmin)
-        navigate('/admin')
       } else if (infoLogin.user_type === 'koordinator') {
         setSidebar(navKoordinator)
-        navigate('/koordinator')
       } else if (infoLogin.user_type === 'kurir') {
-        navigate('/admin')
+        setSidebar(navAdmin)
       } else if (infoLogin.user_type === 'keuangan') {
-        navigate('/admin')
+        setSidebar(navAdmin)
       } else if (infoLogin.user_type === 'pemilik') {
-        navigate('/admin')
+        setSidebar(navAdmin)
       }
     }
   }, [])
