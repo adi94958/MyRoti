@@ -5,6 +5,7 @@ import sidebarContentAtom from '../recoil/sidebarContentRecoil'
 import { useRecoilState } from 'recoil'
 import navAdmin from '../navAdmin'
 import navKoordinator from './../navKoordinator'
+import navKurir from 'src/navKurir'
 
 const DefaultLayout = () => {
   const navigate = useNavigate()
@@ -20,7 +21,7 @@ const DefaultLayout = () => {
       } else if (infoLogin.user_type === 'koordinator') {
         setSidebar(navKoordinator)
       } else if (infoLogin.user_type === 'kurir') {
-        setSidebar(navAdmin)
+        setSidebar(navKurir)
       } else if (infoLogin.user_type === 'keuangan') {
         setSidebar(navAdmin)
       } else if (infoLogin.user_type === 'pemilik') {
