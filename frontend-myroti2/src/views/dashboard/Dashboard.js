@@ -5,6 +5,7 @@ import navAdmin from 'src/navAdmin'
 
 import sidebarContentAtom from 'src/recoil/sidebarContentRecoil'
 import navKoordinator from 'src/navKoordinator'
+import navKurir from 'src/navKurir'
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ const Dashboard = () => {
         setSidebar(navKoordinator)
         navigate('/koordinator')
       } else if (infoLogin.user_type === 'kurir') {
-        setSidebar(navAdmin)
+        setSidebar(navKurir)
         navigate('/kurir')
       } else if (infoLogin.user_type === 'keuangan') {
         setSidebar(navAdmin)

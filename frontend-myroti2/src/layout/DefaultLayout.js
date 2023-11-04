@@ -5,7 +5,7 @@ import sidebarContentAtom from '../recoil/sidebarContentRecoil'
 import { useRecoilState } from 'recoil'
 import navAdmin from '../navAdmin'
 import navKoordinator from './../navKoordinator'
-import navKurir from './../navKurir'
+import navKurir from 'src/navKurir'
 
 const DefaultLayout = () => {
   const navigate = useNavigate()

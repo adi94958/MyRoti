@@ -42,7 +42,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/admin', name: 'Admin', exact: true, element: KelolaDataKoordinator },
   { path: '/koordinator', name: 'Koordinator', exact: true, element: Pengiriman },
-  { path: '/kurir', name: 'Kurir', exact: true, element: KelolaDataKoordinator },
+  { path: '/kurir', name: 'Kurir', exact: true, element: Pengiriman },
   { path: '/admin/koordinator', name: 'Koordinator', element: KelolaDataKoordinator },
   { path: '/admin/koordinator/tambah', name: 'Tambah Koordinator', element: FormTambahKoordinator },
   { path: '/admin/koordinator/update', name: 'Edit Koordinator', element: FormUpdateKoordinator },
