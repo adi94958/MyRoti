@@ -23,6 +23,7 @@ const Dashboard = () => {
         navigate('/koordinator')
       } else if (infoLogin.user_type === 'kurir') {
         setSidebar(navAdmin)
+        navigate('/kurir')
       } else if (infoLogin.user_type === 'keuangan') {
         setSidebar(navAdmin)
       } else if (infoLogin.user_type === 'pemilik') {
