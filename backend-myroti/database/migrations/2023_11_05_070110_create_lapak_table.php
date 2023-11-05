@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kurirs', function (Blueprint $table) {
-            $table->id('id_kurir');
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->string('nama', 50);
-            $table->string('user_type');
+        Schema::create('lapak', function (Blueprint $table) {
+            $table->bigIncrements('kode_lapak');
+            $table->string('nama_lapak', 50);
+            $table->string('alamat_lapak', 100);
+            $table->string('no_telp', 15);
+            $table->foreignId('id_kurir')->constrained('kurir', 'id_kurir');
             $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
+            $table->softDeletes();
             $table->timestamps();
-
-            //$table->foreign('area')->references('id')->on('area_distribusi');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('lapak');
     }
 };

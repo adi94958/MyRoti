@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('lapak', function (Blueprint $table) {
-            $table->foreignId('id_kurir')->constrained('kurirs', 'id_kurir');
-            $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
+        Schema::create('rotibasi', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_penjualan')->constrained('datapenjualan', 'id_penjualan');
+            $table->foreignId('kode_roti');
+            $table->integer('jumlah_roti');
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('rotibasi');
     }
 };

@@ -9,19 +9,12 @@ class TransaksiRoti extends Model
 {
     use HasFactory;
     protected $table = 'transaksi_roti'; 
-    protected $primaryKey = 'id_transaksi_roti'; 
+    public $timestamps = false;
     protected $fillable = [
         'id_transaksi', 
         'kode_roti', 
-        'id_penjualan',
         'jumlah_roti',
     ];
-
-    //hubungan FK ke PM
-    public function penjualan()
-    {
-        return $this->belongsTo(DataPenjualan::class, 'id_penjualan', 'id_penjualan');
-    }
 
     public function transaksi()
     {
