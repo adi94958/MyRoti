@@ -13,14 +13,13 @@ class Transaksi extends Model
 
     protected $table = 'transaksi';
     protected $primaryKey = 'id_transaksi';
-    public $timestamps = false; // Atur menjadi false jika Anda tidak menggunakan kolom 'created_at' dan 'updated_at'.
+    public $timestamps = false;
 
     protected $fillable = [
         'kode_lapak',
-        'kode_roti',
-        'jumlah_roti',
         'id_kurir',
-        'tanggal_pengiriman'
+        'tanggal_pengiriman',
+        'status'
     ];
 
     public function Lapak(): BelongsTo
@@ -28,17 +27,12 @@ class Transaksi extends Model
         return $this->belongsTo(Lapak::class, 'kode_lapak', 'kode_lapak');
     }
 
-    public function Roti(): BelongsTo
-    {
-        return $this->belongsTo(Roti::class, 'kode_roti', 'kode_roti');
-    }
+    // public function dataPenjualan()
+    // {
+    //     return $this->hasMany(DataPenjualan::class, 'id_transaksi', 'id_transaksi');
+    // }
 
-    public function dataPenjualan()
-    {
-        return $this->hasMany(DataPenjualan::class, 'id_transaksi', 'id_transaksi');
-    }
-
-    public function transaksi()
+    public function transaksi_roti()
     {
         return $this->hasMany(TransaksiRoti::class, 'id_transaksi', 'id_transaksi');
     }

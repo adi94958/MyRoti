@@ -14,12 +14,9 @@ class DataPenjualan extends Model
     protected $fillable = [
         'id_transaksi',
         'tanggal_pengiriman',
-        'status',
         'bukti_pengiriman',
         'uang_setoran',
-        'roti_basi',
         'catatan_penjual',
-        'status_setor',
     ];
 
     //hubungan FK ke PM
@@ -28,11 +25,6 @@ class DataPenjualan extends Model
         return $this->belongsTo(Transaksi::class, 'id_transaksi', 'id_transaksi');
     }
 
-    //hubungan PM ke FK
-    public function transaksiRoti()
-    {
-        return $this->hasMany(TransaksiRoti::class, 'id_penjualan', 'id_penjualan');
-    }
 
 
 }

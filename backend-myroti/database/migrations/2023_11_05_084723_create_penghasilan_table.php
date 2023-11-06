@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('datapenjualan')) {
-            Schema::table('datapenjualan', function (Blueprint $table){
-                $table->foreignId('id_transaksi')->constrained('transaksi', 'id_transaksi');
-            });
-        }
+        Schema::create('penghasilan', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_penjualan')->constrained('datapenjualan', 'id_penjualan');
+            $table->integer('id_kurir');  
+            $table->integer('penghasilan');
+        });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('penghasilan');
     }
 };

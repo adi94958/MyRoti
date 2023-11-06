@@ -18,6 +18,7 @@ class Kurir extends Authenticatable
         'username', 
         'password', 
         'nama',
+        'no_telp',
         'user_type',
         'area_id'
     ];

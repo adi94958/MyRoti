@@ -68,5 +68,7 @@ Route::post('/pemilik/registrasi', [DataPemilikController::class, 'registerPemil
 Route::put('/pemilik/update/{id}', [DataPemilikController::class, 'updatePemilik']);
 Route::delete('/pemilik/delete/{id}', [DataPemilikController::class, 'deletePemilik']);
 
+Route::get('/kurir/transaksi', [TransaksiController::class, 'TransaksiKurir']);
+
 
 // Kurir routes here

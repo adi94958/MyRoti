@@ -11,19 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('datapenjualan')) {
-        Schema::create('datapenjualan', function (Blueprint $table){
+        Schema::create('datapenjualan', function (Blueprint $table) {
             $table->bigIncrements('id_penjualan');
-            $table->integer('id_transaksi');
-            $table->timestamp('tanggal_pengiriman')->useCurrent();
-            $table->string('status', 100);
-            $table->text('bukti_pengiriman');
+            $table->foreignId('id_transaksi')->constrained('transaksi', 'id_transaksi');
+            $table->timestamp('tanggal_pengiriman');
             $table->decimal('uang_setoran', 15, 2);
-            $table->integer('roti_basi');
             $table->text('catatan_penjual');
-            $table->string('status_setor', 15);
         });
-        }
     }
 
     /**

@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('lapak', function (Blueprint $table) {
+        Schema::create('lapak', function (Blueprint $table) {
+            $table->bigIncrements('kode_lapak');
+            $table->string('nama_lapak', 50);
+            $table->string('alamat_lapak', 100);
+            $table->string('no_telp', 15)->nullable();
             $table->foreignId('id_kurir')->constrained('kurirs', 'id_kurir');
             $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('lapak');
     }
 };
