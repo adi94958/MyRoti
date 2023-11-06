@@ -13,6 +13,7 @@ class Transaksi extends Model
 
     protected $table = 'transaksi';
     protected $primaryKey = 'id_transaksi';
+    public $timestamps = false;
 
     protected $fillable = [
         'kode_lapak',

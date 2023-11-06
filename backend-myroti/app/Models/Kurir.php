@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Kurir extends Authenticatable
 {
     use HasFactory, HasApiTokens;
-    protected $table = 'kurir';
+    protected $table = 'kurirs';
     protected $primaryKey = 'id_kurir';
     protected $fillable = [
         'username', 

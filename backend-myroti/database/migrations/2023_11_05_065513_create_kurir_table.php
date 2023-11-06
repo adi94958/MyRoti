@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kurir', function (Blueprint $table) {
+        Schema::create('kurirs', function (Blueprint $table) {
             $table->id('id_kurir');
             $table->string('username')->unique();
             $table->string('password');
             $table->string('nama', 50);
             $table->string('user_type');
-            $table->string('no_telp', 15);
+            $table->string('no_telp', 15)->nullable();
             $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
             $table->timestamps();
         });

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->bigIncrements('kode_lapak');
             $table->string('nama_lapak', 50);
             $table->string('alamat_lapak', 100);
-            $table->string('no_telp', 15);
-            $table->foreignId('id_kurir')->constrained('kurir', 'id_kurir');
+            $table->string('no_telp', 15)->nullable();
+            $table->foreignId('id_kurir')->constrained('kurirs', 'id_kurir');
             $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
             $table->softDeletes();
             $table->timestamps();
