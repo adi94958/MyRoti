@@ -15,9 +15,9 @@ class TransaksiController extends Controller
     {
 
         $datas = Transaksi::select('transaksi.id_transaksi', 'lapak.nama_lapak', 'transaksi.id_kurir', 'transaksi_roti.kode_roti', 'transaksi_roti.jumlah_roti', 'transaksi.status')
-        ->join('transaksi_roti', 'transaksi.id_transaksi', '=', 'transaksi_roti.id_transaksi')
-        ->join('lapak', 'transaksi.kode_lapak', '=', 'lapak.kode_lapak')
-        ->get();
+            ->join('transaksi_roti', 'transaksi.id_transaksi', '=', 'transaksi_roti.id_transaksi')
+            ->join('lapak', 'transaksi.kode_lapak', '=', 'lapak.kode_lapak')
+            ->get();
 
         return response()->json($datas, 200);
     }
@@ -28,7 +28,6 @@ class TransaksiController extends Controller
         $datas = Transaksi::with('transaksi_roti')->get();
 
         return response()->json($datas, 200);
-
     }
 
 
@@ -38,17 +37,19 @@ class TransaksiController extends Controller
 
         $datas = Lapak::select('kode_lapak', 'nama_lapak')
             ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
-            ->select('lapak.kode_lapak','lapak.nama_lapak', 'areadistribusi.area_distribusi')
+            ->join('kurirs', 'lapak.id_kurir', '=', 'kurirs.id_kurir')
+            ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'areadistribusi.area_distribusi', 'kurirs.nama')
             ->whereNotIn('kode_lapak', $lapakDalamTransaksi) // Tambahkan ini untuk mengabaikan lapak dalam transaksi
             ->get();
 
         return response()->json($datas, 200);
     }
 
-    public function createRotiTransaki($kode_roti, $jumlah_roti, $id_transaksi){
+    public function createRotiTransaki($kode_roti, $jumlah_roti, $id_transaksi)
+    {
         $roti = Roti::where('kode_roti', $kode_roti)->first();
 
-        if($jumlah_roti <= $roti->stok_roti){
+        if ($jumlah_roti <= $roti->stok_roti) {
             TransaksiRoti::create([
                 'id_transaksi' => $id_transaksi,
                 'kode_roti' => $kode_roti,
@@ -58,7 +59,6 @@ class TransaksiController extends Controller
             $roti->stok_roti -= $jumlah_roti; // Perbaikan: Menggunakan variabel $jumlah_roti
             $roti->save();
         }
-
     }
 
 
@@ -70,7 +70,7 @@ class TransaksiController extends Controller
             'kode_roti.*' => 'required',
             'jumlah_roti.*' => 'required',
         ]);
-    
+
         // Buat koordinator baru
         if ($lapak) {
 
@@ -80,7 +80,7 @@ class TransaksiController extends Controller
             // Membuat transaksi
             $transaksi = Transaksi::create([
                 'kode_lapak' => $lapak->kode_lapak,
-                'id_kurir'=> $id_kurir,
+                'id_kurir' => $id_kurir,
                 'status' => 'ready'
             ]);
 
@@ -94,7 +94,6 @@ class TransaksiController extends Controller
             }
 
             return response()->json(['message' => 'Transaksi berhasil dibuat']);
-                
         } else {
             return response()->json(['message' => 'Lapak tidak ditemukan']);
         }
@@ -108,7 +107,7 @@ class TransaksiController extends Controller
     //         'kode_roti.*' => 'required',
     //         'jumlah_roti.*' => 'required',
     //     ]);
-    
+
     //     // Buat koordinator baru
     //     if ($lapak) {
     //         // Dapatkan 'id_kurir' dari 'lapak'
@@ -181,6 +180,4 @@ class TransaksiController extends Controller
 
         return response()->json(['message' => 'Transaksi dan data penjualan terkait berhasil dihapus']);
     }
-        
-
 }

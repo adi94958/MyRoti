@@ -26,7 +26,7 @@ import {
   CModalFooter,
   CModalTitle,
 } from '@coreui/react'
-import { cilPen, cilTrash, cilPlaylistAdd, cilBurger, cilPlus } from '@coreui/icons'
+import { cilTrash, cilBurger } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 const FormPengiriman = () => {
@@ -34,26 +34,16 @@ const FormPengiriman = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const [modalRoti, setModalRoti] = useState(false)
-  const [modalJumlahRoti, setModalJumlahRoti] = useState(false)
   const [formData, setFormData] = useState({
     tanggal: new Date().toLocaleDateString(), // Mendapatkan tanggal sekarang dalam format lokal
+    kode_lapak: '',
     nama_lapak: '',
     nama_kurir: '',
-    kode_lapak: '',
   })
-
+  const [inputDataRotiArray, setInputDataRotiArray] = useState([])
   const [dataArray, setDataArray] = useState([])
-  const [inputDataRoti, setInputDataRoti] = useState({
-    kode_roti: '',
-    nama_roti: '',
-    rasa_roti: '',
-    jumlah_roti: '',
-    harga_satuan_roti: '',
-    stok_roti: '',
-  })
 
   useEffect(() => {
-    //   handleData();
     const dataTransaksi = JSON.parse(localStorage.getItem('dataTransaksi'))
     setFormData({
       ...formData,
@@ -66,7 +56,6 @@ const FormPengiriman = () => {
   const [dataRoti, setDataRoti] = useState([])
   const handleRotiModal = () => {
     setModalRoti(true)
-    // Menggunakan Axios untuk mengambil data dari API
     axios
       .get('http://localhost:8000/api/koordinator/dataroti')
       .then((response) => {
@@ -74,53 +63,38 @@ const FormPengiriman = () => {
         setDataRoti(response.data)
       })
       .catch((error) => {
-        // Handle error jika terjadi kesalahan saat mengambil data dari API
         console.error('Error fetching data:', error)
       })
   }
 
-  const handleJumlahRoti = (user) => {
-    setModalRoti(false)
-    setModalJumlahRoti(true)
-    const rotiPilihan = dataRoti.find((item) => item.kode_roti === user.kode_roti)
-    console.log('roti pilihan', rotiPilihan)
-    if (rotiPilihan) {
-      setInputDataRoti((prevInputDataRoti) => {
-        return {
-          ...prevInputDataRoti,
-          kode_roti: rotiPilihan.kode_roti,
-          nama_roti: rotiPilihan.nama_roti,
-          rasa_roti: rotiPilihan.rasa_roti,
-          harga_satuan_roti: rotiPilihan.harga_satuan_roti,
-          stok_roti: rotiPilihan.stok_roti,
-        }
-      })
-      // console.log('Data roti ditemukan:', inputDataRoti);
-    } else {
-      // Handle jika tidak ada objek dengan kode roti yang sama
-      console.log('Tidak ada data roti dengan kode yang sama.')
+  const handleJumlahRoti = (user, event, index) => {
+    const updatedRotiArray = [...inputDataRotiArray]
+    updatedRotiArray[index] = {
+      ...updatedRotiArray[index],
+      jumlah_roti: event.target.value,
+      kode_roti: user.kode_roti,
+      nama_roti: user.nama_roti,
+      rasa_roti: user.rasa_roti,
+      harga_satuan_roti: user.harga_satuan_roti,
+      stok_roti: user.stok_roti,
     }
+    setInputDataRotiArray(updatedRotiArray)
   }
 
   const tambahRoti = () => {
-    const jumlahRoti = parseInt(inputDataRoti.jumlah_roti, 10) // Mengonversi input ke angka
-    // console.log(jumlahRoti)
-    console.log(inputDataRoti)
-    // Memeriksa apakah input adalah angka dan tidak kosong
-    if (!isNaN(jumlahRoti) && jumlahRoti > 0) {
-      // Memeriksa apakah jumlah roti yang dimasukkan tidak melebihi stok roti
-      if (jumlahRoti <= inputDataRoti.stok_roti) {
-        setDataArray([...dataArray, inputDataRoti])
-        console.log('data array:', dataArray)
-        //console.log(inputDataRoti)
-        //setInputDataRoti({ kode_roti: '', jumlah_roti: '', stok_roti: '' })
-        setModalJumlahRoti(false)
-        navigate('/pengiriman/kelola/kirim')
-      } else {
-        alert('Jumlah roti melebihi stok yang tersedia!')
-      }
+    const isValid = inputDataRotiArray.every(
+      (item, index) => item.jumlah_roti <= dataRoti[index].stok_roti,
+    )
+    if (isValid) {
+      console.log('masuk')
+      const newDataArray = [...inputDataRotiArray]
+      setDataArray(newDataArray)
+      setModalRoti(false)
+      navigate('/pengiriman/kelola/kirim')
     } else {
-      alert('Mohon masukkan jumlah roti yang valid!')
+      alert(
+        'Ada jumlah roti yang melebihi stok yang tersedia. Silakan periksa kembali jumlah roti yang dimasukkan.',
+      )
     }
   }
 
@@ -134,11 +108,10 @@ const FormPengiriman = () => {
       confirmButtonText: 'Delete',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Buat salinan baru dari array dataRoti
         const updatedDataRoti = [...dataArray]
-        // Menghapus item pada indeks yang diberikan menggunakan splice()
+        const updatedInputDataRoti = [...inputDataRotiArray]
         updatedDataRoti.splice(index, 1)
-        // Mengganti dataRoti dengan array yang sudah dihapus itemnya
+        updatedInputDataRoti.splice(index, 1)
         setDataArray(updatedDataRoti)
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
       }
@@ -148,17 +121,12 @@ const FormPengiriman = () => {
   const handleSubmitTransaksi = async (e) => {
     e.preventDefault()
     setLoading(true)
-    console.log(inputDataRoti)
-
     const kodeRotiArray = dataArray.map((item) => item.kode_roti.toString())
     const jumlahRotiArray = dataArray.map((item) => item.jumlah_roti)
-
     const transaksi = {
       kode_roti: kodeRotiArray,
       jumlah_roti: jumlahRotiArray,
     }
-
-    console.log(transaksi)
 
     axios
       .post(
@@ -174,17 +142,6 @@ const FormPengiriman = () => {
         console.error('Error sending cart data', error)
       })
   }
-
-  // const filteredData = dataDistribusi.filter((user) => {
-  //     return (
-  //       searchText === '' ||
-  //       user.nama_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-  //       user.nama_lapak.toLowerCase().includes(searchText.toLowerCase()) ||
-  //       user.nama_kurir.toLowerCase().includes(searchText.toLowerCase()) ||
-  //       user.area.toLowerCase().includes(searchText.toLowerCase()) ||
-  //       user.alamat_lapak.toLowerCase().includes(searchText.toLowerCase())
-  //     )
-  //   })
 
   function handleCancel() {
     localStorage.removeItem('dataTransaksi')
@@ -257,7 +214,7 @@ const FormPengiriman = () => {
                       <CTableHeaderCell>Rasa Roti</CTableHeaderCell>
                       <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
                       <CTableHeaderCell>Harga Satuan</CTableHeaderCell>
-                      <CTableHeaderCell>Aksi</CTableHeaderCell>
+                      <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
@@ -360,7 +317,7 @@ const FormPengiriman = () => {
                   </td>
                 </tr>
               ) : (
-                dataRoti.map((item) => (
+                dataRoti.map((item, index) => (
                   <CTableRow key={item.id}>
                     <CTableDataCell>{item.kode_roti}</CTableDataCell>
                     <CTableDataCell>{item.nama_roti}</CTableDataCell>
@@ -368,13 +325,19 @@ const FormPengiriman = () => {
                     <CTableDataCell>{item.rasa_roti}</CTableDataCell>
                     <CTableDataCell>{item.harga_satuan_roti}</CTableDataCell>
                     <CTableDataCell>
-                      <CForm className="mb-3">
-                        <CButton variant="outline" onClick={() => handleJumlahRoti(item)}>
-                          <CIcon icon={cilPlus} className="mx-8" />
-                          Pilih
-                        </CButton>
+                      <CForm>
+                        <CFormInput
+                          size="sm"
+                          name="jumlah_roti"
+                          placeholder="Jumlah Roti"
+                          floatingLabel="Jumlah Roti"
+                          value={
+                            inputDataRotiArray[index] ? inputDataRotiArray[index].jumlah_roti : ''
+                          }
+                          onChange={(e) => handleJumlahRoti(item, e, index)}
+                          required
+                        ></CFormInput>
                       </CForm>
-                      <CCol></CCol>
                     </CTableDataCell>
                   </CTableRow>
                 ))
@@ -387,51 +350,10 @@ const FormPengiriman = () => {
             color="secondary"
             onClick={() => {
               setModalRoti(false)
-              // setMessage('')
               setLoading(false)
             }}
           >
             Close
-          </CButton>
-        </CModalFooter>
-      </CModal>
-
-      {/* Modal Jumlah Roti */}
-      <CModal
-        backdrop="static"
-        visible={modalJumlahRoti}
-        className="modal-sm"
-        onClose={() => {
-          setModalJumlahRoti(false)
-          // setModalRoti(true)
-          setLoading(false)
-        }}
-      >
-        <CModalHeader closeButton>
-          <CModalTitle>Masukan Jumlah Roti</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CForm>
-            <CFormInput
-              name="jumlah_roti"
-              placeholder="Jumlah Roti"
-              floatingLabel="Jumlah Roti"
-              value={inputDataRoti.jumlah_roti}
-              onChange={(e) => setInputDataRoti({ ...inputDataRoti, jumlah_roti: e.target.value })}
-              required
-            ></CFormInput>
-          </CForm>
-        </CModalBody>
-        <CModalFooter>
-          <CButton
-            color="secondary"
-            onClick={() => {
-              setModalJumlahRoti(false)
-              setModalRoti(true)
-              setLoading(false)
-            }}
-          >
-            Back
           </CButton>
           {loading ? (
             <CButton color="primary" disabled>
