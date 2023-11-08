@@ -21,8 +21,20 @@ const navKurir = [
   {
     component: CNavItem,
     name: 'Pengiriman',
-    to: '/pengiriman',
+    to: '/kurir',
     icon: <CIcon icon={cilEnvelopeLetter} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Pengiriman Kurir',
+        to: '/kurir',
+      },
+      {
+        component: CNavItem,
+        name: 'Daftar Pengiriman',
+        to: 'kurir/daftar-pengiriman',
+      },
+    ],
   },
 ]
 
