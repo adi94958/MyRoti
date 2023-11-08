@@ -19,23 +19,27 @@ import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const navKurir = [
   {
-    component: CNavItem,
+    component: CNavTitle,
+    name: 'Kelola Pengiriman',
+  },
+  {
+    component: CNavGroup,
     name: 'Pengiriman',
     to: '/kurir',
     icon: <CIcon icon={cilEnvelopeLetter} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Pengiriman Kurir',
-        to: '/kurir',
+        name: 'Pengiriman Roti',
+        to: '/kurir/pengiriman',
       },
       {
         component: CNavItem,
-        name: 'Daftar Pengiriman',
+        name: 'Penerimaan Uang Roti',
         to: 'kurir/daftar-pengiriman',
       },
     ],
-  },
+  }
 ]
 
 export default navKurir

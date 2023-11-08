@@ -18,6 +18,9 @@ import {
     CModalFooter,
     CModalTitle,
     CFormInput,
+    CFormGroup,
+    CLabel,
+    CFormTextarea,
 } from '@coreui/react'
 import { cilPen, cilSearch } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -107,6 +110,7 @@ const DaftarPengiriman = () => {
                                 <CTableHeaderCell>Daftar Roti</CTableHeaderCell>
                                 <CTableHeaderCell>Total Harga</CTableHeaderCell>
                                 <CTableHeaderCell>Roti Basi</CTableHeaderCell>
+                                <CTableHeaderCell>Catatan</CTableHeaderCell>
                                 <CTableHeaderCell>Status</CTableHeaderCell>
                                 <CTableHeaderCell>Aksi</CTableHeaderCell>
                             </CTableRow>
@@ -144,6 +148,15 @@ const DaftarPengiriman = () => {
                                                 <CIcon icon={cilPen} className="mx-12 me-2" />
                                                 Input Roti Basi
                                             </CButton>
+                                        </CTableDataCell>
+                                        <CTableDataCell>
+                                            <CFormTextarea
+                                                id="catatan"
+                                                name="catatan"
+                                                // value={catatan}
+                                                // onChange={handleCatatanChange}
+                                                placeholder="Masukkan catatan Anda di sini..."
+                                            />
                                         </CTableDataCell>
                                         <CTableDataCell>
                                             <CButton
