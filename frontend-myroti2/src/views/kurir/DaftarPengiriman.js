@@ -91,7 +91,7 @@ const DaftarPengiriman = () => {
 
     setDataDenganTotalHarga(newDataDenganTotalHarga)
   }, [data])
-  
+
   return (
     <>
       <CCard>
