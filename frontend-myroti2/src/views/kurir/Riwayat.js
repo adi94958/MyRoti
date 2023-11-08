@@ -21,7 +21,7 @@ const RiwayatKurir = () => {
 
   const fetchRiwayatKurir = () => {
     axios
-      .get('http://127.0.0.1:8000/api/kurir/riwayat') 
+      .get('http://127.0.0.1:8000/api/kurir/riwayat')
       .then((response) => {
         setRiwayatKurir(response.data)
       })
