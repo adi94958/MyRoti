@@ -36,16 +36,16 @@ const FormUpdateRoti = React.lazy(() => import('./views/koordinator/roti/FormUpd
 // Lapak
 const Lapak = React.lazy(() => import('./views/koordinator/lapak/DataLapak'))
 const FormTambahLapak = React.lazy(() => import('./views/koordinator/lapak/FormTambahLapak'))
-const FormUpdateLapak = React.lazy(() => import('./views/koordinator/lapak/FormUpdateLapak'))
-
+const FormUpdateLapak = React.lazy(() => import('./views/koordinator/lapak/FormUpdateLapak
 //kurir
 const Riwayat = React.lazy(() => import('./views/kurir/Riwayat'))
+const PengirimanKurir = React.lazy(() => import('./views/kurir/KurirPengiriman'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/admin', name: 'Admin', exact: true, element: KelolaDataKoordinator },
   { path: '/koordinator', name: 'Koordinator', exact: true, element: Pengiriman },
-  { path: '/kurir', name: 'Kurir', exact: true, element: Pengiriman },
+  { path: '/kurir', name: 'Kurir', exact: true, element: PengirimanKurir },
   { path: '/admin/koordinator', name: 'Koordinator', element: KelolaDataKoordinator },
   { path: '/admin/koordinator/tambah', name: 'Tambah Koordinator', element: FormTambahKoordinator },
   { path: '/admin/koordinator/update', name: 'Edit Koordinator', element: FormUpdateKoordinator },
