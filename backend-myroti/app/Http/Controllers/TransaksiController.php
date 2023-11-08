@@ -27,7 +27,7 @@ class TransaksiController extends Controller
     public function TransaksiKurir()
     {
 
-        $datas = Transaksi::with('transaksi_roti.roti')->get();
+        $datas = Transaksi::with('transaksi_roti.roti','Lapak')->get();
 
         return response()->json($datas, 200);
     }
@@ -161,7 +161,7 @@ class TransaksiController extends Controller
         }
     
         $request->validate([
-            'bukti_pengiriman' => 'required|image|png,jpg,jpeg',
+            'bukti_pengiriman' => 'required|image',
         ], [
             'bukti_pengiriman.required' => 'File bukti pengiriman diperlukan.',
             'bukti_pengiriman.image' => 'File bukti pengiriman harus berupa gambar.',
@@ -184,6 +184,7 @@ class TransaksiController extends Controller
     }
 
     public function kurirDeliver (Request $request, $id_transaksi){
+
 
         $transaksi = Transaksi::find($id_transaksi);
     

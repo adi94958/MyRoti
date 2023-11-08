@@ -76,6 +76,30 @@ const Login = () => {
             user_type: infoLogin.user_type,
           }),
         )
+      } else if (infoLogin.user_type === 'kurir') {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          },
+        })
+        Toast.fire({
+          icon: 'success',
+          title: 'Signed in Successfully',
+        })
+        localStorage.setItem(
+          `dataLogin`,
+          JSON.stringify({
+            nama: infoLogin.nama,
+            user_type: infoLogin.user_type,
+            id: infoLogin.id_kurir,
+          }),
+        )
       } else {
         const Toast = Swal.mixin({
           toast: true,
