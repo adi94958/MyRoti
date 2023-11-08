@@ -39,7 +39,7 @@ const navKurir = [
         to: 'kurir/daftar-pengiriman',
       },
     ],
-  }
+  },
 ]
 
 export default navKurir

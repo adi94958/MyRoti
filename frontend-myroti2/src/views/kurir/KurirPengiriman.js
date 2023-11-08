@@ -164,7 +164,6 @@ const DataPengiriman = () => {
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
-                    <CTableHeaderCell>Submit</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -174,22 +173,26 @@ const DataPengiriman = () => {
                       <CTableDataCell>{lapak.nama_lapak}</CTableDataCell>
                       <CTableDataCell>
                         <CButton
+                          color="primary"
                           variant="outline"
-                          className="mx-2"
+                          className="ms-2"
+                          title="Daftar Roti"
                           onClick={() => handleRotiClick(lapak)}
                         >
-                          Lihat Roti
+                          <CIcon icon={cilSearch} className="mx-12 me-2" />
+                          Open Detail
                         </CButton>
                       </CTableDataCell>
                       <CTableDataCell>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <CFormInput
                             type="file"
-                            size="md"
+                            size="sm"
                             id="formFileSm"
                             accept="image/jpeg, image/jpg, image/png"
                             onChange={(e) => handleFoto(e, index)}
                             disabled={lapak.status === 'Ready'}
+                            style={{ width: '75%' }}
                           />
                           <CButton
                             variant="outline"
@@ -200,24 +203,23 @@ const DataPengiriman = () => {
                           >
                             Lihat
                           </CButton>
+                          <CButton
+                            variant="outline"
+                            size="sm"
+                            className="mx-1"
+                            onClick={() => handleSubmit()}
+                            disabled={lapak.status === 'Ready'}
+                          >
+                            Submit Foto
+                          </CButton>
                         </div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          variant="outline"
-                          size="sm"
-                          className="mx-2"
-                          onClick={() => handleSubmit()}
-                          disabled={lapak.status === 'Ready'}
-                        >
-                          Submit
-                        </CButton>
                       </CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color={lapak.status === 'Ready' ? 'success' : 'danger'}
                           style={{ color: 'white' }}
                           onClick={() => {}}
+                          disabled={lapak.status === 'On Going'}
                         >
                           {lapak.status}
                         </CButton>
