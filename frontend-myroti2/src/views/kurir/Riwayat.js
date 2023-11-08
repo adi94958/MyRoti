@@ -56,6 +56,10 @@ const RiwayatKurir = () => {
           { nama: 'Roti Coklat', jumlah: 5 },
           { nama: 'Roti Keju', jumlah: 15 },
         ],
+        rotiBasi: [
+          { nama: 'Roti Tawar', jumlah: 3 },
+          { nama: 'Roti Keju', jumlah: 2 },
+        ],
       },
       {
         nama_lapak: 'Lapak B',
@@ -65,6 +69,10 @@ const RiwayatKurir = () => {
         roti: [
           { nama: 'Roti Tawar', jumlah: 8 },
           { nama: 'Roti Keju', jumlah: 12 },
+        ],
+        rotiBasi: [
+          { nama: 'Roti Tawar', jumlah: 4 },
+          { nama: 'Roti Keju', jumlah: 1 },
         ],
       },
       {
@@ -76,6 +84,10 @@ const RiwayatKurir = () => {
           { nama: 'Roti Coklat', jumlah: 7 },
           { nama: 'Roti Keju', jumlah: 10 },
         ],
+        rotiBasi: [
+          { nama: 'Roti Coklat', jumlah: 2 },
+          { nama: 'Roti Keju', jumlah: 3 },
+        ],
       },
     ]
 
@@ -83,7 +95,17 @@ const RiwayatKurir = () => {
   }
 
   const handleRotiClick = (lapak, index) => {
-    setDataRoti(lapak.roti)
+    // Menggabungkan data "Roti" dan "Roti Basi" dalam satu variabel
+    const combinedRoti = lapak.roti.map((roti) => {
+      const matchingRotiBasi = lapak.rotiBasi.find((rotiBasi) => rotiBasi.nama === roti.nama)
+      return {
+        nama: roti.nama,
+        jumlah: roti.jumlah,
+        jumlahBasi: matchingRotiBasi ? matchingRotiBasi.jumlah : 0,
+      }
+    })
+
+    setDataRoti(combinedRoti)
     setCurrentItemIndex(index)
     setVisible(true)
   }
@@ -152,6 +174,7 @@ const RiwayatKurir = () => {
                 <CTableRow>
                   <CTableHeaderCell>Nama Roti</CTableHeaderCell>
                   <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+                  <CTableHeaderCell>Jumlah Roti Basi</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -159,6 +182,7 @@ const RiwayatKurir = () => {
                   <CTableRow key={index}>
                     <CTableDataCell>{roti.nama}</CTableDataCell>
                     <CTableDataCell>{roti.jumlah}</CTableDataCell>
+                    <CTableDataCell>{roti.jumlahBasi}</CTableDataCell>
                   </CTableRow>
                 ))}
               </CTableBody>
