@@ -72,3 +72,4 @@ Route::get('/kurir/transaksi', [TransaksiController::class, 'TransaksiKurir']);
 
 
 // Kurir routes here
+Route::get('/kurir/riwayat', [TransaksiController::class, 'RiwayatTransaksiKurir']);

@@ -38,6 +38,9 @@ const Lapak = React.lazy(() => import('./views/koordinator/lapak/DataLapak'))
 const FormTambahLapak = React.lazy(() => import('./views/koordinator/lapak/FormTambahLapak'))
 const FormUpdateLapak = React.lazy(() => import('./views/koordinator/lapak/FormUpdateLapak'))
 
+//kurir
+const Riwayat = React.lazy(() => import('./views/kurir/Riwayat'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/admin', name: 'Admin', exact: true, element: KelolaDataKoordinator },
@@ -65,6 +68,7 @@ const routes = [
   { path: '/lapak', name: 'Lapak', element: Lapak },
   { path: '/lapak/update', name: 'Form Update Lapak', element: FormUpdateLapak },
   { path: '/lapak/tambah', name: 'Form Tambah Lapak', element: FormTambahLapak },
+  { path: '/kurir/riwayat', name: 'Riwayat Kurir', element: Riwayat },
 ]
 
 export default routes
