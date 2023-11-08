@@ -42,7 +42,9 @@ const Riwayat = React.lazy(() => import('./views/kurir/Riwayat'))
 const PengirimanKurir = React.lazy(() => import('./views/kurir/KurirPengiriman'))
 
 // Kurir
-const DaftarPengiriman = React.lazy(() => import('./views/kurir/daftar-pengiriman/DaftarPengiriman'))
+const DaftarPengiriman = React.lazy(() =>
+  import('./views/kurir/daftar-pengiriman/DaftarPengiriman'),
+)
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
