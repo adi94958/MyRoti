@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import {
@@ -25,6 +25,13 @@ const Login = () => {
     password: '',
   })
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
+    if (infoLogin != null) {
+      navigate('/dashboard')
+    }
+  }, [])
 
   const handleUsername = (e) => {
     const inputValue = e.target.value
