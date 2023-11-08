@@ -38,6 +38,11 @@ const navKurir = [
         name: 'Penerimaan Uang Roti',
         to: 'kurir/daftar-pengiriman',
       },
+      {
+        component: CNavItem,
+        name: 'Riwayat Pengiriman',
+        to: 'kurir/riwayat',
+      },
     ],
   },
 ]
