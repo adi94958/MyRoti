@@ -68,8 +68,8 @@ const FormPengiriman = () => {
   }
 
   const handleJumlahRoti = (item, event, index) => {
-    const jumlahRoti = parseInt(event.target.value, 10);
-    const newData = [...inputDataRotiArray];
+    const jumlahRoti = parseInt(event.target.value, 10)
+    const newData = [...inputDataRotiArray]
     newData[index] = {
       ...newData[index],
       jumlah_roti: jumlahRoti >= 0 ? jumlahRoti : 0,
@@ -78,26 +78,26 @@ const FormPengiriman = () => {
       rasa_roti: item.rasa_roti,
       harga_satuan_roti: item.harga_satuan_roti,
       stok_roti: item.stok_roti,
-    };
-    setInputDataRotiArray(newData);
-  };
+    }
+    setInputDataRotiArray(newData)
+  }
 
   const tambahRoti = () => {
     const isValid = inputDataRotiArray.every(
-      (item, index) => item.jumlah_roti <= dataRoti[index].stok_roti && item.jumlah_roti > 0
-    );
+      (item, index) => item.jumlah_roti <= dataRoti[index].stok_roti && item.jumlah_roti > 0,
+    )
     if (isValid) {
-      console.log('masuk');
-      const newDataArray = [...inputDataRotiArray];
-      setDataArray(newDataArray);
-      setModalRoti(false);
-      navigate('/pengiriman/kelola/kirim');
+      console.log('masuk')
+      const newDataArray = [...inputDataRotiArray]
+      setDataArray(newDataArray)
+      setModalRoti(false)
+      navigate('/pengiriman/kelola/kirim')
     } else {
       alert(
-        'Jumlah roti harus lebih dari 0 dan tidak boleh melebihi stok yang tersedia. Silakan periksa kembali jumlah roti yang dimasukkan.'
-      );
+        'Jumlah roti harus lebih dari 0 dan tidak boleh melebihi stok yang tersedia. Silakan periksa kembali jumlah roti yang dimasukkan.',
+      )
     }
-  };
+  }
 
   const handleDeleteRoti = (data, index) => {
     Swal.fire({
@@ -331,7 +331,8 @@ const FormPengiriman = () => {
                           size="sm"
                           name="jumlah_roti"
                           value={
-                            (inputDataRotiArray[index] && inputDataRotiArray[index].jumlah_roti) ?? 0
+                            (inputDataRotiArray[index] && inputDataRotiArray[index].jumlah_roti) ??
+                            0
                           }
                           onChange={(e) => handleJumlahRoti(item, e, index)}
                           required

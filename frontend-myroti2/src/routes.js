@@ -43,7 +43,6 @@ const Riwayat = React.lazy(() => import('./views/kurir/Riwayat'))
 const PengirimanKurir = React.lazy(() => import('./views/kurir/KurirPengiriman'))
 const DaftarPengiriman = React.lazy(() => import('./views/kurir/DaftarPengiriman'))
 
-
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/admin', name: 'Admin', exact: true, element: KelolaDataKoordinator },
