@@ -67,36 +67,37 @@ const FormPengiriman = () => {
       })
   }
 
-  const handleJumlahRoti = (user, event, index) => {
-    const updatedRotiArray = [...inputDataRotiArray]
-    updatedRotiArray[index] = {
-      ...updatedRotiArray[index],
-      jumlah_roti: event.target.value,
-      kode_roti: user.kode_roti,
-      nama_roti: user.nama_roti,
-      rasa_roti: user.rasa_roti,
-      harga_satuan_roti: user.harga_satuan_roti,
-      stok_roti: user.stok_roti,
-    }
-    setInputDataRotiArray(updatedRotiArray)
-  }
+  const handleJumlahRoti = (item, event, index) => {
+    const jumlahRoti = parseInt(event.target.value, 10);
+    const newData = [...inputDataRotiArray];
+    newData[index] = {
+      ...newData[index],
+      jumlah_roti: jumlahRoti >= 0 ? jumlahRoti : 0,
+      kode_roti: item.kode_roti,
+      nama_roti: item.nama_roti,
+      rasa_roti: item.rasa_roti,
+      harga_satuan_roti: item.harga_satuan_roti,
+      stok_roti: item.stok_roti,
+    };
+    setInputDataRotiArray(newData);
+  };
 
   const tambahRoti = () => {
     const isValid = inputDataRotiArray.every(
-      (item, index) => item.jumlah_roti <= dataRoti[index].stok_roti,
-    )
+      (item, index) => item.jumlah_roti <= dataRoti[index].stok_roti && item.jumlah_roti > 0
+    );
     if (isValid) {
-      console.log('masuk')
-      const newDataArray = [...inputDataRotiArray]
-      setDataArray(newDataArray)
-      setModalRoti(false)
-      navigate('/pengiriman/kelola/kirim')
+      console.log('masuk');
+      const newDataArray = [...inputDataRotiArray];
+      setDataArray(newDataArray);
+      setModalRoti(false);
+      navigate('/pengiriman/kelola/kirim');
     } else {
       alert(
-        'Ada jumlah roti yang melebihi stok yang tersedia. Silakan periksa kembali jumlah roti yang dimasukkan.',
-      )
+        'Jumlah roti harus lebih dari 0 dan tidak boleh melebihi stok yang tersedia. Silakan periksa kembali jumlah roti yang dimasukkan.'
+      );
     }
-  }
+  };
 
   const handleDeleteRoti = (data, index) => {
     Swal.fire({
@@ -200,7 +201,7 @@ const FormPengiriman = () => {
                   <CRow>
                     <CCol md={8} xs={6}>
                       <CButton variant="outline" onClick={handleRotiModal}>
-                        <CIcon icon={cilBurger} className="mx-8" />
+                        <CIcon icon={cilBurger} className="mx-8 me-2" />
                         Pilih Roti
                       </CButton>
                     </CCol>
@@ -306,7 +307,7 @@ const FormPengiriman = () => {
                 <CTableHeaderCell>Stok Roti</CTableHeaderCell>
                 <CTableHeaderCell>Rasa Roti</CTableHeaderCell>
                 <CTableHeaderCell>Harga Satuan</CTableHeaderCell>
-                <CTableHeaderCell>Aksi</CTableHeaderCell>
+                <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -329,10 +330,8 @@ const FormPengiriman = () => {
                         <CFormInput
                           size="sm"
                           name="jumlah_roti"
-                          placeholder="Jumlah Roti"
-                          floatingLabel="Jumlah Roti"
                           value={
-                            inputDataRotiArray[index] ? inputDataRotiArray[index].jumlah_roti : ''
+                            (inputDataRotiArray[index] && inputDataRotiArray[index].jumlah_roti) ?? 0
                           }
                           onChange={(e) => handleJumlahRoti(item, e, index)}
                           required

@@ -25,33 +25,33 @@ const navKurir = [
   {
     component: CNavGroup,
     name: 'Pengiriman',
-    to: '/pengiriman',
+    to: '/kurir',
     icon: <CIcon icon={cilEnvelopeLetter} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Kelola Pengiriman',
-        to: '/pengiriman/kelola',
+        name: 'Pengiriman',
+        to: '#',
       },
       {
         component: CNavItem,
         name: 'Daftar Pengiriman',
-        to: '/pengiriman/list',
+        to: 'kurir/daftar-pengiriman',
       },
     ],
   },
-  {
-    component: CNavItem,
-    name: 'Roti',
-    to: '/roti',
-    icon: <CIcon icon={cilBurger} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Lapak',
-    to: '/lapak',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Roti',
+  //   to: '/roti',
+  //   icon: <CIcon icon={cilBurger} customClassName="nav-icon" />,
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'Lapak',
+  //   to: '/lapak',
+  //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+  // },
 ]
 
 export default navKurir
