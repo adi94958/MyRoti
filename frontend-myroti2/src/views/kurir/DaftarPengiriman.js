@@ -26,74 +26,93 @@ import { cilPen, cilSearch } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useNavigate } from 'react-router-dom'
 
-
-
-
 const DaftarPengiriman = () => {
-    const [data, setData] = useState([
-        {
-            id: 1,
-            namaLapak: "Lapak 1",
-            alamatLapak: "Jl. Lapak 1, Kota A",
-            jenisRoti: [
-                { jenis: "Roti Tawar", jumlah: 50, harga: 5000 }, // Harga per roti adalah 5000
-                { jenis: "Roti Manis", jumlah: 30, harga: 7000 }  // Harga per roti adalah 7000
-            ],
-            totalHargaRoti: '',
-            status: "Delivered"
-        },
-        {
-            id: 2,
-            namaLapak: "Lapak 2",
-            alamatLapak: "Jl. Lapak 2, Kota B",
-            jenisRoti: [
-                { jenis: "Roti Gandum", jumlah: 20, harga: 6000 },   // Harga per roti adalah 6000
-                { jenis: "Roti Keju", jumlah: 15, harga: 8000 },      // Harga per roti adalah 8000
-                { jenis: "Roti Coklat", jumlah: 25, harga: 7500 }     // Harga per roti adalah 7500
-            ],
-            totalHargaRoti: '',
-            status: "Delivered"
-        },
-        {
-            id: 3,
-            namaLapak: "Lapak 3",
-            alamatLapak: "Jl. Lapak 3, Kota C",
-            jenisRoti: [
-                { jenis: "Roti Lapis", jumlah: 28, harga: 5500 },     // Harga per roti adalah 5500
-                { jenis: "Roti Pisang", jumlah: 42, harga: 6500 }     // Harga per roti adalah 6500
-            ],
-            status: "Delivered"
-        }
-    ]);
-    const navigate = useNavigate()
-    const [modalRoti, setModalRoti] = useState(false)
-    const [modalRotiBasi, setModalRotiBasi] = useState(false)
-    const [loading, setLoading] = useState(false)
-    function handleModalRoti() {
-        console.log(modalRoti)
-        setModalRoti(true)
-    }
+  const [data, setData] = useState([
+    {
+      id: 1,
+      namaLapak: 'Lapak 1',
+      alamatLapak: 'Jl. Lapak 1, Kota A',
+      jenisRoti: [
+        { jenis: 'Roti Tawar', jumlah: 50, harga: 5000 }, // Harga per roti adalah 5000
+        { jenis: 'Roti Manis', jumlah: 30, harga: 7000 }, // Harga per roti adalah 7000
+      ],
+      totalHargaRoti: '',
+      status: 'Delivered',
+    },
+    {
+      id: 2,
+      namaLapak: 'Lapak 2',
+      alamatLapak: 'Jl. Lapak 2, Kota B',
+      jenisRoti: [
+        { jenis: 'Roti Gandum', jumlah: 20, harga: 6000 }, // Harga per roti adalah 6000
+        { jenis: 'Roti Keju', jumlah: 15, harga: 8000 }, // Harga per roti adalah 8000
+        { jenis: 'Roti Coklat', jumlah: 25, harga: 7500 }, // Harga per roti adalah 7500
+      ],
+      totalHargaRoti: '',
+      status: 'Delivered',
+    },
+    {
+      id: 3,
+      namaLapak: 'Lapak 3',
+      alamatLapak: 'Jl. Lapak 3, Kota C',
+      jenisRoti: [
+        { jenis: 'Roti Lapis', jumlah: 28, harga: 5500 }, // Harga per roti adalah 5500
+        { jenis: 'Roti Pisang', jumlah: 42, harga: 6500 }, // Harga per roti adalah 6500
+      ],
+      status: 'Delivered',
+    },
+  ])
+  const navigate = useNavigate()
+  const [modalRoti, setModalRoti] = useState(false)
+  const [modalRotiBasi, setModalRotiBasi] = useState(false)
+  const [loading, setLoading] = useState(false)
+  function handleModalRoti() {
+    console.log(modalRoti)
+    setModalRoti(true)
+  }
 
-    function handleModalRotiBasi() {
-        console.log(modalRoti)
-        setModalRotiBasi(true)
-    }
+  function handleModalRotiBasi() {
+    console.log(modalRoti)
+    setModalRotiBasi(true)
+  }
 
-    const [dataDenganTotalHarga, setDataDenganTotalHarga] = useState([]);
-    useEffect(() => {
-        const newDataDenganTotalHarga = data.map(item => {
-            const totalHargaRoti = item.jenisRoti.reduce((total, roti) => {
-                return total + roti.jumlah * roti.harga;
-            }, 0);
-            return {
-                ...item,
-                totalHargaRoti: totalHargaRoti
-            };
-        });
+  const [dataDenganTotalHarga, setDataDenganTotalHarga] = useState([])
+  useEffect(() => {
+    const newDataDenganTotalHarga = data.map((item) => {
+      const totalHargaRoti = item.jenisRoti.reduce((total, roti) => {
+        return total + roti.jumlah * roti.harga
+      }, 0)
+      return {
+        ...item,
+        totalHargaRoti: totalHargaRoti,
+      }
+    })
 
-        setDataDenganTotalHarga(newDataDenganTotalHarga);
-    }, [data]);
+    setDataDenganTotalHarga(newDataDenganTotalHarga)
+  }, [data])
 
+  return (
+    <>
+      <CCard>
+        <CCardHeader>Daftar Pengiriman</CCardHeader>
+        <CCardBody>
+          <CForm className="mb-3"></CForm>
+          <CTable striped bordered responsive>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>No.</CTableHeaderCell>
+                <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
+                <CTableHeaderCell>Alamat Lengkap</CTableHeaderCell>
+                <CTableHeaderCell>Daftar Roti</CTableHeaderCell>
+                <CTableHeaderCell>Total Harga</CTableHeaderCell>
+                <CTableHeaderCell>Roti Basi</CTableHeaderCell>
+                <CTableHeaderCell>Status</CTableHeaderCell>
+                <CTableHeaderCell>Aksi</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {dataDenganTotalHarga.map((item, index) => {
+                const isLast = index === dataDenganTotalHarga.length - 1
 
     return (
         <>
