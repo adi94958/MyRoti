@@ -160,7 +160,6 @@ const RiwayatKurir = () => {
       </CCardBody>
       {visible && (
         <CModal
-          alignment="center"
           visible={visible}
           onClose={() => setVisible(false)}
           aria-labelledby="VerticallyCenteredExample"
