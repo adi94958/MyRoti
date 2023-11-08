@@ -69,7 +69,8 @@ Route::put('/pemilik/update/{id}', [DataPemilikController::class, 'updatePemilik
 Route::delete('/pemilik/delete/{id}', [DataPemilikController::class, 'deletePemilik']);
 
 Route::get('/kurir/transaksi', [TransaksiController::class, 'TransaksiKurir']);
-
+Route::put('/kurir/transaksi/{id}', [TransaksiController::class, 'kurirDeliver']);
+Route::post('/kurir/transaksi/{id}', [TransaksiController::class, 'uploadBukti']);
 
 // Kurir routes here
 Route::get('/kurir/riwayat', [TransaksiController::class, 'RiwayatTransaksiKurir']);
