@@ -19,6 +19,7 @@ class Transaksi extends Model
         'kode_lapak',
         'id_kurir',
         'tanggal_pengiriman',
+        'bukti_pengiriman',
         'status'
     ];
 

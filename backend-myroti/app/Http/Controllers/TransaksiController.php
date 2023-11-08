@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaksi;
-use App\Models\Lapak;
 use App\Models\Roti;
+use App\Models\Lapak;
+use App\Models\Transaksi;
+use Illuminate\Http\Request;
 use App\Models\DataPenjualan;
 use App\Models\TransaksiRoti;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TransaksiController extends Controller
 {
@@ -22,14 +23,16 @@ class TransaksiController extends Controller
         return response()->json($datas, 200);
     }
 
+    
     public function TransaksiKurir()
     {
 
-        $datas = Transaksi::with('transaksi_roti')->get();
+        $datas = Transaksi::with('transaksi_roti.roti')->get();
 
         return response()->json($datas, 200);
 
     }
+
 
 
     public function lapakTransaksi()
@@ -151,6 +154,92 @@ class TransaksiController extends Controller
     //     }
     // }
 
+    public function uploadbukti(Request $request, $id_transaksi){
+        $transaksi = Transaksi::find($id_transaksi);
+    
+        if (!$transaksi) {
+            return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+        }
+    
+        $request->validate([
+            'bukti_pengiriman' => 'required|image|png,jpg,jpeg',
+        ], [
+            'bukti_pengiriman.required' => 'File bukti pengiriman diperlukan.',
+            'bukti_pengiriman.image' => 'File bukti pengiriman harus berupa gambar.',
+        ]);
+    
+        if ($request->hasFile('bukti_pengiriman')) {
+            // Hapus bukti pengiriman sebelumnya jika ada
+            if ($transaksi->bukti_pengiriman) {
+                Storage::delete($transaksi->bukti_pengiriman);
+            }
+    
+            $transaksi->bukti_pengiriman = $request->file('bukti_pengiriman')->store('bukti_pengiriman');
+            $transaksi->status = 'delivered';
+            $transaksi->save();
+    
+            return response()->json(['message' => 'Bukti pengiriman berhasil diunggah']);
+        } else {
+            return response()->json(['message' => 'Tidak ada file bukti pengiriman yang diunggah'], 400);
+        }
+    }
+
+    public function kurirDeliver (Request $request, $id_transaksi){
+
+        $transaksi = Transaksi::find($id_transaksi);
+    
+        if (!$transaksi) {
+            return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'status' => 'required',
+        ]);
+
+        $transaksi->status = $request->status;
+        $transaksi->save();
+        return response()->json(['message' => 'Status berhasil terubah']);
+
+    }
+    
+
+    public function cekbukti (Request $request){
+        return $request->file;
+    }
+
+    // public function uploadbukti(Request $request, $id_transaksi){
+
+    //     return $request->file;
+
+    //     $transaksi = Transaksi::find($id_transaksi);
+    
+    //     if (!$transaksi) {
+    //         return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+    //     }
+    
+    //     $request->validate([
+    //         'bukti_pengiriman' => 'required|image',
+    //     ], [
+    //         'bukti_pengiriman.required' => 'File bukti pengiriman diperlukan.',
+    //         'bukti_pengiriman.image' => 'File bukti pengiriman harus berupa gambar.',
+    //     ]);
+    
+    //     if ($request->hasFile('bukti_pengiriman')) {
+    //         // Baca data biner dari file gambar yang diunggah
+    //         $imageData = file_get_contents($request->file('bukti_pengiriman')->getRealPath());
+    
+    //         // Simpan data biner ke kolom 'bukti_pengiriman'
+    //         $transaksi->bukti_pengiriman = $imageData;
+    
+    //         $transaksi->status = 'delivered';
+    //         $transaksi->save();
+    
+    //         return response()->json(['message' => 'Bukti berhasil diunggah']);
+    //     } else {
+    //         return response()->json(['message' => 'Tidak ada file bukti pengiriman yang diunggah'], 400);
+    //     }
+    // }
+    
 
     public function deleteTransaksi($id_transaksi)
     {
