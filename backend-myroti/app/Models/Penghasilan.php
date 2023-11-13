@@ -5,19 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RotiBasi extends Model
+class Penghasilan extends Model
 {
     use HasFactory;
-    protected $table = 'rotibasi'; 
+
+    protected $table = 'penghasilan'; 
     public $timestamps = false;
     protected $fillable = [
         'id_penjualan', 
-        'kode_roti', 
-        'jumlah_roti',
+        'id_kurir', 
+        'penghasilan',
     ];
 
     public function penjualan()
     {
         return $this->belongsTo(DataPenjualan::class, 'id_penjualan', 'id_penjualan');
     }
+
 }
