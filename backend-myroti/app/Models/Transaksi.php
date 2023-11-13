@@ -28,10 +28,10 @@ class Transaksi extends Model
         return $this->belongsTo(Lapak::class, 'kode_lapak', 'kode_lapak');
     }
 
-    // public function dataPenjualan()
-    // {
-    //     return $this->hasMany(DataPenjualan::class, 'id_transaksi', 'id_transaksi');
-    // }
+    public function dataPenjualan()
+    {
+        return $this->hasOne(DataPenjualan::class, 'id_transaksi', 'id_transaksi');
+    }
 
     public function transaksi_roti()
     {

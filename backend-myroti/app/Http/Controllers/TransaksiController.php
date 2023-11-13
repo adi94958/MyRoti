@@ -27,10 +27,11 @@ class TransaksiController extends Controller
     public function TransaksiKurir()
     {
 
-        $datas = Transaksi::with('transaksi_roti.roti', 'Lapak')->get();
-
+        $datas = Transaksi::with(['transaksi_roti.roti', 'Lapak'])->get();
+    
         return response()->json($datas, 200);
     }
+    
 
 
 

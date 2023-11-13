@@ -12,6 +12,7 @@ use App\Http\Controllers\DataRotiController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DataKeuanganController;
 use App\Http\Controllers\DataPemilikController;
+use App\Http\Controllers\PenjualanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,8 @@ Route::delete('/pemilik/delete/{id}', [DataPemilikController::class, 'deletePemi
 Route::get('/kurir/transaksi', [TransaksiController::class, 'TransaksiKurir']);
 Route::put('/kurir/transaksi/{id}', [TransaksiController::class, 'kurirDeliver']);
 Route::post('/kurir/transaksi/{id}', [TransaksiController::class, 'uploadBukti']);
+Route::get('/kurir/transaksi/{id}', [PenjualanController::class, 'totalharga']);
+Route::post('/kurir/penjualan/{id}', [PenjualanController::class, 'createPenjualan']);
 
 // Kurir routes here
 Route::get('/kurir/riwayat', [TransaksiController::class, 'RiwayatTransaksiKurir']);

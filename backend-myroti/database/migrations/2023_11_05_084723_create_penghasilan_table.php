@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('penghasilan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_penjualan')->constrained('datapenjualan', 'id_penjualan');
+            $table->timestamp('tanggal_pengambilan')->default(now());
             $table->integer('id_kurir');  
             $table->integer('penghasilan');
         });
