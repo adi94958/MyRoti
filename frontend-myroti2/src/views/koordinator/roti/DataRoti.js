@@ -16,30 +16,9 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
-  CFormInput,
-  CInputGroup,
-  CModal,
-  CModalTitle,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CInputGroupText,
-  CFormTextarea,
-  CFormSelect,
-  CFormLabel,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilPen,
-  cilSend,
-  cilTrash,
-  cilSearch,
-  cilShortText,
-  cilCalendar,
-  cilClock,
-  cilUserPlus,
-  cilFile,
-} from '@coreui/icons'
+import { cilPen, cilTrash, cilUserPlus } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
 const KelolaDataDataRoti = () => {

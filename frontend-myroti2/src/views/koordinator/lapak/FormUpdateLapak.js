@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -15,24 +17,29 @@ import {
   CSpinner,
   CFormSelect,
 } from '@coreui/react'
-import { Link } from 'react-router-dom'
 
-import axios from 'axios'
-const FormTambahLapak = () => {
+const FormUpdateRoti = () => {
   const [selectedArea, setSelectedArea] = useState('') // Nilai opsi yang dipilih
   const [optionsArea, setOptionsArea] = useState([]) // Array untuk menyimpan opsi dari API
   const [selectedKurir, setSelectedKurir] = useState('') // Nilai opsi yang dipilih
   const [optionsKurir, setOptionsKurir] = useState([]) // Array untuk menyimpan opsi dari API
+  const [namaLapak, setNamaLapak] = useState('')
+  const [kodeLapak, setKodeLapak] = useState('')
+  const [alamat, setAlamat] = useState('')
   const [message, setMessage] = useState('')
-  const [isKurirDisabled, setIsKurirDisabled] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    nama_lapak: '',
-    alamat: '',
-  })
+  const [isKurirDisabled, setIsKurirDisabled] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    handleArea() // Memanggil fungsi handleArea saat komponen dimuat
+    const dataLapak = JSON.parse(localStorage.getItem('lsDataLapak'))
+    setNamaLapak(dataLapak.nama_lapak)
+    setAlamat(dataLapak.alamat)
+    setSelectedArea(dataLapak.area_id)
+    setSelectedKurir(dataLapak.id_kurir)
+    setKodeLapak(dataLapak.kode_lapak)
+    handleArea()
+    handleKurir(dataLapak.area_id)
   }, [])
 
   function handleArea() {
@@ -40,12 +47,12 @@ const FormTambahLapak = () => {
       .get('http://localhost:8000/api/area')
       .then((response) => {
         const data = response.data // Mengakses data dari respons API
-
         const formattedOptions = [
           '--Pilih Kecamatan--',
           ...data.map((area) => ({
             label: area.area_distribusi, // Ganti dengan properti yang sesuai dari API area
             value: area.area_id, // Ganti dengan properti yang sesuai dari API area
+            isSelected: area.area_id === selectedArea,
           })),
         ]
         // Menyimpan data opsi ke dalam state
@@ -56,18 +63,18 @@ const FormTambahLapak = () => {
       })
   }
 
-  function handleKurir(area_lapak) {
+  function handleKurir(area_id) {
     axios
       .get('http://localhost:8000/api/kurir')
       .then((response) => {
         const data = response.data // Pastikan respons dari API kurir mengandung data kurir yang benar
-        const areaLapakString = parseInt(area_lapak, 10)
+        const areaLapakString = parseInt(area_id, 10)
         const filteredKurir = data.filter((kurir) => kurir.area_id === areaLapakString)
-        console.log(area_lapak)
         console.log(filteredKurir)
         const OptionsKurir = [
           '--Pilih Kurir--',
           ...filteredKurir.map((kurir) => ({
+            isSelected: kurir.id_kurir === selectedKurir,
             label: kurir.nama, // Ganti dengan properti yang sesuai dari API area
             value: kurir.id_kurir, // Ganti dengan properti yang sesuai dari API area
           })),
@@ -90,6 +97,7 @@ const FormTambahLapak = () => {
     } else {
       // Jika nilai valid dipilih, ambil kurir berdasarkan nilai tersebut
       handleKurir(selectedValue)
+      setSelectedKurir('')
     }
   }
 
@@ -100,31 +108,32 @@ const FormTambahLapak = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
-    console.log(selectedArea)
-    console.log(selectedKurir)
-
-    const newLapak = {
-      nama_lapak: formData.nama_lapak,
-      area_id: selectedArea,
-      alamat_lapak: formData.alamat,
+    const area_id = parseInt(selectedArea, 10)
+    const updateLapak = {
+      nama_lapak: namaLapak,
       id_kurir: selectedKurir,
+      area_id: area_id,
+      alamat_lapak: alamat,
     }
+    console.log(updateLapak)
+    console.log(kodeLapak)
 
     try {
-      const response = await axios.post(
-        'http://localhost:8000/api/koordinator/lapak/registrasi',
-        newLapak,
+      const response = axios.put(
+        `http://localhost:8000/api/koordinator/lapak/update/${kodeLapak}`,
+        updateLapak,
       )
+      console.log('Roti updated successfully:', response.data)
+      localStorage.removeItem('lsDataLapak')
       Swal.fire({
         title: 'Berhasil',
-        text: `Lapak baru berhasil dibuat.`,
+        text: `Data ${updateLapak.nama_lapak} telah berhasil diubah.`,
         icon: 'success',
         confirmButtonText: 'OK',
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.href = '/lapak'
-          console.log('Roti created successfully:', response.data)
+          console.log('Roti updated successfully:', response.data)
         }
       })
     } catch (error) {
@@ -138,29 +147,37 @@ const FormTambahLapak = () => {
       setLoading(false)
     }
   }
+
+  function handleCancel() {
+    localStorage.removeItem('lsDataLapak')
+    navigate('/lapak')
+  }
+
   return (
     <>
       <CCard>
         <CForm onSubmit={handleSubmit}>
-          <CCardHeader>Form Tambah Roti</CCardHeader>
+          <CCardHeader>Form Update Lapak</CCardHeader>
           <CCardBody>
             <CRow>
               <CCol xs={12}>
                 <CInputGroup className="mb-3">
                   <CFormInput
-                    name="nama_lapak"
+                    name="namaLapak"
                     placeholder="Nama Lapak"
                     floatingLabel="Nama Lapak"
-                    value={formData.nama_lapak}
+                    defaultValue={namaLapak}
                     required
-                    onChange={(e) => setFormData({ ...formData, nama_lapak: e.target.value })}
+                    onChange={(e) => setNamaLapak(e.target.value)}
                   />
                 </CInputGroup>
               </CCol>
               <CCol xs={12}>
                 <CInputGroup className="mb-3">
+                  <CInputGroupText id="nama-area">Kecamatan</CInputGroupText>
                   <CFormSelect
                     aria-label="Default select example"
+                    aria-describedby="nama-area"
                     value={selectedArea}
                     onChange={handleSelectChangeArea}
                     options={optionsArea}
@@ -173,16 +190,18 @@ const FormTambahLapak = () => {
                     name="alamat"
                     placeholder="Alamat"
                     floatingLabel="Alamat"
-                    value={formData.alamat}
+                    defaultValue={alamat}
                     required
-                    onChange={(e) => setFormData({ ...formData, alamat: e.target.value })}
+                    onChange={(e) => setAlamat(e.target.value)}
                   />
                 </CInputGroup>
               </CCol>
               <CCol xs={12}>
                 <CInputGroup className="mb-3">
+                  <CInputGroupText id="nama-kurir">Nama Kurir</CInputGroupText>
                   <CFormSelect
                     aria-label="Default select example"
+                    id="nama-kurir"
                     value={selectedKurir}
                     onChange={handleSelectChangeKurir}
                     options={optionsKurir}
@@ -194,12 +213,17 @@ const FormTambahLapak = () => {
           </CCardBody>
           <CCardFooter>
             <CRow>
+              <CCol xs={10}></CCol>
               <CCol md={1}>
-                <Link to={'/lapak'}>
-                  <CButton color="danger" variant="outline" className="ms-2" title="Back">
-                    Back
-                  </CButton>
-                </Link>
+                <CButton
+                  color="secondary"
+                  variant="outline"
+                  className="ms-2"
+                  title="Back"
+                  onClick={handleCancel}
+                >
+                  Back
+                </CButton>
               </CCol>
               <CCol xs={1}>
                 {loading ? (
@@ -222,4 +246,5 @@ const FormTambahLapak = () => {
     </>
   )
 }
-export default FormTambahLapak
+
+export default FormUpdateRoti

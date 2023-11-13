@@ -16,30 +16,9 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
-  CFormInput,
-  CInputGroup,
-  CModal,
-  CModalTitle,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CInputGroupText,
-  CFormTextarea,
-  CFormSelect,
-  CFormLabel,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilPen,
-  cilSend,
-  cilTrash,
-  cilSearch,
-  cilShortText,
-  cilCalendar,
-  cilClock,
-  cilUserPlus,
-  cilFile,
-} from '@coreui/icons'
+import { cilPen, cilTrash, cilUserPlus } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
 const Lapak = () => {
@@ -134,7 +113,6 @@ const Lapak = () => {
               <CTable striped bordered responsive>
                 <CTableHead>
                   <CTableRow>
-                    {/* <CTableHeaderCell>Kode Lapak</CTableHeaderCell> */}
                     <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Kecamatan</CTableHeaderCell>
                     <CTableHeaderCell>Alamat</CTableHeaderCell>
@@ -152,7 +130,6 @@ const Lapak = () => {
                   ) : (
                     filteredData.map((user) => (
                       <CTableRow key={user.id}>
-                        {/* <CTableDataCell>{user.kode_lapak}</CTableDataCell> */}
                         <CTableDataCell>{user.nama_lapak}</CTableDataCell>
                         <CTableDataCell>{user.area_distribusi}</CTableDataCell>
                         <CTableDataCell>{user.alamat_lapak}</CTableDataCell>
