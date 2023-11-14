@@ -161,7 +161,7 @@ class TransaksiController extends Controller
         }
     
         $request->validate([
-            'bukti_pengiriman' => 'required|image|png,jpg,jpeg',
+            'bukti_pengiriman' => 'required|image',
         ], [
             'bukti_pengiriman.required' => 'File bukti pengiriman diperlukan.',
             'bukti_pengiriman.image' => 'File bukti pengiriman harus berupa gambar.',
@@ -173,13 +173,34 @@ class TransaksiController extends Controller
                 Storage::delete($transaksi->bukti_pengiriman);
             }
     
-            $transaksi->bukti_pengiriman = $request->file('bukti_pengiriman')->store('bukti_pengiriman');
+            $transaksi->bukti_pengiriman = basename($request->file('bukti_pengiriman')->store('bukti_pengiriman'));
             $transaksi->status = 'delivered';
             $transaksi->save();
     
             return response()->json(['message' => 'Bukti pengiriman berhasil diunggah']);
         } else {
             return response()->json(['message' => 'Tidak ada file bukti pengiriman yang diunggah'], 400);
+        }
+    }
+
+    public function getImage($path)
+    {
+        // Pastikan path sesuai dengan struktur penyimpanan Anda
+        $path = 'bukti_pengiriman/' . $path;
+
+        // Periksa apakah file ada
+        if (Storage::exists($path)) {
+            // Dapatkan konten gambar
+            $content = Storage::get($path);
+
+            // Dapatkan tipe konten
+            $mimeType = Storage::mimeType($path);
+
+            // Langsung kembalikan respons HTTP
+            return response($content)->header('Content-Type', $mimeType);
+        } else {
+            // Jika file tidak ditemukan, kembalikan respons 404 (not found)
+            return response()->json(['message' => 'File not found'], 404);
         }
     }
 
