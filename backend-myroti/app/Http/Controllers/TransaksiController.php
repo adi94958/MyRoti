@@ -174,8 +174,8 @@ class TransaksiController extends Controller
             if ($transaksi->bukti_pengiriman) {
                 Storage::delete($transaksi->bukti_pengiriman);
             }
-
-            $transaksi->bukti_pengiriman = $request->file('bukti_pengiriman')->store('bukti_pengiriman');
+    
+            $transaksi->bukti_pengiriman = basename($request->file('bukti_pengiriman')->store('bukti_pengiriman'));
             $transaksi->status = 'delivered';
             $transaksi->save();
 
@@ -185,9 +185,28 @@ class TransaksiController extends Controller
         }
     }
 
-    public function kurirDeliver(Request $request, $id_transaksi)
+    public function getImage($path)
     {
+        // Pastikan path sesuai dengan struktur penyimpanan Anda
+        $path = 'bukti_pengiriman/' . $path;
 
+        // Periksa apakah file ada
+        if (Storage::exists($path)) {
+            // Dapatkan konten gambar
+            $content = Storage::get($path);
+
+            // Dapatkan tipe konten
+            $mimeType = Storage::mimeType($path);
+
+            // Langsung kembalikan respons HTTP
+            return response($content)->header('Content-Type', $mimeType);
+        } else {
+            // Jika file tidak ditemukan, kembalikan respons 404 (not found)
+            return response()->json(['message' => 'File not found'], 404);
+        }
+    }
+
+    public function kurirDeliver (Request $request, $id_transaksi){
 
         $transaksi = Transaksi::find($id_transaksi);
 
