@@ -77,3 +77,4 @@ Route::get('/kurir/transaksi/{id}', [PenjualanController::class, 'totalharga']);
 Route::post('/kurir/penjualan/{id}', [PenjualanController::class, 'createPenjualan']);
 
 // Kurir routes here
+Route::get('/kurir/riwayat', [TransaksiController::class, 'RiwayatTransaksiKurir']);

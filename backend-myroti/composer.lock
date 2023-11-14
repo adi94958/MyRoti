@@ -3625,6 +3625,7 @@
         },
         {
             "name": "symfony/http-foundation",
+<<<<<<< HEAD
             "version": "v6.3.8",
             "source": {
                 "type": "git",
@@ -3635,6 +3636,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/http-foundation/zipball/ce332676de1912c4389222987193c3ef38033df6",
                 "reference": "ce332676de1912c4389222987193c3ef38033df6",
+=======
+            "version": "v6.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-foundation.git",
+                "reference": "59d1837d5d992d16c2628cd0d6b76acf8d69b33e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/59d1837d5d992d16c2628cd0d6b76acf8d69b33e",
+                "reference": "59d1837d5d992d16c2628cd0d6b76acf8d69b33e",
+>>>>>>> b4b7fa6cb8cc87fae22ba1dc07438c4dd56865d0
                 "shasum": ""
             },
             "require": {
@@ -3682,7 +3695,11 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/http-foundation/tree/v6.3.8"
+=======
+                "source": "https://github.com/symfony/http-foundation/tree/v6.3.7"
+>>>>>>> b4b7fa6cb8cc87fae22ba1dc07438c4dd56865d0
             },
             "funding": [
                 {
@@ -3698,6 +3715,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-11-07T10:17:15+00:00"
         },
         {
@@ -3712,6 +3730,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/http-kernel/zipball/929202375ccf44a309c34aeca8305408442ebcc1",
                 "reference": "929202375ccf44a309c34aeca8305408442ebcc1",
+=======
+            "time": "2023-10-28T23:55:27+00:00"
+        },
+        {
+            "name": "symfony/http-kernel",
+            "version": "v6.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-kernel.git",
+                "reference": "6d4098095f93279d9536a0e9124439560cc764d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/6d4098095f93279d9536a0e9124439560cc764d0",
+                "reference": "6d4098095f93279d9536a0e9124439560cc764d0",
+>>>>>>> b4b7fa6cb8cc87fae22ba1dc07438c4dd56865d0
                 "shasum": ""
             },
             "require": {
@@ -3795,7 +3829,11 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/http-kernel/tree/v6.3.8"
+=======
+                "source": "https://github.com/symfony/http-kernel/tree/v6.3.7"
+>>>>>>> b4b7fa6cb8cc87fae22ba1dc07438c4dd56865d0
             },
             "funding": [
                 {
@@ -3811,7 +3849,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-11-10T13:47:32+00:00"
+=======
+            "time": "2023-10-29T14:31:45+00:00"
+>>>>>>> b4b7fa6cb8cc87fae22ba1dc07438c4dd56865d0
         },
         {
             "name": "symfony/mailer",
@@ -7947,6 +7989,7 @@
         },
         {
             "name": "symfony/yaml",
+<<<<<<< HEAD
             "version": "v6.3.8",
             "source": {
                 "type": "git",
@@ -7957,6 +8000,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/yaml/zipball/3493af8a8dad7fa91c77fa473ba23ecd95334a92",
                 "reference": "3493af8a8dad7fa91c77fa473ba23ecd95334a92",
+=======
+            "version": "v6.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "9758b6c69d179936435d0ffb577c3708d57e38a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/9758b6c69d179936435d0ffb577c3708d57e38a8",
+                "reference": "9758b6c69d179936435d0ffb577c3708d57e38a8",
+>>>>>>> b4b7fa6cb8cc87fae22ba1dc07438c4dd56865d0
                 "shasum": ""
             },
             "require": {
@@ -7999,7 +8054,11 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/yaml/tree/v6.3.8"
+=======
+                "source": "https://github.com/symfony/yaml/tree/v6.3.7"
+>>>>>>> b4b7fa6cb8cc87fae22ba1dc07438c4dd56865d0
             },
             "funding": [
                 {
@@ -8015,7 +8074,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-11-06T10:58:05+00:00"
+=======
+            "time": "2023-10-28T23:31:00+00:00"
+>>>>>>> b4b7fa6cb8cc87fae22ba1dc07438c4dd56865d0
         },
         {
             "name": "theseer/tokenizer",

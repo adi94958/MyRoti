@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import {
@@ -25,6 +25,13 @@ const Login = () => {
     password: '',
   })
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
+    if (infoLogin != null) {
+      navigate('/dashboard')
+    }
+  }, [])
 
   const handleUsername = (e) => {
     const inputValue = e.target.value
@@ -67,6 +74,30 @@ const Login = () => {
           JSON.stringify({
             nama: infoLogin.username,
             user_type: infoLogin.user_type,
+          }),
+        )
+      } else if (infoLogin.user_type === 'kurir') {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          },
+        })
+        Toast.fire({
+          icon: 'success',
+          title: 'Signed in Successfully',
+        })
+        localStorage.setItem(
+          `dataLogin`,
+          JSON.stringify({
+            nama: infoLogin.nama,
+            user_type: infoLogin.user_type,
+            id: infoLogin.id_kurir,
           }),
         )
       } else {
