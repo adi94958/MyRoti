@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('kode_lapak')->constrained('lapak', 'kode_lapak');
             $table->integer('id_kurir');    
             $table->string('bukti_pengiriman')->nullable();
-            $table->timestamp('tanggal_pengiriman')->default(now());
+            $table->date('tanggal_pengiriman')->default(now());
             $table->enum('status', ['ready', 'on delivery', 'delivered', 'finished']);  
         });
     }

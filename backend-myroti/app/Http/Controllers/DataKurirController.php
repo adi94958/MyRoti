@@ -31,6 +31,17 @@ class DataKurirController extends Controller
         return response()->json($datas, 200);
     }
 
+    public function getPenghasilan($id_kurir){
+
+        $kurir = Kurir::with(['penghasilan'])->find($id_kurir);
+
+        if (!$kurir) {
+            return response()->json(['message' => 'Kurir not found'], 404);
+        }
+    
+        return response()->json($kurir, 200);
+    }
+
     public function registerKurir(Request $request)
     {
         // Validasi input

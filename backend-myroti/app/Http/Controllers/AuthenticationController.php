@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Keuangan;
 use App\Models\Kurir;
 use App\Models\Koordinator;
+use App\Models\Pemilik;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +51,26 @@ class AuthenticationController extends Controller
                     'message' => 'Password salah'
                 ], Response::HTTP_UNAUTHORIZED);
             }
+        } elseif ($keuangan = Keuangan::where('username', $request->username)->first()){
+            $decryptedPassword = Crypt::decryptString($keuangan->password);
+            if ($request->password == $decryptedPassword) {
+                $user = $keuangan;
+            } else {
+                return response()->json([
+                    'message' => 'Password salah'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
+        } elseif ($pemilik = Pemilik::where('username', $request->username)->first()) {
+            $decryptedPassword = Crypt::decryptString($pemilik->password);
+            if ($request->password == $decryptedPassword) {
+                $user = $pemilik;
+            } else {
+                return response()->json([
+                    'message' => 'Password salah'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
         } else {
             return response()->json([
                 'message' => 'Akun tidak ditemukan'
