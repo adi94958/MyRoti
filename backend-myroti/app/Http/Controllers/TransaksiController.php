@@ -312,18 +312,4 @@ class TransaksiController extends Controller
 
         return response()->json(['message' => 'Transaksi dan data penjualan terkait berhasil dihapus']);
     }
-
-    public function RiwayatTransaksiKurir()
-    {
-        // $idKurir = session('id_kurir');
-
-        $riwayatKurir = Transaksi::where('status', 'finished')
-            // ->where('transaksi.id_kurir', $idKurir) 
-            ->join('lapak', 'transaksi.kode_lapak', '=', 'lapak.kode_lapak')
-            ->leftjoin('datapenjualan', 'transaksi.id_transaksi', '=', 'datapenjualan.id_transaksi')
-            ->select('lapak.nama_lapak', 'lapak.alamat_lapak', 'datapenjualan.catatan_penjual', 'transaksi.status')
-            ->get();
-
-        return response()->json($riwayatKurir);
-    }
 }

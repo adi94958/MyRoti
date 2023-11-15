@@ -20,4 +20,10 @@ class RotiBasi extends Model
     {
         return $this->belongsTo(DataPenjualan::class, 'id_penjualan', 'id_penjualan');
     }
+    // Di dalam model RotiBasi
+    public function roti()
+    {
+        return $this->belongsTo(Roti::class, 'kode_roti', 'kode_roti');
+    }
+
 }
