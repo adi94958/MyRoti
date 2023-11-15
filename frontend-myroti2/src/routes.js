@@ -27,6 +27,12 @@ const FormUpdateKurir = React.lazy(() => import('./views/admin/kurir/FormUpdateK
 // Pengiriman
 const Pengiriman = React.lazy(() => import('./views/koordinator/pengiriman/Pengiriman'))
 const FormPengiriman = React.lazy(() => import('./views/koordinator/pengiriman/FormPengiriman'))
+const DaftarPengirimanKoor = React.lazy(() =>
+  import('./views/koordinator/pengiriman/DaftarPengiriman'),
+)
+const RiwayatPengiriman = React.lazy(() =>
+  import('./views/koordinator/pengiriman/RiwayatPengiriman'),
+)
 
 // Roti
 const Roti = React.lazy(() => import('./views/koordinator/roti/DataRoti'))
@@ -65,7 +71,8 @@ const routes = [
   { path: '/pengiriman', name: 'Pengiriman', element: Pengiriman },
   { path: '/pengiriman/kelola', name: 'Kelola Pengiriman', element: Pengiriman },
   { path: '/pengiriman/kelola/kirim', name: 'Form Pengiriman', element: FormPengiriman },
-  { path: '/pengiriman/list', name: 'Daftar Pengiriman', element: Pengiriman },
+  { path: '/pengiriman/list', name: 'Daftar Pengiriman', element: DaftarPengirimanKoor },
+  { path: '/pengiriman/riwayat', name: 'Riwayat Pengiriman', element: RiwayatPengiriman },
   { path: '/roti', name: 'Roti', element: Roti },
   { path: '/roti/update', name: 'Form Update Roti', element: FormUpdateRoti },
   { path: '/roti/tambah', name: 'Form Tambah Roti', element: FormTambahRoti },
