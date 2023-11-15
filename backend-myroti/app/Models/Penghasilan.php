@@ -11,15 +11,16 @@ class Penghasilan extends Model
 
     protected $table = 'penghasilan'; 
     public $timestamps = false;
-    protected $fillable = [
-        'id_penjualan', 
+    protected $primaryKey = 'id_penghasilan';
+    protected $fillable = [ 
         'id_kurir', 
         'penghasilan',
+        'tanggal_pengiriman',
     ];
 
-    public function penjualan()
+    public function Kurir()
     {
-        return $this->belongsTo(DataPenjualan::class, 'id_penjualan', 'id_penjualan');
+        return $this->belongsTo(Kurir::class, 'id_kurir', 'id_kurir');
     }
 
 }

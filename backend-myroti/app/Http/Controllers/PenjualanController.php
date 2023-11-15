@@ -68,6 +68,8 @@ class PenjualanController extends Controller
     }
 
 
+
+
     public function createPenjualan(Request $request, $id_transaksi)
     {
         // $transaksi = Transaksi::where('id_transaksi', $id_transaksi)->first();
