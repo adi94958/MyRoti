@@ -22,6 +22,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak A',
             'created_at' => Carbon::now()->subDays(1)->toDateTimeString(),
             'id_kurir' => 1,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak B',
@@ -29,6 +30,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak B',
             'created_at' => Carbon::now()->subDays(2)->toDateTimeString(),
             'id_kurir' => 3,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak C',
@@ -36,6 +38,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak C',
             'created_at' => Carbon::now()->subDays(3)->toDateTimeString(),
             'id_kurir' => 5,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak D',
@@ -43,6 +46,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak D',
             'created_at' => Carbon::now()->subDays(4)->toDateTimeString(),
             'id_kurir' => 7,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak E',
@@ -50,6 +54,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak E',
             'created_at' => Carbon::now()->subDays(5)->toDateTimeString(),
             'id_kurir' => 9,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak F',
@@ -57,6 +62,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak F',
             'created_at' => Carbon::now()->subDays(6)->toDateTimeString(),
             'id_kurir' => 11,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak G',
@@ -64,6 +70,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak G',
             'created_at' => Carbon::now()->subDays(7)->toDateTimeString(),
             'id_kurir' => 12,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak H',
@@ -71,6 +78,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak H',
             'created_at' => Carbon::now()->subDays(8)->toDateTimeString(),
             'id_kurir' => 13,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak I',
@@ -78,6 +86,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak I',
             'created_at' => Carbon::now()->subDays(9)->toDateTimeString(),
             'id_kurir' => 14,
+            'status' => 'enable',
         ],
         [
             'nama_lapak' => 'Lapak J',
@@ -85,6 +94,7 @@ class LapakSeeder extends Seeder
             'alamat_lapak' => 'Alamat Lapak J',
             'created_at' => Carbon::now()->subDays(10)->toDateTimeString(),
             'id_kurir' => 15,
+            'status' => 'enable',
         ]
         ]);
     }

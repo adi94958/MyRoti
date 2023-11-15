@@ -27,7 +27,7 @@ class TransaksiController extends Controller
     public function TransaksiKurir()
     {
 
-        $datas = Transaksi::with(['transaksi_roti.roti', 'Lapak'])->get();
+        $datas = Transaksi::with(['transaksi_roti.roti', 'Lapak.Kurir'])->get();
     
         return response()->json($datas, 200);
     }
@@ -37,13 +37,12 @@ class TransaksiController extends Controller
 
     public function lapakTransaksi()
     {
-        $lapakDalamTransaksi = Transaksi::distinct()->pluck('kode_lapak')->toArray();
+        // $lapakDalamTransaksi = Transaksi::distinct()->pluck('kode_lapak')->toArray();
 
-        $datas = Lapak::select('kode_lapak', 'nama_lapak')
+        $datas = Lapak::where('status', 'enable')
             ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
             ->join('kurirs', 'lapak.id_kurir', '=', 'kurirs.id_kurir')
             ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'areadistribusi.area_distribusi', 'kurirs.nama')
-            ->whereNotIn('kode_lapak', $lapakDalamTransaksi) // Tambahkan ini untuk mengabaikan lapak dalam transaksi
             ->get();
 
         return response()->json($datas, 200);
@@ -178,6 +177,11 @@ class TransaksiController extends Controller
             $transaksi->bukti_pengiriman = basename($request->file('bukti_pengiriman')->store('bukti_pengiriman'));
             $transaksi->status = 'delivered';
             $transaksi->save();
+
+            $lapak = Lapak::find($transaksi->kode_lapak);
+            
+            $lapak->status = 'disable';
+            $lapak->save();
 
             return response()->json(['message' => 'Bukti pengiriman berhasil diunggah']);
         } else {
