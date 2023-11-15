@@ -33,69 +33,17 @@ const RiwayatKurir = () => {
   }, [])
 
   const fetchRiwayatKurir = () => {
-    // Digunakan untuk mendapatkan data riwayat kurir dari API
-    // Anda dapat menggantinya dengan data dummy Anda
-    // axios
-    //   .get('http://127.0.0.1:8000/api/kurir/riwayat')
-    //   .then((response) => {
-    //     setRiwayatKurir(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error:', error);
-    //   });
-
-    // Dummy data riwayat kurir
-    const dummyRiwayatKurir = [
-      {
-        nama_lapak: 'Lapak A',
-        alamat_lapak: 'Alamat Lapak A',
-        catatan_penjual: 'Catatan Penjual A',
-        status: 'Finished',
-        roti: [
-          { nama: 'Roti Tawar', jumlah: 10 },
-          { nama: 'Roti Coklat', jumlah: 5 },
-          { nama: 'Roti Keju', jumlah: 15 },
-        ],
-        rotiBasi: [
-          { nama: 'Roti Tawar', jumlah: 3 },
-          { nama: 'Roti Keju', jumlah: 2 },
-        ],
-      },
-      {
-        nama_lapak: 'Lapak B',
-        alamat_lapak: 'Alamat Lapak B',
-        catatan_penjual: 'Catatan Penjual B',
-        status: 'Finished',
-        roti: [
-          { nama: 'Roti Tawar', jumlah: 8 },
-          { nama: 'Roti Keju', jumlah: 12 },
-        ],
-        rotiBasi: [
-          { nama: 'Roti Tawar', jumlah: 4 },
-          { nama: 'Roti Keju', jumlah: 1 },
-        ],
-      },
-      {
-        nama_lapak: 'Lapak C',
-        alamat_lapak: 'Alamat Lapak C',
-        catatan_penjual: 'Catatan Penjual C',
-        status: 'Finished',
-        roti: [
-          { nama: 'Roti Coklat', jumlah: 7 },
-          { nama: 'Roti Keju', jumlah: 10 },
-        ],
-        rotiBasi: [
-          { nama: 'Roti Coklat', jumlah: 2 },
-          { nama: 'Roti Keju', jumlah: 3 },
-        ],
-      },
-    ]
-
-    setRiwayatKurir(dummyRiwayatKurir)
+    axios
+      .get('http://127.0.0.1:8000/api/kurir/riwayat')
+      .then((response) => {
+        setRiwayatKurir(response.data)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
   }
 
   const handleRotiClick = (lapak, index) => {
-    // Menggabungkan data "Roti" dan "Roti Basi" dalam satu variabel
     const combinedRoti = lapak.roti.map((roti) => {
       const matchingRotiBasi = lapak.rotiBasi.find((rotiBasi) => rotiBasi.nama === roti.nama)
       return {
@@ -136,7 +84,7 @@ const RiwayatKurir = () => {
                     color="primary"
                     variant="outline"
                     className="ms-2"
-                    title="Daftar Roti"
+                    title="Detail Roti"
                     onClick={() => handleRotiClick(item, index)}
                   >
                     <CIcon icon={cilSearch} className="mx-12 me-2" />
@@ -168,24 +116,28 @@ const RiwayatKurir = () => {
             <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
           </CModalHeader>
           <CModalBody>
-            <CTable striped bordered responsive>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell>Nama Roti</CTableHeaderCell>
-                  <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
-                  <CTableHeaderCell>Jumlah Roti Basi</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {dataRoti.map((roti, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{roti.nama}</CTableDataCell>
-                    <CTableDataCell>{roti.jumlah}</CTableDataCell>
-                    <CTableDataCell>{roti.jumlahBasi}</CTableDataCell>
+            {dataRoti.length === 0 ? (
+              <p>No data available.</p>
+            ) : (
+              <CTable striped bordered responsive>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>Nama Roti</CTableHeaderCell>
+                    <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+                    <CTableHeaderCell>Jumlah Roti Basi</CTableHeaderCell>
                   </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
+                </CTableHead>
+                <CTableBody>
+                  {dataRoti.map((roti, index) => (
+                    <CTableRow key={index}>
+                      <CTableDataCell>{roti.nama}</CTableDataCell>
+                      <CTableDataCell>{roti.jumlah}</CTableDataCell>
+                      <CTableDataCell>{roti.jumlahBasi}</CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            )}
           </CModalBody>
           <CModalFooter>
             <CButton color="secondary" onClick={() => setVisible(false)}>
