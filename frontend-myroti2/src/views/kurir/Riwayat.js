@@ -89,23 +89,6 @@ const DataPengiriman = () => {
           <CCard>
             <CCardHeader>Data Pengiriman Kurir</CCardHeader>
             <CCardBody>
-              <CForm className="mb-3">
-                <CRow>
-                  <CCol md={8} xs={6}>
-                    <CInputGroup>
-                      <CFormInput
-                        type="text"
-                        placeholder="Search..."
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                      />
-                      <CButton variant="outline" className="ms-2">
-                        <CIcon icon={cilSearch} />
-                      </CButton>
-                    </CInputGroup>
-                  </CCol>
-                </CRow>
-              </CForm>
               <CTable striped bordered responsive>
                 <CTableHead>
                   <CTableRow>
