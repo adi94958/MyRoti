@@ -37,12 +37,12 @@ class RotiBasiSeeder extends Seeder
             [
                 'id_penjualan' => 5,
                 'kode_roti' => 5,
-                'jumlah_roti' => 1,
+                'jumlah_roti' => 2,
             ],
             [
                 'id_penjualan' => 6,
                 'kode_roti' => 6,
-                'jumlah_roti' => 3,
+                'jumlah_roti' => 2,
             ],
             [
                 'id_penjualan' => 7,

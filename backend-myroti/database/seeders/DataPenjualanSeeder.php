@@ -16,22 +16,6 @@ class DataPenjualanSeeder extends Seeder
     {
         DB::table('datapenjualan')->insert([
             [
-                'id_transaksi' => '3',
-                'tanggal_pengambilan' => now(),
-                'total_harga' => '25000',
-                'total_dengan_rotibasi' => '30000',
-                'uang_setoran' => '20000',
-                'catatan_penjual' => 'banyakin roti nanas',
-            ],
-            [
-                'id_transaksi' => '5',
-                'tanggal_pengambilan' => Carbon::now()->subDays(2),
-                'total_harga' => '20000',
-                'total_dengan_rotibasi' => '20000',
-                'uang_setoran' => '20000',
-                'catatan_penjual' => 'pesanan lengkap',
-            ],
-            [
                 'id_transaksi' => '1',
                 'tanggal_pengambilan' => now(),
                 'total_harga' => '20000',
@@ -44,23 +28,39 @@ class DataPenjualanSeeder extends Seeder
                 'tanggal_pengambilan' => Carbon::now()->subDays(3),
                 'total_harga' => '18000',
                 'total_dengan_rotibasi' => '20000',
-                'uang_setoran' => '15000',
+                'uang_setoran' => '18000',
                 'catatan_penjual' => 'roti kurang',
+            ],
+            [
+                'id_transaksi' => '3',
+                'tanggal_pengambilan' => now(),
+                'total_harga' => '25000',
+                'total_dengan_rotibasi' => '30000',
+                'uang_setoran' => '20000',
+                'catatan_penjual' => 'banyakin roti nanas',
             ],
             [
                 'id_transaksi' => '4',
                 'tanggal_pengambilan' => Carbon::now()->subDays(5),
                 'total_harga' => '22000',
                 'total_dengan_rotibasi' => '25000',
-                'uang_setoran' => '20000',
+                'uang_setoran' => '22000',
                 'catatan_penjual' => 'roti terlalu banyak',
+            ],
+            [
+                'id_transaksi' => '5',
+                'tanggal_pengambilan' => Carbon::now()->subDays(2),
+                'total_harga' => '200000',
+                'total_dengan_rotibasi' => '200000',
+                'uang_setoran' => '200000',
+                'catatan_penjual' => 'pesanan lengkap',
             ],
             [
                 'id_transaksi' => '6',
                 'tanggal_pengambilan' => now(),
                 'total_harga' => '30000',
                 'total_dengan_rotibasi' => '35000',
-                'uang_setoran' => '25000',
+                'uang_setoran' => '30000',
                 'catatan_penjual' => 'banyakin roti coklat',
             ],
             [
@@ -68,7 +68,7 @@ class DataPenjualanSeeder extends Seeder
                 'tanggal_pengambilan' => Carbon::now()->subDays(7),
                 'total_harga' => '18000',
                 'total_dengan_rotibasi' => '20000',
-                'uang_setoran' => '15000',
+                'uang_setoran' => '18000',
                 'catatan_penjual' => 'roti kurang',
             ],
             [
@@ -76,7 +76,7 @@ class DataPenjualanSeeder extends Seeder
                 'tanggal_pengambilan' => now(),
                 'total_harga' => '22000',
                 'total_dengan_rotibasi' => '25000',
-                'uang_setoran' => '20000',
+                'uang_setoran' => '22000',
                 'catatan_penjual' => 'roti terlalu banyak',
             ],
             [
@@ -84,7 +84,7 @@ class DataPenjualanSeeder extends Seeder
                 'tanggal_pengambilan' => Carbon::now()->subDays(3),
                 'total_harga' => '30000',
                 'total_dengan_rotibasi' => '35000',
-                'uang_setoran' => '25000',
+                'uang_setoran' => '30000',
                 'catatan_penjual' => 'banyakin roti coklat',
             ],
             [
@@ -92,7 +92,7 @@ class DataPenjualanSeeder extends Seeder
                 'tanggal_pengambilan' => now(),
                 'total_harga' => '18000',
                 'total_dengan_rotibasi' => '20000',
-                'uang_setoran' => '15000',
+                'uang_setoran' => '18000',
                 'catatan_penjual' => 'roti kurang',
             ],
             [
@@ -100,7 +100,7 @@ class DataPenjualanSeeder extends Seeder
                 'tanggal_pengambilan' => Carbon::now()->subDays(5),
                 'total_harga' => '22000',
                 'total_dengan_rotibasi' => '25000',
-                'uang_setoran' => '20000',
+                'uang_setoran' => '22000',
                 'catatan_penjual' => 'roti terlalu banyak',
             ],
             [
@@ -108,7 +108,7 @@ class DataPenjualanSeeder extends Seeder
                 'tanggal_pengambilan' => now(),
                 'total_harga' => '30000',
                 'total_dengan_rotibasi' => '35000',
-                'uang_setoran' => '25000',
+                'uang_setoran' => '30000',
                 'catatan_penjual' => 'banyakin roti coklat',
             ],
             [
@@ -116,7 +116,7 @@ class DataPenjualanSeeder extends Seeder
                 'tanggal_pengambilan' => Carbon::now()->subDays(2),
                 'total_harga' => '25000',
                 'total_dengan_rotibasi' => '30000',
-                'uang_setoran' => '20000',
+                'uang_setoran' => '25000',
                 'catatan_penjual' => 'banyakin roti nanas',
             ],
             [
