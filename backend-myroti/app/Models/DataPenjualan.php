@@ -32,9 +32,5 @@ class DataPenjualan extends Model
         return $this->hasMany(RotiBasi::class, 'id_penjualan', 'id_penjualan');
     }
 
-    public function penghasilan()
-    {
-        return $this->hasOne(RotiBasi::class, 'id_penjualan', 'id_penjualan');
-    }
 
 }

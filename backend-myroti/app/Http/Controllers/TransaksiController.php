@@ -7,6 +7,7 @@ use App\Models\Lapak;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Models\DataPenjualan;
+use App\Models\Penghasilan;
 use App\Models\TransaksiRoti;
 use Illuminate\Support\Facades\Storage;
 
@@ -96,6 +97,11 @@ class TransaksiController extends Controller
                 $this->createRotiTransaki($kode_roti, $jumlah_roti, $id_transaksi);
             }
 
+            $lapak = Lapak::find($transaksi->kode_lapak);
+            
+            $lapak->status = 'disable';
+            $lapak->save();
+
             return response()->json(['message' => 'Transaksi berhasil dibuat']);
         } else {
             return response()->json(['message' => 'Lapak tidak ditemukan']);
@@ -153,6 +159,44 @@ class TransaksiController extends Controller
     //     }
     // }
 
+    public function cekTransaksi($tanggal_pengiriman, $id_kurir){
+        
+        $transaksis = Transaksi::where('tanggal_pengiriman',  $tanggal_pengiriman)->where('id_kurir',  $id_kurir)->get();
+
+        foreach($transaksis as $transaksi){
+            if ($transaksi->status != 'delivered'){
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public function createPenghasilan($tanggal_pengiriman, $id_kurir){
+        $transaksis = Transaksi::where('tanggal_pengiriman',  $tanggal_pengiriman)->where('id_kurir',  $id_kurir)->get();
+
+        $total = 0;
+
+        foreach($transaksis as $transaksi){
+
+            $transaksiroti = TransaksiRoti::where('id_transaksi',  $transaksi->id_transaksi)->get();
+
+            foreach($transaksiroti as $roti){
+                $total += $roti->jumlah_roti;
+            }
+        }
+
+        $penghasilan = $total/300 * 50000;
+
+        Penghasilan::create([
+            'id_kurir' => $transaksi->id_kurir,
+            'tanggal_pengiriman' => $tanggal_pengiriman,
+            'penghasilan' => $penghasilan
+        ]);
+
+    }
+
     public function uploadbukti(Request $request, $id_transaksi)
     {
         $transaksi = Transaksi::find($id_transaksi);
@@ -180,8 +224,12 @@ class TransaksiController extends Controller
 
             $lapak = Lapak::find($transaksi->kode_lapak);
             
-            $lapak->status = 'disable';
+            $lapak->status = 'enable';
             $lapak->save();
+
+            if($this->cekTransaksi($transaksi->tanggal_pengiriman, $transaksi->id_kurir)){
+                $this->createPenghasilan($transaksi->tanggal_pengiriman, $transaksi->id_kurir);
+            }
 
             return response()->json(['message' => 'Bukti pengiriman berhasil diunggah']);
         } else {
@@ -233,38 +281,6 @@ class TransaksiController extends Controller
         return $request->file;
     }
 
-    // public function uploadbukti(Request $request, $id_transaksi){
-
-    //     return $request->file;
-
-    //     $transaksi = Transaksi::find($id_transaksi);
-
-    //     if (!$transaksi) {
-    //         return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
-    //     }
-
-    //     $request->validate([
-    //         'bukti_pengiriman' => 'required|image',
-    //     ], [
-    //         'bukti_pengiriman.required' => 'File bukti pengiriman diperlukan.',
-    //         'bukti_pengiriman.image' => 'File bukti pengiriman harus berupa gambar.',
-    //     ]);
-
-    //     if ($request->hasFile('bukti_pengiriman')) {
-    //         // Baca data biner dari file gambar yang diunggah
-    //         $imageData = file_get_contents($request->file('bukti_pengiriman')->getRealPath());
-
-    //         // Simpan data biner ke kolom 'bukti_pengiriman'
-    //         $transaksi->bukti_pengiriman = $imageData;
-
-    //         $transaksi->status = 'delivered';
-    //         $transaksi->save();
-
-    //         return response()->json(['message' => 'Bukti berhasil diunggah']);
-    //     } else {
-    //         return response()->json(['message' => 'Tidak ada file bukti pengiriman yang diunggah'], 400);
-    //     }
-    // }
 
 
     public function deleteTransaksi($id_transaksi)
@@ -295,19 +311,5 @@ class TransaksiController extends Controller
         $transaksi->delete();
 
         return response()->json(['message' => 'Transaksi dan data penjualan terkait berhasil dihapus']);
-    }
-
-    public function RiwayatTransaksiKurir()
-    {
-        // $idKurir = session('id_kurir');
-
-        $riwayatKurir = Transaksi::where('status', 'finished')
-            // ->where('transaksi.id_kurir', $idKurir) 
-            ->join('lapak', 'transaksi.kode_lapak', '=', 'lapak.kode_lapak')
-            ->leftjoin('datapenjualan', 'transaksi.id_transaksi', '=', 'datapenjualan.id_transaksi')
-            ->select('lapak.nama_lapak', 'lapak.alamat_lapak', 'datapenjualan.catatan_penjual', 'transaksi.status')
-            ->get();
-
-        return response()->json($riwayatKurir);
     }
 }
