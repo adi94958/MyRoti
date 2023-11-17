@@ -38,6 +38,11 @@ const navKoordinator = [
         name: 'Daftar Pengiriman',
         to: '/pengiriman/list',
       },
+      {
+        component: CNavItem,
+        name: 'Riwayat Pengiriman',
+        to: '/pengiriman/riwayat',
+      },
     ],
   },
   {

@@ -25,22 +25,18 @@ import {
   CInputGroup,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilSearch, cilUserPlus } from '@coreui/icons'
+import { cilSearch, cilUserPlus, cilTrash } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
-const DataPengiriman = () => {
+const DaftarPengiriman = () => {
   const [searchText, setSearchText] = useState('')
   const [dataRoti, setDataRoti] = useState([])
   const [visible, setVisible] = useState(false)
   const [open, setOpen] = useState(false)
-  const [foto, setFoto] = useState(null)
-  const [dataFoto, setDataFoto] = useState([])
-  const [kurir_id, setKurirId] = useState('')
+  const [foto, setFoto] = useState('')
   const [dataTransaksi, setDataTransaksi] = useState([])
 
   useEffect(() => {
-    const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
-    setKurirId(infoLogin.id)
     handleData()
   }, [])
 
@@ -55,12 +51,30 @@ const DataPengiriman = () => {
         console.error('Error fetching data:', error)
       })
   }
+
+  const formatDate = (date) => {
+    const newDate = new Date(date)
+    const formattedDate = `${newDate.getDate().toString().padStart(2, '0')}-${(
+      newDate.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, '0')}-${newDate.getFullYear()}`
+    return formattedDate
+  }
+
   const filteredData = dataTransaksi.filter((lapak) => {
-    const lapakName = lapak?.nama_lapak?.toString()?.toLowerCase() || ''
+    const lapakName = lapak?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
+    const kurirName = lapak?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
+    const status = lapak?.status?.toLowerCase() || ''
+    const tanggalPengiriman = formatDate(lapak.tanggal_pengiriman)
+
     const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
-    const isStatus = lapak?.status !== 'delivered' && lapak?.status !== 'finished'
-    const isKurirMatch = lapak?.id_kurir === kurir_id
-    return lapakNameMatch && isStatus && isKurirMatch
+    const kurirNameMatch = kurirName.includes(searchText.toLowerCase())
+    const statusMatch = status.includes(searchText.toLowerCase())
+    const tanggalPengirimanMatch = tanggalPengiriman.includes(searchText.toLowerCase())
+
+    const isStatus = lapak?.status !== 'closed'
+    return (lapakNameMatch || kurirNameMatch || statusMatch || tanggalPengirimanMatch) && isStatus
   })
 
   const handleRotiClick = (lapak) => {
@@ -70,61 +84,65 @@ const DataPengiriman = () => {
     console.log(dataRoti)
   }
 
-  const handleFile = (index) => {
-    const newDataFoto = [...dataFoto]
-    const selectedFile = newDataFoto[index]
-    if (selectedFile) {
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        const dataURL = event.target.result
-        setFoto(dataURL) // Set the data URL as the image source
-        setOpen(true)
-      }
-      reader.readAsDataURL(selectedFile) // Read the file as data URL
-    }
-  }
-
-  const handleFoto = (event, index) => {
-    const selectedFile = event.target.files[0]
-    const newDataFoto = [...dataFoto]
-    newDataFoto[index] = selectedFile
-    setDataFoto(newDataFoto)
-    console.log(newDataFoto)
-  }
-
-  const handleStatus = (lapak) => {
-    axios
-      .put(`http://localhost:8000/api/kurir/transaksi/${lapak.id_transaksi}`, {
-        status: 'on delivery',
-      })
-      .then(() => {
-        // The PUT request is successful, now you can refresh the data
-        handleData()
-      })
-      .catch((error) => {
-        console.error('Error updating status:', error)
-      })
-  }
-  const handleSubmit = (lapak, index) => {
-    const newDataFoto = [...dataFoto]
-    const selectedFile = newDataFoto[index]
-
-    if (selectedFile) {
-      const formData = new FormData()
-      formData.append('bukti_pengiriman', selectedFile)
+  const handleFoto = (lapak) => {
+    if (lapak.status === 'delivered') {
+      console.log(lapak.bukti_pengiriman)
       axios
-        .post(`http://localhost:8000/api/kurir/transaksi/${lapak.id_transaksi}`, formData)
+        .get('http://localhost:8000/api/koordinator/' + lapak.bukti_pengiriman, {
+          responseType: 'blob',
+        })
         .then((response) => {
-          console.log('File uploaded successfully', response)
-          setFoto(null)
-          handleData()
+          const reader = new FileReader()
+          reader.onload = (event) => {
+            const dataURL = event.target.result
+            setFoto(dataURL)
+            setOpen(true)
+          }
+          reader.readAsDataURL(response.data) // Read the blob response as data URL
         })
         .catch((error) => {
-          console.error('Error uploading file:', error)
+          console.error('Error fetching data:', error)
         })
     } else {
-      console.error('No file selected for upload')
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        },
+      })
+      Toast.fire({
+        icon: 'error',
+        title: 'Kurir Belum Sampai',
+      })
     }
+  }
+
+  const handleDelete = (data) => {
+    Swal.fire({
+      title: `Apakah anda yakin ingin menghapus transaksi lapak ${data.lapak.nama_lapak}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Delete',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:8000/api/koordinator/transaksi/delete/${data.id_transaksi}`)
+          .then((response) => {
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+            window.location.href = '/pengiriman/list'
+          })
+          .catch((error) => {
+            console.error('Error deleting data:', error)
+          })
+      }
+    })
   }
 
   return (
@@ -156,7 +174,8 @@ const DataPengiriman = () => {
                   <CTableRow>
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
-                    <CTableHeaderCell>Alamat Lengkap</CTableHeaderCell>
+                    <CTableHeaderCell>Kurir</CTableHeaderCell>
+                    <CTableHeaderCell>Tanggal Pengiriman</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
@@ -168,11 +187,13 @@ const DataPengiriman = () => {
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
+                      <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="primary"
                           variant="outline"
+                          size="sm"
                           className="ms-2"
                           title="Daftar Roti"
                           onClick={() => handleRotiClick(lapak)}
@@ -182,53 +203,31 @@ const DataPengiriman = () => {
                         </CButton>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <CFormInput
-                            type="file"
-                            size="sm"
-                            id="formFileSm"
-                            accept="image/jpeg, image/jpg, image/png"
-                            onChange={(e) => handleFoto(e, index)}
-                            disabled={lapak.status === 'ready'}
-                            style={{ width: '60%' }}
-                          />
-                          <CButton
-                            variant="outline"
-                            size="sm"
-                            className="mx-2"
-                            onClick={() => handleFile(index)}
-                            disabled={lapak.status === 'ready'}
-                          >
-                            Lihat
-                          </CButton>
-                          <CButton
-                            variant="outline"
-                            size="sm"
-                            className="mx-1"
-                            onClick={() => handleSubmit(lapak, index)}
-                            disabled={lapak.status === 'ready'}
-                          >
-                            Submit Foto
-                          </CButton>
-                        </div>
+                        <CButton variant="outline" size="sm" onClick={() => handleFoto(lapak)}>
+                          Lihat
+                        </CButton>
                       </CTableDataCell>
                       <CTableDataCell
                         style={{
                           color:
                             lapak.status === 'ready'
                               ? 'green' // Assuming 'ready' status should display green text
-                              : 'red',
+                              : lapak.status === 'on delivery'
+                              ? 'red' // 'on delivery' status will display red text
+                              : 'blue',
                         }}
                       >
                         {lapak.status}
                       </CTableDataCell>
                       <CTableDataCell>
                         <CButton
+                          color="danger"
                           variant="outline"
-                          onClick={() => handleStatus(lapak)}
-                          disabled={lapak.status === 'on delivery'}
+                          className="ms-2"
+                          title="Hapus Data Roti"
+                          onClick={() => handleDelete(lapak)}
                         >
-                          Accept
+                          <CIcon icon={cilTrash} />
                         </CButton>
                       </CTableDataCell>
                     </CTableRow>
@@ -243,6 +242,7 @@ const DataPengiriman = () => {
         <CModal
           alignment="center"
           visible={visible}
+          className="modal"
           onClose={() => setVisible(false)}
           aria-labelledby="VerticallyCenteredExample"
         >
@@ -299,4 +299,4 @@ const DataPengiriman = () => {
   )
 }
 
-export default DataPengiriman
+export default DaftarPengiriman
