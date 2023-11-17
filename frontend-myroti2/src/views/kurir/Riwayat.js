@@ -16,8 +16,6 @@ import {
   CModalBody,
   CModalFooter,
   CModalTitle,
-  CFormInput,
-  CInputGroup,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSearch } from '@coreui/icons'
@@ -26,15 +24,18 @@ const RiwayatKurir = () => {
   const [riwayatKurir, setRiwayatKurir] = useState([])
   const [visible, setVisible] = useState(false)
   const [dataRoti, setDataRoti] = useState([])
-  const [currentItemIndex, setCurrentItemIndex] = useState(null)
+  const [kurir_id, setKurirId] = useState('')
+  const [selectedIdTransaksi, setSelectedIdTransaksi] = useState(null)
 
   useEffect(() => {
+    const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
+    setKurirId(infoLogin.id)
     fetchRiwayatKurir()
   }, [])
 
   const fetchRiwayatKurir = () => {
     axios
-      .get('http://127.0.0.1:8000/api/kurir/riwayat')
+      .get(`http://127.0.0.1:8000/api/kurir/riwayat?id_kurir=${kurir_id}`)
       .then((response) => {
         setRiwayatKurir(response.data)
       })
@@ -43,19 +44,21 @@ const RiwayatKurir = () => {
       })
   }
 
-  const handleRotiClick = (lapak, index) => {
-    const combinedRoti = lapak.roti.map((roti) => {
-      const matchingRotiBasi = lapak.rotiBasi.find((rotiBasi) => rotiBasi.nama === roti.nama)
-      return {
-        nama: roti.nama,
-        jumlah: roti.jumlah,
-        jumlahBasi: matchingRotiBasi ? matchingRotiBasi.jumlah : 0,
-      }
-    })
+  const handleRotiClick = async (item, index) => {
+    try {
+      const id_transaksi = item.id_transaksi
 
-    setDataRoti(combinedRoti)
-    setCurrentItemIndex(index)
-    setVisible(true)
+      // Use axios for the second API call
+      const response = await axios.get(`/api/riwayat-transaksi/${id_transaksi}`)
+      const result = response.data
+
+      console.log(result)
+      setDataRoti(result.detail_roti)
+      setSelectedIdTransaksi(id_transaksi)
+      setVisible(true)
+    } catch (error) {
+      console.error('Error fetching detail roti:', error)
+    }
   }
 
   return (
@@ -69,7 +72,6 @@ const RiwayatKurir = () => {
               <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
               <CTableHeaderCell>Alamat Lengkap</CTableHeaderCell>
               <CTableHeaderCell>Detail Roti</CTableHeaderCell>
-              <CTableHeaderCell>Catatan Penjual</CTableHeaderCell>
               <CTableHeaderCell>Status</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -90,11 +92,6 @@ const RiwayatKurir = () => {
                     <CIcon icon={cilSearch} className="mx-12 me-2" />
                     Open Detail
                   </CButton>
-                </CTableDataCell>
-                <CTableDataCell>
-                  <div style={{ fontFamily: 'Arial', fontWeight: 'bold' }}>
-                    {item.catatan_penjual}
-                  </div>
                 </CTableDataCell>
                 <CTableDataCell>
                   <CButton color="success" style={{ color: 'white' }} disabled>

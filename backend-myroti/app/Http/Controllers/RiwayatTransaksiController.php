@@ -55,6 +55,9 @@ class RiwayatTransaksiController extends Controller
         ];
     })->values();  // Add this line to reindex the array keys
 
+    return response()->json(['detail_roti' => $combinedDetailRoti]);
+
+
 $combinedDetailRoti = $combinedDetailRoti->values()->all();
 
         
