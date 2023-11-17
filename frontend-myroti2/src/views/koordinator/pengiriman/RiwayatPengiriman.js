@@ -64,7 +64,7 @@ const RiwayatPengiriman = () => {
 
   const filteredData = dataTransaksi.filter((lapak) => {
     const lapakName = lapak?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
-    const kurirName = lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
+    const kurirName = lapak?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
     const status = lapak?.status?.toLowerCase() || ''
     const tanggalPengiriman = formatDate(lapak.tanggal_pengiriman)
 
@@ -82,6 +82,44 @@ const RiwayatPengiriman = () => {
     setVisible(true)
     console.log(dataTransaksi)
     console.log(dataRoti)
+  }
+
+  const handleFoto = (lapak) => {
+    if (lapak.status === 'delivered') {
+      console.log(lapak.bukti_pengiriman)
+      axios
+        .get('http://localhost:8000/api/koordinator/' + lapak.bukti_pengiriman, {
+          responseType: 'blob',
+        })
+        .then((response) => {
+          const reader = new FileReader()
+          reader.onload = (event) => {
+            const dataURL = event.target.result
+            setFoto(dataURL)
+            setOpen(true)
+          }
+          reader.readAsDataURL(response.data) // Read the blob response as data URL
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error)
+        })
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        },
+      })
+      Toast.fire({
+        icon: 'error',
+        title: 'Kurir Belum Sampai',
+      })
+    }
   }
 
   const handleDelete = (data) => {
@@ -137,11 +175,9 @@ const RiwayatPengiriman = () => {
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Kurir</CTableHeaderCell>
-                    <CTableHeaderCell>Status</CTableHeaderCell>
                     <CTableHeaderCell>Tanggal Pengiriman</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
-                    <CTableHeaderCell>Aksi</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -149,23 +185,7 @@ const RiwayatPengiriman = () => {
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>{lapak.kurir.nama}</CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color={
-                            lapak.status === 'ready'
-                              ? 'success'
-                              : lapak.status === 'on delivery'
-                              ? 'danger'
-                              : 'info'
-                          }
-                          size="sm"
-                          style={{ color: 'white' }}
-                          disabled
-                        >
-                          {lapak.status}
-                        </CButton>
-                      </CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
                       <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
                       <CTableDataCell>
                         <CButton
@@ -181,14 +201,8 @@ const RiwayatPengiriman = () => {
                         </CButton>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <CButton
-                          color="danger"
-                          variant="outline"
-                          className="ms-2"
-                          title="Hapus Data Roti"
-                          onClick={() => handleDelete(lapak)}
-                        >
-                          <CIcon icon={cilTrash} />
+                        <CButton variant="outline" size="sm" onClick={() => handleFoto(lapak)}>
+                          Lihat
                         </CButton>
                       </CTableDataCell>
                     </CTableRow>
@@ -230,6 +244,27 @@ const RiwayatPengiriman = () => {
           </CModalBody>
           <CModalFooter>
             <CButton color="secondary" onClick={() => setVisible(false)}>
+              Close
+            </CButton>
+          </CModalFooter>
+        </CModal>
+      )}
+      {open && (
+        <CModal
+          size="lg"
+          alignment="center"
+          visible={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="VerticallyCenteredExample"
+        >
+          <CModalHeader>
+            <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+          </CModalBody>
+          <CModalFooter>
+            <CButton color="secondary" onClick={() => setOpen(false)}>
               Close
             </CButton>
           </CModalFooter>

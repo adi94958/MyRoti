@@ -64,7 +64,7 @@ const DaftarPengiriman = () => {
 
   const filteredData = dataTransaksi.filter((lapak) => {
     const lapakName = lapak?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
-    const kurirName = lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
+    const kurirName = lapak?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
     const status = lapak?.status?.toLowerCase() || ''
     const tanggalPengiriman = formatDate(lapak.tanggal_pengiriman)
 
@@ -187,7 +187,7 @@ const DaftarPengiriman = () => {
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>{lapak.kurir.nama}</CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
                       <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
                       <CTableDataCell>
                         <CButton

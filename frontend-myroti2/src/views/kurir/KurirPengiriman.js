@@ -156,6 +156,7 @@ const DataPengiriman = () => {
                   <CTableRow>
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Alamat Lengkap</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
@@ -167,6 +168,7 @@ const DataPengiriman = () => {
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="primary"
@@ -188,7 +190,7 @@ const DataPengiriman = () => {
                             accept="image/jpeg, image/jpg, image/png"
                             onChange={(e) => handleFoto(e, index)}
                             disabled={lapak.status === 'ready'}
-                            style={{ width: '70%' }}
+                            style={{ width: '60%' }}
                           />
                           <CButton
                             variant="outline"
@@ -210,14 +212,15 @@ const DataPengiriman = () => {
                           </CButton>
                         </div>
                       </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color={lapak.status === 'ready' ? 'success' : 'danger'}
-                          style={{ color: 'white' }}
-                          disabled
-                        >
-                          {lapak.status}
-                        </CButton>
+                      <CTableDataCell
+                        style={{
+                          color:
+                            lapak.status === 'ready'
+                              ? 'green' // Assuming 'ready' status should display green text
+                              : 'red',
+                        }}
+                      >
+                        {lapak.status}
                       </CTableDataCell>
                       <CTableDataCell>
                         <CButton
