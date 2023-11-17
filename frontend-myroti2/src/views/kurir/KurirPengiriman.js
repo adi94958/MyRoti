@@ -58,7 +58,7 @@ const DataPengiriman = () => {
   const filteredData = dataTransaksi.filter((lapak) => {
     const lapakName = lapak?.nama_lapak?.toString()?.toLowerCase() || ''
     const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
-    const isStatus = lapak?.status !== 'delivered' && lapak?.status !== 'closed'
+    const isStatus = lapak?.status !== 'delivered' && lapak?.status !== 'finished'
     const isKurirMatch = lapak?.id_kurir === kurir_id
     return lapakNameMatch && isStatus && isKurirMatch
   })
