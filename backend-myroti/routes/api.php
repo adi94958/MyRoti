@@ -78,6 +78,9 @@ Route::get('/kurir/transaksi/{id}', [PenjualanController::class, 'totalharga']);
 Route::post('/kurir/penjualan/{id}', [PenjualanController::class, 'createPenjualan']);
 
 // Kurir routes here
+
 Route::get('/kurir/riwayat/{id}', [RiwayatTransaksiController::class, 'RiwayatTransaksiKurir']);
 Route::get('/kurir/riwayat-transaksi/{id}', [RiwayatTransaksiController::class, 'detailRoti']);
+Route::get('/kurir/penghasilan/{id}', [DataKurirController::class, 'getPenghasilan']);
+
 

@@ -16,7 +16,7 @@ class LapakController extends Controller
         $datas = Lapak::select('kode_lapak', 'nama_lapak', 'id_kurir', 'area_id', 'alamat_lapak')
             ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
             ->join('kurirs', 'lapak.id_kurir', '=', 'kurirs.id_kurir')
-            ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'kurirs.nama', 'areadistribusi.area_distribusi', 'lapak.alamat_lapak', 'lapak.area_id', 'lapak.id_kurir')
+            ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'kurirs.nama', 'areadistribusi.area_distribusi', 'lapak.alamat_lapak', 'lapak.area_id', 'lapak.id_kurir', 'lapak.status')
             ->get();
 
         return response()->json($datas, 200);
@@ -42,7 +42,8 @@ class LapakController extends Controller
                     'nama_lapak' => $request->nama_lapak,
                     'area_id' => $area->area_id,
                     'id_kurir' => $kurir->id_kurir,
-                    'alamat_lapak' => $request->alamat_lapak
+                    'alamat_lapak' => $request->alamat_lapak,
+                    'status' => 'enable'
                 ]);
                 return response()->json(['message' => 'Lapak berhasil didaftarkan']);
             }
