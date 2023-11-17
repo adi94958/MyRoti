@@ -29,6 +29,15 @@ class DataPenjualanSeeder extends Seeder
             'total_dengan_rotibasi' => '0',
             'uang_setoran' => '20000', 
             'catatan_penjual' => 'pesanan lengkap'
-        ]);    
+        ]); 
+        
+        DB::table('datapenjualan')->insert([
+            'id_transaksi'=> '1',
+            'tanggal_pengambilan' => now(),
+            'total_harga' => '20000',
+            'total_dengan_rotibasi' => '0',
+            'uang_setoran' => '20000', 
+            'catatan_penjual' => 'pesanan lengkap'
+        ]); 
     }
 }
