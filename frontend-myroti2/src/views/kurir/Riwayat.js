@@ -1,110 +1,157 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import {
+  CModal,
+  CModalHeader,
+  CModalBody,
+  CModalFooter,
+  CModalTitle,
+  CButton,
   CCard,
   CCardBody,
   CCardHeader,
+  CCol,
+  CRow,
   CTable,
   CTableBody,
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
+  CForm,
+  CFormInput,
+  CInputGroup,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilSearch } from '@coreui/icons'
+import { cilSearch, cilUserPlus } from '@coreui/icons'
+import { Link } from 'react-router-dom'
 
-const RiwayatKurir = () => {
-  const [riwayatKurir, setRiwayatKurir] = useState([])
-  const [visible, setVisible] = useState(false)
+const DataPengiriman = () => {
+  const [searchText, setSearchText] = useState('')
   const [dataRoti, setDataRoti] = useState([])
+  const [visible, setVisible] = useState(false)
+  const [open, setOpen] = useState(false)
   const [kurir_id, setKurirId] = useState('')
-  const [selectedIdTransaksi, setSelectedIdTransaksi] = useState(null)
+  const [dataTransaksi, setDataTransaksi] = useState([])
 
   useEffect(() => {
     const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
     setKurirId(infoLogin.id)
-    fetchRiwayatKurir()
+    handleData()
   }, [])
 
-  const fetchRiwayatKurir = () => {
+  const handleData = () => {
     axios
-      .get(`http://127.0.0.1:8000/api/kurir/riwayat?id_kurir=${kurir_id}`)
+      .get('http://localhost:8000/api/kurir/transaksi')
       .then((response) => {
-        setRiwayatKurir(response.data)
+        console.log(response.data)
+        setDataTransaksi(response.data)
       })
       .catch((error) => {
-        console.error('Error:', error)
+        console.error('Error fetching data:', error)
       })
   }
+  const filteredData = dataTransaksi.filter((lapak) => {
+    const lapakName = lapak?.nama_lapak?.toString()?.toLowerCase() || ''
+    const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
+    const isStatus = lapak?.status == 'finished'
+    const isKurirMatch = lapak?.id_kurir === kurir_id
+    return lapakNameMatch && isStatus && isKurirMatch
+  })
 
-  const handleRotiClick = async (item, index) => {
+  const handleRotiClick = async (lapak) => {
     try {
-      const id_transaksi = item.id_transaksi
-
-      // Use axios for the second API call
-      const response = await axios.get(`/api/riwayat-transaksi/${id_transaksi}`)
-      const result = response.data
-
-      console.log(result)
-      setDataRoti(result.detail_roti)
-      setSelectedIdTransaksi(id_transaksi)
-      setVisible(true)
+      const response = await axios.get(
+        `http://localhost:8000/api/kurir/riwayat-transaksi/${lapak.id_transaksi}`,
+      )
+      console.log('Response:', response) // Tambahkan ini untuk melihat respons dari API
+      if (response.status >= 200 && response.status < 300) {
+        const data = response.data
+        console.log('Data Roti:', data.detail_roti) // Tambahkan ini untuk melihat data roti
+        setDataRoti(data.detail_roti)
+        setVisible(true)
+        console.log(dataTransaksi)
+        console.log(dataRoti)
+      } else {
+        throw new Error('Gagal mengambil data roti')
+      }
     } catch (error) {
-      console.error('Error fetching detail roti:', error)
+      console.error('Terjadi kesalahan:', error.message)
     }
   }
 
   return (
-    <CCard>
-      <CCardHeader>Riwayat Kurir</CCardHeader>
-      <CCardBody>
-        <CTable striped bordered responsive>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell>No.</CTableHeaderCell>
-              <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
-              <CTableHeaderCell>Alamat Lengkap</CTableHeaderCell>
-              <CTableHeaderCell>Detail Roti</CTableHeaderCell>
-              <CTableHeaderCell>Status</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {riwayatKurir.map((item, index) => (
-              <CTableRow key={index}>
-                <CTableDataCell>{index + 1}</CTableDataCell>
-                <CTableDataCell>{item.nama_lapak}</CTableDataCell>
-                <CTableDataCell>{item.alamat_lapak}</CTableDataCell>
-                <CTableDataCell>
-                  <CButton
-                    color="primary"
-                    variant="outline"
-                    className="ms-2"
-                    title="Detail Roti"
-                    onClick={() => handleRotiClick(item, index)}
-                  >
-                    <CIcon icon={cilSearch} className="mx-12 me-2" />
-                    Open Detail
-                  </CButton>
-                </CTableDataCell>
-                <CTableDataCell>
-                  <CButton color="success" style={{ color: 'white' }} disabled>
-                    {item.status}
-                  </CButton>
-                </CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
-      </CCardBody>
+    <div>
+      <CRow>
+        <CCol>
+          <CCard>
+            <CCardHeader>Data Pengiriman Kurir</CCardHeader>
+            <CCardBody>
+              <CForm className="mb-3">
+                <CRow>
+                  <CCol md={8} xs={6}>
+                    <CInputGroup>
+                      <CFormInput
+                        type="text"
+                        placeholder="Search..."
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                      />
+                      <CButton variant="outline" className="ms-2">
+                        <CIcon icon={cilSearch} />
+                      </CButton>
+                    </CInputGroup>
+                  </CCol>
+                </CRow>
+              </CForm>
+              <CTable striped bordered responsive>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>No</CTableHeaderCell>
+                    <CTableHeaderCell>Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Roti</CTableHeaderCell>
+                    <CTableHeaderCell>Status</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {filteredData.map((lapak, index) => (
+                    <CTableRow key={index}>
+                      <CTableDataCell>{index + 1}</CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                      <CTableDataCell>
+                        <CButton
+                          color="primary"
+                          variant="outline"
+                          className="ms-2"
+                          title="Daftar Roti"
+                          onClick={() => handleRotiClick(lapak)}
+                        >
+                          <CIcon icon={cilSearch} className="mx-12 me-2" />
+                          Open Detail
+                        </CButton>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <CButton
+                          color={lapak.status === 'ready' ? 'success' : 'danger'}
+                          style={{ color: 'white' }}
+                          disabled
+                        >
+                          {lapak.status}
+                        </CButton>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
       {visible && (
         <CModal
+          alignment="center"
           visible={visible}
           onClose={() => setVisible(false)}
           aria-labelledby="VerticallyCenteredExample"
@@ -113,28 +160,24 @@ const RiwayatKurir = () => {
             <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
           </CModalHeader>
           <CModalBody>
-            {dataRoti.length === 0 ? (
-              <p>No data available.</p>
-            ) : (
-              <CTable striped bordered responsive>
-                <CTableHead>
-                  <CTableRow>
-                    <CTableHeaderCell>Nama Roti</CTableHeaderCell>
-                    <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
-                    <CTableHeaderCell>Jumlah Roti Basi</CTableHeaderCell>
+            <CTable striped bordered responsive>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell>Nama Roti</CTableHeaderCell>
+                  <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+                  <CTableHeaderCell>Jumlah Roti Basi</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {dataRoti.map((roti, index) => (
+                  <CTableRow key={index}>
+                    <CTableDataCell>{roti.nama_roti}</CTableDataCell>
+                    <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
+                    <CTableDataCell>{roti.jumlah_roti_basi}</CTableDataCell>
                   </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {dataRoti.map((roti, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>{roti.nama}</CTableDataCell>
-                      <CTableDataCell>{roti.jumlah}</CTableDataCell>
-                      <CTableDataCell>{roti.jumlahBasi}</CTableDataCell>
-                    </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
-            )}
+                ))}
+              </CTableBody>
+            </CTable>
           </CModalBody>
           <CModalFooter>
             <CButton color="secondary" onClick={() => setVisible(false)}>
@@ -143,8 +186,8 @@ const RiwayatKurir = () => {
           </CModalFooter>
         </CModal>
       )}
-    </CCard>
+    </div>
   )
 }
 
-export default RiwayatKurir
+export default DataPengiriman

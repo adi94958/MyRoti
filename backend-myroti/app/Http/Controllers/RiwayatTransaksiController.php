@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\DataPenjualan;
 
 class RiwayatTransaksiController extends Controller
@@ -28,6 +29,10 @@ class RiwayatTransaksiController extends Controller
                 'dataPenjualan.rotibasi'
             ])->find($idTransaksi);
     
+            if (!$transaksi) {
+                throw new \Exception('Transaksi not found');
+            }
+    
             $lapak = $transaksi->lapak;
     
             $detailRoti = $transaksi->transaksi_roti->map(function ($item) {
@@ -36,45 +41,37 @@ class RiwayatTransaksiController extends Controller
                     'jumlah_roti' => $item->jumlah_roti,
                 ];
             });
-
+    
             $detailRotiBasi = $transaksi->dataPenjualan->rotibasi->map(function ($rotiBasi) {
                 return [
                     'nama_roti' => $rotiBasi->roti->nama_roti,
                     'jumlah_roti_basi' => $rotiBasi->jumlah_roti
                 ];
             });
-            
-
-            $combinedDetailRoti = $detailRoti->concat($detailRotiBasi)
-    ->groupBy('nama_roti')
-    ->map(function ($items) {
-        return [
-            'nama_roti' => $items->first()['nama_roti'],
-            'jumlah_roti' => $items->sum('jumlah_roti'),
-            'jumlah_roti_basi' => $items->sum('jumlah_roti_basi')
-        ];
-    })->values();  // Add this line to reindex the array keys
-
-    return response()->json(['detail_roti' => $combinedDetailRoti]);
-
-
-$combinedDetailRoti = $combinedDetailRoti->values()->all();
-
-        
-            $status = $transaksi->status;
     
-            return response()->json([
-                'lapak' => [
-                    'nama_lapak' => $lapak->nama_lapak,
-                    'alamat_lapak' => $lapak->alamat_lapak,
-                ],
-                'detail_roti' => $combinedDetailRoti,
-                'status' => $status,
-            ]);
+            $combinedDetailRoti = $detailRoti->concat($detailRotiBasi)
+                ->groupBy('nama_roti')
+                ->map(function ($items) {
+                    return [
+                        'nama_roti' => $items->first()['nama_roti'],
+                        'jumlah_roti' => $items->sum('jumlah_roti'),
+                        'jumlah_roti_basi' => $items->sum('jumlah_roti_basi')
+                    ];
+                })->values();  // Add this line to reindex the array keys
+    
+            // Pindahkan pernyataan ini ke tempat yang sesuai
+            $combinedDetailRoti = $combinedDetailRoti->values()->all();
+            
+            Log::info('Pesan log');
+    
+            return response()->json(['detail_roti' => $combinedDetailRoti]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error fetching detail roti', 'message' => $e->getMessage()], 500);
+            // Tangkap kesalahan secara eksplisit dan kembalikan pesan khusus
+            Log::error('Error in detailRoti: ' . $e->getMessage());
+            return response()->json(['error' => 'Data roti tidak ada'], 500);
         }
     }
+    
     
         
     /**
@@ -84,6 +81,7 @@ $combinedDetailRoti = $combinedDetailRoti->values()->all();
     {
         // $idKurir = session('id_kurir');
 
+        //general
         $riwayatKurir = Transaksi::where('status', 'finished')
             // ->where('transaksi.id_kurir', $idKurir) 
             ->join('lapak', 'transaksi.kode_lapak', '=', 'lapak.kode_lapak')

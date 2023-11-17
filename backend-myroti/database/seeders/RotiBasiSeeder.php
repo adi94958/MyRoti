@@ -23,7 +23,12 @@ class RotiBasiSeeder extends Seeder
                 'id_penjualan'=> 2, 
                 'kode_roti'=> 1, 
                 'jumlah_roti'=> 0
-            ]
+            ],
+            [
+                'id_penjualan'=> 3, 
+                'kode_roti'=> 1, 
+                'jumlah_roti'=> 2
+            ],
             ]);
         }
 }
