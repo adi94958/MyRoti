@@ -12,10 +12,15 @@ class RiwayatTransaksiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+    public function readDataPenjualan()
+{
+    $datas = DataPenjualan::select('datapenjualan.id_penjualan', 'datapenjualan.tanggal_pengambilan', 'datapenjualan.uang_setoran', 'datapenjualan.id_transaksi', 'transaksi.kode_lapak')
+        ->join('transaksi', 'datapenjualan.id_transaksi', '=', 'transaksi.id_transaksi')
+        ->join('lapak', 'transaksi.kode_lapak', '=', 'lapak.kode_lapak')
+        ->get();
+
+    return response()->json($datas, 200);
+}
 
     /**
      * Store a newly created resource in storage.
