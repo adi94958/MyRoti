@@ -111,6 +111,7 @@ const DataPengiriman = () => {
                   <CTableRow>
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Alamat Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
                   </CTableRow>
@@ -120,6 +121,7 @@ const DataPengiriman = () => {
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="primary"
@@ -133,13 +135,11 @@ const DataPengiriman = () => {
                         </CButton>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <CButton
-                          color={lapak.status === 'ready' ? 'success' : 'danger'}
-                          style={{ color: 'white' }}
-                          disabled
-                        >
-                          {lapak.status}
-                        </CButton>
+                        {lapak.status === 'finished' ? (
+                          <span style={{ color: 'green' }}> {lapak.status} </span>
+                        ) : (
+                          <span>{lapak.status}</span>
+                        )}
                       </CTableDataCell>
                     </CTableRow>
                   ))}
