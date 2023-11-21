@@ -385,7 +385,7 @@ const FormPengiriman = () => {
           <CTable striped bordered responsive>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell>Kode Roti</CTableHeaderCell>
+                <CTableHeaderCell>No</CTableHeaderCell>
                 <CTableHeaderCell>Nama Roti</CTableHeaderCell>
                 <CTableHeaderCell>Stok Roti</CTableHeaderCell>
                 <CTableHeaderCell>Rasa Roti</CTableHeaderCell>
@@ -403,7 +403,7 @@ const FormPengiriman = () => {
               ) : (
                 dataRoti.map((roti, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{roti.kode_roti}</CTableDataCell>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>{roti.nama_roti}</CTableDataCell>
                     <CTableDataCell>{roti.stok_roti}</CTableDataCell>
                     <CTableDataCell>{roti.rasa_roti}</CTableDataCell>
