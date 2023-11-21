@@ -15,7 +15,7 @@ import {
   CFormInput,
   CCol,
   CRow,
-  CForm
+  CForm,
 } from '@coreui/react'
 import { cilCart, cilSearch } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -56,18 +56,21 @@ const Pengiriman = () => {
   }
 
   const filteredData = data.filter((lapak) => {
-    const searchableFields = [
-      'nama_lapak',
-      'nama_kurir',
-    ];
+    const searchableFields = ['nama_lapak', 'nama_kurir']
 
-    return searchText === '' || searchableFields.some((field) => {
-      const fieldValue = lapak[field];
+    return (
+      searchText === '' ||
+      searchableFields.some((field) => {
+        const fieldValue = lapak[field]
 
-      // Check if the field value is a string before applying toLowerCase()
-      return typeof fieldValue === 'string' && fieldValue.toLowerCase().includes(searchText.toLowerCase());
-    });
-  });
+        // Check if the field value is a string before applying toLowerCase()
+        return (
+          typeof fieldValue === 'string' &&
+          fieldValue.toLowerCase().includes(searchText.toLowerCase())
+        )
+      })
+    )
+  })
 
   return (
     <CCard>

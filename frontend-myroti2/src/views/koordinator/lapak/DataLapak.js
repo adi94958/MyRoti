@@ -17,7 +17,7 @@ import {
   CTableRow,
   CForm,
   CInputGroup,
-  CFormInput
+  CFormInput,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPen, cilTrash, cilUserPlus, cilSearch } from '@coreui/icons'
@@ -83,21 +83,21 @@ const Lapak = () => {
   }
 
   const filteredData = dataLapak.filter((lapak) => {
-    const searchableFields = [
-      'kode_lapak',
-      'nama_lapak',
-      'nama_kurir',
-      'area',
-      'alamat_lapak',
-    ];
+    const searchableFields = ['kode_lapak', 'nama_lapak', 'nama_kurir', 'area', 'alamat_lapak']
 
-    return searchText === '' || searchableFields.some((field) => {
-      const fieldValue = lapak[field];
+    return (
+      searchText === '' ||
+      searchableFields.some((field) => {
+        const fieldValue = lapak[field]
 
-      // Check if the field value is a string before applying toLowerCase()
-      return typeof fieldValue === 'string' && fieldValue.toLowerCase().includes(searchText.toLowerCase());
-    });
-  });
+        // Check if the field value is a string before applying toLowerCase()
+        return (
+          typeof fieldValue === 'string' &&
+          fieldValue.toLowerCase().includes(searchText.toLowerCase())
+        )
+      })
+    )
+  })
 
   return (
     <div>

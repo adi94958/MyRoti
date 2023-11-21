@@ -17,7 +17,7 @@ import {
   CTableRow,
   CForm,
   CInputGroup,
-  CFormInput
+  CFormInput,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPen, cilTrash, cilUserPlus, cilSearch } from '@coreui/icons'
@@ -86,15 +86,21 @@ const KelolaDataDataRoti = () => {
       'stok_roti',
       'rasa_roti',
       'harga_satuan_roti',
-    ];
+    ]
 
-    return searchText === '' || searchableFields.some((field) => {
-      const fieldValue = roti[field];
+    return (
+      searchText === '' ||
+      searchableFields.some((field) => {
+        const fieldValue = roti[field]
 
-      // Check if the field value is a string before applying toLowerCase()
-      return typeof fieldValue === 'string' && fieldValue.toLowerCase().includes(searchText.toLowerCase());
-    });
-  });
+        // Check if the field value is a string before applying toLowerCase()
+        return (
+          typeof fieldValue === 'string' &&
+          fieldValue.toLowerCase().includes(searchText.toLowerCase())
+        )
+      })
+    )
+  })
 
   return (
     <div>
