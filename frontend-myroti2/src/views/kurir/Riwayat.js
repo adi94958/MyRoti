@@ -56,7 +56,7 @@ const DataPengiriman = () => {
   const filteredData = dataTransaksi.filter((lapak) => {
     const lapakName = lapak?.nama_lapak?.toString()?.toLowerCase() || ''
     const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
-    const isStatus = lapak?.status == 'finished'
+    const isStatus = lapak?.status === 'finished'
     const isKurirMatch = lapak?.id_kurir === kurir_id
     return lapakNameMatch && isStatus && isKurirMatch
   })
@@ -112,7 +112,9 @@ const DataPengiriman = () => {
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Alamat Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Tanggal Pengambilan</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
+                    <CTableHeaderCell>Uang Setoran</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -122,6 +124,7 @@ const DataPengiriman = () => {
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="primary"
@@ -134,6 +137,7 @@ const DataPengiriman = () => {
                           Open Detail
                         </CButton>
                       </CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
                       <CTableDataCell>
                         {lapak.status === 'finished' ? (
                           <span style={{ color: 'green' }}> {lapak.status} </span>
