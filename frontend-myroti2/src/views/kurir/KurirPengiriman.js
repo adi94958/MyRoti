@@ -164,7 +164,13 @@ const DataPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {filteredData.map((lapak, index) => (
+                  {filteredData.length === 0 ? (
+                    <tr>
+                      <td colSpan="9" className="text-center">
+                        Tidak ada data.
+                      </td>
+                    </tr>
+                  ) : (filteredData.map((lapak, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
@@ -232,7 +238,7 @@ const DataPengiriman = () => {
                         </CButton>
                       </CTableDataCell>
                     </CTableRow>
-                  ))}
+                  )))}
                 </CTableBody>
               </CTable>
             </CCardBody>

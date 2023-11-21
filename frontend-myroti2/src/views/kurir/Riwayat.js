@@ -99,33 +99,40 @@ const DataPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {filteredData.map((lapak, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color="primary"
-                          variant="outline"
-                          className="ms-2"
-                          title="Daftar Roti"
-                          onClick={() => handleRotiClick(lapak)}
-                        >
-                          <CIcon icon={cilSearch} className="mx-12 me-2" />
-                          Open Detail
-                        </CButton>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color={lapak.status === 'ready' ? 'success' : 'danger'}
-                          style={{ color: 'white' }}
-                          disabled
-                        >
-                          {lapak.status}
-                        </CButton>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
+                  {filteredData.length === 0 ? (
+                    <tr>
+                      <td colSpan="9" className="text-center">
+                        Tidak ada data.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredData.map((lapak, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{index + 1}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            className="ms-2"
+                            title="Daftar Roti"
+                            onClick={() => handleRotiClick(lapak)}
+                          >
+                            <CIcon icon={cilSearch} className="mx-12 me-2" />
+                            Open Detail
+                          </CButton>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color={lapak.status === 'ready' ? 'success' : 'danger'}
+                            style={{ color: 'white' }}
+                            disabled
+                          >
+                            {lapak.status}
+                          </CButton>
+                        </CTableDataCell>
+                      </CTableRow>
+                    )))}
                 </CTableBody>
               </CTable>
             </CCardBody>
