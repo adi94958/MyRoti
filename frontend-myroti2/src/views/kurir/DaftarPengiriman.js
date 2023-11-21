@@ -19,7 +19,6 @@ import {
   CModalTitle,
   CFormInput,
   CFormGroup,
-  CSpinner,
   CLabel,
   CFormTextarea,
 } from '@coreui/react'
@@ -27,42 +26,45 @@ import { cilPen, cilSearch } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useNavigate } from 'react-router-dom'
 
+
+
+
 const DaftarPengiriman = () => {
-  // const [data, setData] = useState([
-  //     {
-  //         id: 1,
-  //         namaLapak: 'Lapak 1',
-  //         alamatLapak: 'Jl. Lapak 1, Kota A',
-  //         jenisRoti: [
-  //             { jenis: 'Roti Tawar', jumlah: 50, harga: 5000 }, // Harga per roti adalah 5000
-  //             { jenis: 'Roti Manis', jumlah: 30, harga: 7000 }, // Harga per roti adalah 7000
-  //         ],
-  //         totalHargaRoti: '',
-  //         status: 'Delivered',
-  //     },
-  //     {
-  //         id: 2,
-  //         namaLapak: 'Lapak 2',
-  //         alamatLapak: 'Jl. Lapak 2, Kota B',
-  //         jenisRoti: [
-  //             { jenis: 'Roti Gandum', jumlah: 20, harga: 6000 }, // Harga per roti adalah 6000
-  //             { jenis: 'Roti Keju', jumlah: 15, harga: 8000 }, // Harga per roti adalah 8000
-  //             { jenis: 'Roti Coklat', jumlah: 25, harga: 7500 }, // Harga per roti adalah 7500
-  //         ],
-  //         totalHargaRoti: '',
-  //         status: 'Delivered',
-  //     },
-  //     {
-  //         id: 3,
-  //         namaLapak: 'Lapak 3',
-  //         alamatLapak: 'Jl. Lapak 3, Kota C',
-  //         jenisRoti: [
-  //             { jenis: 'Roti Lapis', jumlah: 28, harga: 5500 }, // Harga per roti adalah 5500
-  //             { jenis: 'Roti Pisang', jumlah: 42, harga: 6500 }, // Harga per roti adalah 6500
-  //         ],
-  //         status: 'Delivered',
-  //     },
-  // ])
+  const [data, setData] = useState([
+    {
+      id: 1,
+      namaLapak: "Lapak 1",
+      alamatLapak: "Jl. Lapak 1, Kota A",
+      jenisRoti: [
+        { jenis: "Roti Tawar", jumlah: 50, harga: 5000 }, // Harga per roti adalah 5000
+        { jenis: "Roti Manis", jumlah: 30, harga: 7000 }  // Harga per roti adalah 7000
+      ],
+      totalHargaRoti: '',
+      status: "Delivered"
+    },
+    {
+      id: 2,
+      namaLapak: "Lapak 2",
+      alamatLapak: "Jl. Lapak 2, Kota B",
+      jenisRoti: [
+        { jenis: "Roti Gandum", jumlah: 20, harga: 6000 },   // Harga per roti adalah 6000
+        { jenis: "Roti Keju", jumlah: 15, harga: 8000 },      // Harga per roti adalah 8000
+        { jenis: "Roti Coklat", jumlah: 25, harga: 7500 }     // Harga per roti adalah 7500
+      ],
+      totalHargaRoti: '',
+      status: "Delivered"
+    },
+    {
+      id: 3,
+      namaLapak: "Lapak 3",
+      alamatLapak: "Jl. Lapak 3, Kota C",
+      jenisRoti: [
+        { jenis: "Roti Lapis", jumlah: 28, harga: 5500 },     // Harga per roti adalah 5500
+        { jenis: "Roti Pisang", jumlah: 42, harga: 6500 }     // Harga per roti adalah 6500
+      ],
+      status: "Delivered"
+    }
+  ]);
   const navigate = useNavigate()
   const [modalRoti, setModalRoti] = useState(false)
   const [modalRotiBasi, setModalRotiBasi] = useState(false)
@@ -72,43 +74,26 @@ const DaftarPengiriman = () => {
     setModalRoti(true)
   }
 
-  useEffect(() => {
-    handleDataTransaksi()
-  }, [])
-
-  const [dataTransaksi, setDataTransaksi] = useState([])
-  function handleDataTransaksi() {
-    axios
-      .get('http://localhost:8000/api/kurir/transaksi')
-      .then((response) => {
-        console.log(response.data)
-        setDataTransaksi(response.data)
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error)
-      })
-  }
-
   function handleModalRotiBasi() {
     console.log(modalRoti)
     setModalRotiBasi(true)
   }
 
-  const [dataDenganTotalHarga, setDataDenganTotalHarga] = useState([])
+  const [dataDenganTotalHarga, setDataDenganTotalHarga] = useState([]);
   useEffect(() => {
-    const newDataDenganTotalHarga = dataTransaksi.map((item) => {
-      const totalHargaRoti = item.transaksi_roti.reduce((total, roti) => {
-        return total + roti.jumlah_roti * roti.roti.harga_satuan_roti
-      }, 0)
-
+    const newDataDenganTotalHarga = data.map(item => {
+      const totalHargaRoti = item.jenisRoti.reduce((total, roti) => {
+        return total + roti.jumlah * roti.harga;
+      }, 0);
       return {
         ...item,
-        totalHargaRoti: totalHargaRoti,
-      }
-    })
+        totalHargaRoti: totalHargaRoti
+      };
+    });
 
-    setDataDenganTotalHarga(newDataDenganTotalHarga)
-  }, [dataTransaksi])
+    setDataDenganTotalHarga(newDataDenganTotalHarga);
+  }, [data]);
+
 
   return (
     <>
@@ -131,82 +116,73 @@ const DaftarPengiriman = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {dataDenganTotalHarga.length === 0 ? (
-                <tr>
-                  <td colSpan="9" className="text-center">
-                    Tidak ada data.
-                  </td>
-                </tr>
-              ) : (
-                dataDenganTotalHarga
-                  //.filter((item) => item.status === 'Delivered')
-                  .map((item, index) => {
-                    const isLast = index === dataDenganTotalHarga.length - 1
-                    return (
-                      <CTableRow key={index}>
-                        <CTableDataCell>{index + 1}</CTableDataCell>
-                        <CTableDataCell>{item.lapak.nama_lapak}</CTableDataCell>
-                        <CTableDataCell>{item.lapak.alamat_lapak}</CTableDataCell>
-                        <CTableDataCell>
-                          <CButton
-                            color="primary"
-                            variant="outline"
-                            className="ms-2"
-                            title="Daftar Roti"
-                            onClick={() => handleModalRoti()}
-                          >
-                            <CIcon icon={cilSearch} className="mx-12 me-2" />
-                            Open Detail
-                          </CButton>
-                        </CTableDataCell>
-                        <CTableDataCell>{item.totalHargaRoti}</CTableDataCell>
-                        <CTableDataCell>
-                          <CButton
-                            color="primary"
-                            variant="outline"
-                            className="ms-2"
-                            title="Daftar Roti Basi"
-                            onClick={() => handleModalRotiBasi()}
-                          >
-                            <CIcon icon={cilPen} className="mx-12 me-2" />
-                            Input Roti Basi
-                          </CButton>
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CFormTextarea
-                            id="catatan"
-                            name="catatan"
-                            // value={catatan}
-                            // onChange={handleCatatanChange}
-                            placeholder="Masukkan catatan Anda di sini..."
-                          />
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CButton
-                            color="warning"
-                            className="ms-2"
-                            title="status"
-                            disabled
-                            onClick={'#'}
-                          >
-                            {item.status}
-                          </CButton>
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CButton
-                            color="primary"
-                            variant="outline"
-                            className="ms-2"
-                            title="submit"
-                            onClick={'#'}
-                          >
-                            Submit
-                          </CButton>
-                        </CTableDataCell>
-                      </CTableRow>
-                    )
-                  })
-              )}
+              {dataDenganTotalHarga.map((item, index) => {
+                const isLast = index === dataDenganTotalHarga.length - 1
+
+                return (
+                  <CTableRow key={index}>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableDataCell>{item.namaLapak}</CTableDataCell>
+                    <CTableDataCell>{item.alamatLapak}</CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        className="ms-2"
+                        title="Daftar Roti"
+                        onClick={() => handleModalRoti()}
+                      >
+                        <CIcon icon={cilSearch} className="mx-12 me-2" />
+                        Open Detail
+                      </CButton>
+                    </CTableDataCell>
+                    <CTableDataCell>{item.totalHargaRoti}</CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        className="ms-2"
+                        title="Daftar Roti Basi"
+                        onClick={() => handleModalRotiBasi()}
+                      >
+                        <CIcon icon={cilPen} className="mx-12 me-2" />
+                        Input Roti Basi
+                      </CButton>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CFormTextarea
+                        id="catatan"
+                        name="catatan"
+                        // value={catatan}
+                        // onChange={handleCatatanChange}
+                        placeholder="Masukkan catatan Anda di sini..."
+                      />
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="warning"
+                        className="ms-2"
+                        title="status"
+                        disabled
+                        onClick={'#'}
+                      >
+                        {item.status}
+                      </CButton>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        className="ms-2"
+                        title="submit"
+                        onClick={'#'}
+                      >
+                        Submit
+                      </CButton>
+                    </CTableDataCell>
+                  </CTableRow>
+                )
+              })}
             </CTableBody>
           </CTable>
         </CCardBody>
@@ -232,20 +208,20 @@ const DaftarPengiriman = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {dataTransaksi.length === 0 ? (
+              {data.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="text-center">
                     Tidak ada data.
                   </td>
                 </tr>
               ) : (
-                dataTransaksi.map((item) =>
-                  item.transaksi_roti.map((transaksi_roti, index) => (
+                data.map((item) =>
+                  item.jenisRoti.map((jenisRotiItem, index) => (
                     <CTableRow key={index}>
-                      <CTableDataCell>{transaksi_roti.roti.nama_roti}</CTableDataCell>
-                      <CTableDataCell>{transaksi_roti.jumlah_roti}</CTableDataCell>
+                      <CTableDataCell>{jenisRotiItem.jenis}</CTableDataCell>
+                      <CTableDataCell>{jenisRotiItem.jumlah}</CTableDataCell>
                     </CTableRow>
-                  )),
+                  ))
                 )
               )}
             </CTableBody>
@@ -285,18 +261,18 @@ const DaftarPengiriman = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {dataTransaksi.length === 0 ? (
+              {data.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="text-center">
                     Tidak ada data.
                   </td>
                 </tr>
               ) : (
-                dataTransaksi.map((item) =>
-                  item.transaksi_roti.map((transaksi_roti, index) => (
+                data.map((item) =>
+                  item.jenisRoti.map((jenisRotiItem, index) => (
                     <CTableRow key={index}>
-                      <CTableDataCell>{transaksi_roti.roti.nama_roti}</CTableDataCell>
-                      <CTableDataCell>{transaksi_roti.jumlah_roti}</CTableDataCell>
+                      <CTableDataCell>{jenisRotiItem.jenis}</CTableDataCell>
+                      <CTableDataCell>{jenisRotiItem.jumlah}</CTableDataCell>
                       <CTableDataCell>
                         <CForm>
                           <CFormInput
@@ -312,7 +288,7 @@ const DaftarPengiriman = () => {
                         </CForm>
                       </CTableDataCell>
                     </CTableRow>
-                  )),
+                  ))
                 )
               )}
             </CTableBody>
@@ -332,7 +308,7 @@ const DaftarPengiriman = () => {
               <CSpinner color="info" size="sm" />
             </CButton>
           ) : (
-            <CButton color="primary" onClick="#">
+            <CButton color="primary" onClick='#'>
               Selesai
             </CButton>
           )}
