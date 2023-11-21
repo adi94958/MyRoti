@@ -118,6 +118,13 @@ class TransaksiSeeder extends Seeder
                 'bukti_pengiriman' => 'bukti15',
                 'status' => 'ready'
             ],
+            [
+                'kode_lapak' => '1',
+                'id_kurir' => '1',
+                'tanggal_pengiriman' => now(),
+                'bukti_pengiriman' => 'bukti3',
+                'status' => 'delivered'
+            ],
         ]);
     }
 }
