@@ -132,7 +132,8 @@ const DataPengiriman = () => {
                           </CButton>
                         </CTableDataCell>
                       </CTableRow>
-                    )))}
+                    ))
+                  )}
                 </CTableBody>
               </CTable>
             </CCardBody>

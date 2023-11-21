@@ -170,75 +170,77 @@ const DataPengiriman = () => {
                         Tidak ada data.
                       </td>
                     </tr>
-                  ) : (filteredData.map((lapak, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color="primary"
-                          variant="outline"
-                          className="ms-2"
-                          title="Daftar Roti"
-                          onClick={() => handleRotiClick(lapak)}
+                  ) : (
+                    filteredData.map((lapak, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{index + 1}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            className="ms-2"
+                            title="Daftar Roti"
+                            onClick={() => handleRotiClick(lapak)}
+                          >
+                            <CIcon icon={cilSearch} className="mx-12 me-2" />
+                            Open Detail
+                          </CButton>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <CFormInput
+                              type="file"
+                              size="sm"
+                              id="formFileSm"
+                              accept="image/jpeg, image/jpg, image/png"
+                              onChange={(e) => handleFoto(e, index)}
+                              disabled={lapak.status === 'ready'}
+                              style={{ width: '60%' }}
+                            />
+                            <CButton
+                              variant="outline"
+                              size="sm"
+                              className="mx-2"
+                              onClick={() => handleFile(index)}
+                              disabled={lapak.status === 'ready'}
+                            >
+                              Lihat
+                            </CButton>
+                            <CButton
+                              variant="outline"
+                              size="sm"
+                              className="mx-1"
+                              onClick={() => handleSubmit(lapak, index)}
+                              disabled={lapak.status === 'ready'}
+                            >
+                              Submit Foto
+                            </CButton>
+                          </div>
+                        </CTableDataCell>
+                        <CTableDataCell
+                          style={{
+                            color:
+                              lapak.status === 'ready'
+                                ? 'green' // Assuming 'ready' status should display green text
+                                : 'red',
+                          }}
                         >
-                          <CIcon icon={cilSearch} className="mx-12 me-2" />
-                          Open Detail
-                        </CButton>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <CFormInput
-                            type="file"
-                            size="sm"
-                            id="formFileSm"
-                            accept="image/jpeg, image/jpg, image/png"
-                            onChange={(e) => handleFoto(e, index)}
-                            disabled={lapak.status === 'ready'}
-                            style={{ width: '60%' }}
-                          />
+                          {lapak.status}
+                        </CTableDataCell>
+                        <CTableDataCell>
                           <CButton
                             variant="outline"
-                            size="sm"
-                            className="mx-2"
-                            onClick={() => handleFile(index)}
-                            disabled={lapak.status === 'ready'}
+                            onClick={() => handleStatus(lapak)}
+                            disabled={lapak.status === 'on delivery'}
                           >
-                            Lihat
+                            Accept
                           </CButton>
-                          <CButton
-                            variant="outline"
-                            size="sm"
-                            className="mx-1"
-                            onClick={() => handleSubmit(lapak, index)}
-                            disabled={lapak.status === 'ready'}
-                          >
-                            Submit Foto
-                          </CButton>
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell
-                        style={{
-                          color:
-                            lapak.status === 'ready'
-                              ? 'green' // Assuming 'ready' status should display green text
-                              : 'red',
-                        }}
-                      >
-                        {lapak.status}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          variant="outline"
-                          onClick={() => handleStatus(lapak)}
-                          disabled={lapak.status === 'on delivery'}
-                        >
-                          Accept
-                        </CButton>
-                      </CTableDataCell>
-                    </CTableRow>
-                  )))}
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
+                  )}
                 </CTableBody>
               </CTable>
             </CCardBody>
