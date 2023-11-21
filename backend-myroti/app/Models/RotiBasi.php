@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RotiBasi extends Model
 {
     use HasFactory;
-    use HasFactory;
     protected $table = 'rotibasi'; 
     public $timestamps = false;
     protected $fillable = [
@@ -21,4 +20,10 @@ class RotiBasi extends Model
     {
         return $this->belongsTo(DataPenjualan::class, 'id_penjualan', 'id_penjualan');
     }
+    // Di dalam model RotiBasi
+    public function roti()
+    {
+        return $this->belongsTo(Roti::class, 'kode_roti', 'kode_roti');
+    }
+
 }

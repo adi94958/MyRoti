@@ -11,12 +11,14 @@ class DataPenjualan extends Model
 
     protected $table = 'datapenjualan'; 
     protected $primaryKey = 'id_penjualan'; 
+    public $timestamps = false;
     protected $fillable = [
         'id_transaksi',
-        'tanggal_pengiriman',
-        'bukti_pengiriman',
+        'tanggal_pengambilan',
+        'total_harga',
+        'total_dengan_rotibasi',
         'uang_setoran',
-        'catatan_penjual',
+        'catatan_penjual'
     ];
 
     //hubungan FK ke PM
@@ -25,6 +27,10 @@ class DataPenjualan extends Model
         return $this->belongsTo(Transaksi::class, 'id_transaksi', 'id_transaksi');
     }
 
+    public function rotibasi()
+    {
+        return $this->hasMany(RotiBasi::class, 'id_penjualan', 'id_penjualan');
+    }
 
 
 }

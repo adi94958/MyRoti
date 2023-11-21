@@ -18,6 +18,7 @@ class Lapak extends Model
         'nama_lapak',
         'area_id',
         'id_kurir',
+        'no_telp',
         'alamat_lapak',
     ];
 

@@ -68,36 +68,36 @@ const FormPengiriman = () => {
   }
 
   const handleJumlahRoti = (item, event, index) => {
-    const jumlahRoti = parseInt(event.target.value, 10);
-    const newData = [...inputDataRotiArray];
+    const inputValue = event.target.value
+    const jumlahRoti = inputValue !== '' ? parseInt(inputValue, 10) : 0 // Mengonversi nilai input menjadi integer, atau set nilai 0 jika input kosong
+    const newData = [...inputDataRotiArray]
     newData[index] = {
       ...newData[index],
-      jumlah_roti: jumlahRoti >= 0 ? jumlahRoti : 0,
+      jumlah_roti: jumlahRoti,
       kode_roti: item.kode_roti,
       nama_roti: item.nama_roti,
       rasa_roti: item.rasa_roti,
       harga_satuan_roti: item.harga_satuan_roti,
       stok_roti: item.stok_roti,
-    };
-    setInputDataRotiArray(newData);
-  };
+    }
+    setInputDataRotiArray(newData)
+  }
 
   const tambahRoti = () => {
     const isValid = inputDataRotiArray.every(
-      (item, index) => item.jumlah_roti <= dataRoti[index].stok_roti && item.jumlah_roti > 0
-    );
+      (item, index) => item.jumlah_roti <= dataRoti[index].stok_roti && item.jumlah_roti > 0,
+    )
     if (isValid) {
-      console.log('masuk');
-      const newDataArray = [...inputDataRotiArray];
-      setDataArray(newDataArray);
-      setModalRoti(false);
-      navigate('/pengiriman/kelola/kirim');
+      const newDataArray = inputDataRotiArray.filter((item) => item.jumlah_roti > 0)
+      setDataArray(newDataArray)
+      setModalRoti(false)
+      navigate('/pengiriman/kelola/kirim')
     } else {
       alert(
-        'Jumlah roti harus lebih dari 0 dan tidak boleh melebihi stok yang tersedia. Silakan periksa kembali jumlah roti yang dimasukkan.'
-      );
+        'Ada jumlah roti yang melebihi stok yang tersedia atau memiliki nilai 0. Silakan periksa kembali jumlah roti yang dimasukkan.',
+      )
     }
-  };
+  }
 
   const handleDeleteRoti = (data, index) => {
     Swal.fire({
@@ -110,10 +110,11 @@ const FormPengiriman = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const updatedDataRoti = [...dataArray]
-        const updatedInputDataRoti = [...inputDataRotiArray]
+        // const updatedInputDataRoti = [...inputDataRotiArray];
         updatedDataRoti.splice(index, 1)
-        updatedInputDataRoti.splice(index, 1)
+        //updatedInputDataRoti.splice(index, 1);
         setDataArray(updatedDataRoti)
+        //setInputDataRotiArray(updatedInputDataRoti); // Memastikan bahwa indeks di kedua array sesuai
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
       }
     })
@@ -122,8 +123,9 @@ const FormPengiriman = () => {
   const handleSubmitTransaksi = async (e) => {
     e.preventDefault()
     setLoading(true)
-    const kodeRotiArray = dataArray.map((item) => item.kode_roti.toString())
-    const jumlahRotiArray = dataArray.map((item) => item.jumlah_roti)
+    const nonZeroDataArray = dataArray.filter((item) => item.jumlah_roti > 0)
+    const kodeRotiArray = nonZeroDataArray.map((item) => item.kode_roti.toString())
+    const jumlahRotiArray = nonZeroDataArray.map((item) => item.jumlah_roti)
     const transaksi = {
       kode_roti: kodeRotiArray,
       jumlah_roti: jumlahRotiArray,
@@ -215,7 +217,7 @@ const FormPengiriman = () => {
                       <CTableHeaderCell>Rasa Roti</CTableHeaderCell>
                       <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
                       <CTableHeaderCell>Harga Satuan</CTableHeaderCell>
-                      <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+                      <CTableHeaderCell>Aksi</CTableHeaderCell>
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
@@ -331,7 +333,8 @@ const FormPengiriman = () => {
                           size="sm"
                           name="jumlah_roti"
                           value={
-                            (inputDataRotiArray[index] && inputDataRotiArray[index].jumlah_roti) ?? 0
+                            (inputDataRotiArray[index] && inputDataRotiArray[index].jumlah_roti) ??
+                            0
                           }
                           onChange={(e) => handleJumlahRoti(item, e, index)}
                           required

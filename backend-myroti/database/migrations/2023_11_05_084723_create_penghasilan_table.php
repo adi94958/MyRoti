@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('penghasilan', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_penjualan')->constrained('datapenjualan', 'id_penjualan');
-            $table->integer('id_kurir');  
-            $table->integer('penghasilan');
+            $table->bigIncrements('id_penghasilan');
+            $table->integer('id_kurir')->constrained('datapenjualan', 'id_penjualan');  
+            $table->date('tanggal_pengiriman')->default(now());
+            $table->float('penghasilan');
         });
     }
 

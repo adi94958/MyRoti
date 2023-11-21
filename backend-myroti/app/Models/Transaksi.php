@@ -19,6 +19,7 @@ class Transaksi extends Model
         'kode_lapak',
         'id_kurir',
         'tanggal_pengiriman',
+        'bukti_pengiriman',
         'status'
     ];
 
@@ -27,10 +28,15 @@ class Transaksi extends Model
         return $this->belongsTo(Lapak::class, 'kode_lapak', 'kode_lapak');
     }
 
-    // public function dataPenjualan()
+    // public function Kurir(): BelongsTo
     // {
-    //     return $this->hasMany(DataPenjualan::class, 'id_transaksi', 'id_transaksi');
+    //     return $this->belongsTo(Kurir::class, 'id_kurir', 'id_kurir');
     // }
+
+    public function dataPenjualan()
+    {
+        return $this->hasOne(DataPenjualan::class, 'id_transaksi', 'id_transaksi');
+    }
 
     public function transaksi_roti()
     {
