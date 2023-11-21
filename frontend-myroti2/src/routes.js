@@ -49,11 +49,19 @@ const Riwayat = React.lazy(() => import('./views/kurir/Riwayat'))
 const PengirimanKurir = React.lazy(() => import('./views/kurir/KurirPengiriman'))
 const DaftarPengiriman = React.lazy(() => import('./views/kurir/DaftarPengiriman'))
 
+// Keuangan
+const Keuangan = React.lazy(() => import('./views/Keuangan/DataKeuangan'))
+
+// Pemilik
+const Pemilik = React.lazy(() => import('./views/Pemilik/DataPemilik'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/admin', name: 'Admin', exact: true, element: KelolaDataKoordinator },
   { path: '/koordinator', name: 'Koordinator', exact: true, element: Pengiriman },
   { path: '/kurir', name: 'Kurir', exact: true, element: PengirimanKurir },
+  { path: '/keuangan', name: 'Keuangan', exact: true, element: Keuangan },
+  { path: '/pemilik', name: 'Pemilik', exact: true, element: Pemilik },
   { path: '/kurir/daftar-pengiriman', name: 'Daftar Pengiriman Kurir', element: DaftarPengiriman },
   { path: '/kurir/pengiriman', name: 'Pengiriman Kurir', element: PengirimanKurir },
   { path: '/admin/koordinator', name: 'Koordinator', element: KelolaDataKoordinator },

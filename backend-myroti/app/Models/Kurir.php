@@ -33,6 +33,11 @@ class Kurir extends Authenticatable
         return $this->hasOne(Lapak::class, 'id_kurir', 'id_kurir');
     }
 
+    public function Transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'id_kurir', 'id_kurir');
+    }
+
     public function penghasilan()
     {
         return $this->hasMany(Penghasilan::class, 'id_kurir', 'id_kurir');

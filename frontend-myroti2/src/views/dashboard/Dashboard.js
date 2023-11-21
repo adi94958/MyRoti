@@ -6,6 +6,8 @@ import navAdmin from 'src/navAdmin'
 import sidebarContentAtom from 'src/recoil/sidebarContentRecoil'
 import navKoordinator from 'src/navKoordinator'
 import navKurir from 'src/navKurir'
+import navKeuangan from 'src/navKeuangan'
+import navPemilik from 'src/navPemilik'
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -26,9 +28,11 @@ const Dashboard = () => {
         setSidebar(navKurir)
         navigate('/kurir')
       } else if (infoLogin.user_type === 'keuangan') {
-        setSidebar(navAdmin)
+        setSidebar(navKeuangan)
+        navigate('/keuangan')
       } else if (infoLogin.user_type === 'pemilik') {
-        setSidebar(navAdmin)
+        setSidebar(navPemilik)
+        navigate('/pemilik')
       }
     }
   }, [])

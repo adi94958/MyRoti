@@ -196,7 +196,7 @@ class TransaksiController extends Controller
         ]);
 
     }
-
+    
     public function uploadbukti(Request $request, $id_transaksi)
     {
         $transaksi = Transaksi::find($id_transaksi);

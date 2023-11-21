@@ -23,15 +23,18 @@ import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
 import sidebarShow from '../recoil/sidebarRecoil'
+import axios from 'axios'
 
 const AppHeader = () => {
   const [showSidebar, setShowSidebar] = useRecoilState(sidebarShow)
   const [Login, setLogin] = useState([])
   const [open, setOpen] = useState(false)
   const [showPenghasilan, setShowPenghasilan] = useState(false)
+  const [Penghasilan, setPenghasilan] = useState([])
+  const [PenghasilanHarian, setPenghasilanHarian] = useState(0)
   const navigate = useNavigate()
 
-  const penghasilan = 50000
+  const today = new Date().toISOString().slice(0, 10)
 
   useEffect(() => {
     const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
@@ -40,14 +43,40 @@ const AppHeader = () => {
       navigate('/login')
     }
 
-    if (infoLogin.user_type == 'kurir') {
+    if (infoLogin.user_type === 'kurir') {
       setShowPenghasilan(true)
+      handleDataPenghasilan(infoLogin.id)
     } else {
       setShowPenghasilan(false)
     }
   }, [])
 
+  const handleDataPenghasilan = (LoginId) => {
+    axios
+      .get('http://localhost:8000/api/kurir/penghasilan/' + LoginId)
+      .then((response) => {
+        console.log(response.data.penghasilan)
+        setPenghasilan(response.data.penghasilan)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error)
+      })
+  }
+
+  const penghasilanHariIni = Penghasilan.filter((item) => {
+    return item.tanggal_pengiriman === today
+  })
+
   const handlePenghasilan = () => {
+    if (penghasilanHariIni.length > 0) {
+      const formattedPenghasilan = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+      }).format(penghasilanHariIni[0].penghasilan)
+      setPenghasilanHarian(formattedPenghasilan)
+    } else {
+      setPenghasilanHarian(0) // Set to 0 if no data found for today
+    }
     setOpen(true)
   }
 
@@ -92,7 +121,6 @@ const AppHeader = () => {
       </CHeader>
       {open && (
         <CModal
-          size="md"
           alignment="top"
           visible={open}
           onClose={() => setOpen(false)}
@@ -101,7 +129,7 @@ const AppHeader = () => {
           <CModalHeader>
             <CModalTitle id="VerticallyCenteredExample">Penghasilan Harian</CModalTitle>
           </CModalHeader>
-          <CModalBody>Penghasilan Hari Ini: Rp. {penghasilan}</CModalBody>
+          <CModalBody>Penghasilan Hari Ini: {PenghasilanHarian}</CModalBody>
           <CModalFooter>
             <CButton color="secondary" onClick={() => setOpen(false)}>
               Close
