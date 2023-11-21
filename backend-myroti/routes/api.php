@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\KeuanganController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataKurirController;
@@ -83,5 +84,10 @@ Route::get('/kurir/riwayat', [RiwayatTransaksiController::class, 'RiwayatTransak
 Route::get('/kurir/riwayat-transaksi/{id}', [RiwayatTransaksiController::class, 'detailRoti']);
 Route::get('/kurir/penghasilan/{id}', [DataKurirController::class, 'getPenghasilan']);
 
+// Keuangan routes here
+Route::get('/keuangan/kurir', [KeuanganController::class, 'getDataKeuangan']);
+
 // Pemilik routes here
 Route::get('/pemilik/income', [PemilikController::class, 'getOwnerIncome']);
+Route::get('/pemilik/minggu', [PemilikController::class, 'getDataPerMinggu']);
+Route::get('/pemilik/bulan', [PemilikController::class, 'getDataPerBulan']);
