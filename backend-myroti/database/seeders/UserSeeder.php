@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
         DB::table('admins')->insert([
-            'username' => 'admin2',
+            'username' => 'admin',
             'password' => Crypt::encryptString('admin2'),
             'user_type' => 'admin',
             'created_at' => Carbon::now()->subDays(15),
@@ -178,7 +178,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir16',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir16'),
                 'nama' => Str::random(5),
                 'area_id' => 10,
                 'user_type' => 'kurir',
@@ -187,7 +187,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir17',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 11,
                 'user_type' => 'kurir',
@@ -196,7 +196,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir18',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 11,
                 'user_type' => 'kurir',
@@ -205,7 +205,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir19',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 12,
                 'user_type' => 'kurir',
@@ -214,7 +214,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir20',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 12,
                 'user_type' => 'kurir',
@@ -223,7 +223,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir21',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 13,
                 'user_type' => 'kurir',
@@ -232,7 +232,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir22',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 13,
                 'user_type' => 'kurir',
@@ -241,7 +241,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir23',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 14,
                 'user_type' => 'kurir',
@@ -250,7 +250,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir24',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 14,
                 'user_type' => 'kurir',
@@ -259,7 +259,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir25',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 15,
                 'user_type' => 'kurir',
@@ -268,7 +268,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir26',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 16,
                 'user_type' => 'kurir',
@@ -277,7 +277,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir27',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 17,
                 'user_type' => 'kurir',
@@ -286,7 +286,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir28',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 17,
                 'user_type' => 'kurir',
@@ -295,7 +295,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir29',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 18,
                 'user_type' => 'kurir',
@@ -304,7 +304,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir30',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 18,
                 'user_type' => 'kurir',
@@ -313,7 +313,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir31',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 19,
                 'user_type' => 'kurir',
@@ -322,7 +322,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir32',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 19,
                 'user_type' => 'kurir',
@@ -331,7 +331,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir33',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 20,
                 'user_type' => 'kurir',
@@ -340,7 +340,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir34',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 20,
                 'user_type' => 'kurir',
@@ -349,7 +349,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir35',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 21,
                 'user_type' => 'kurir',
@@ -358,7 +358,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir36',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 22,
                 'user_type' => 'kurir',
@@ -367,7 +367,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir37',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 22,
                 'user_type' => 'kurir',
@@ -376,7 +376,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir38',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 23,
                 'user_type' => 'kurir',
@@ -385,7 +385,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir39',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 24,
                 'user_type' => 'kurir',
@@ -394,7 +394,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir40',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 24,
                 'user_type' => 'kurir',
@@ -403,7 +403,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir41',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 25,
                 'user_type' => 'kurir',
@@ -412,7 +412,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir42',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 25,
                 'user_type' => 'kurir',
@@ -421,7 +421,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir43',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 26,
                 'user_type' => 'kurir',
@@ -430,7 +430,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir44',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 27,
                 'user_type' => 'kurir',
@@ -439,7 +439,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir45',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 28,
                 'user_type' => 'kurir',
@@ -448,7 +448,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir46',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 28,
                 'user_type' => 'kurir',
@@ -457,7 +457,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir47',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 29,
                 'user_type' => 'kurir',
@@ -466,7 +466,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir48',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 30,
                 'user_type' => 'kurir',
@@ -475,7 +475,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir49',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 30,
                 'user_type' => 'kurir',
@@ -484,7 +484,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir50',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 31,
                 'user_type' => 'kurir',
@@ -493,7 +493,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir51',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 31,
                 'user_type' => 'kurir',
@@ -502,7 +502,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir52',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 32,
                 'user_type' => 'kurir',
@@ -511,7 +511,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir53',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 32,
                 'user_type' => 'kurir',
@@ -520,7 +520,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir54',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 33,
                 'user_type' => 'kurir',
@@ -529,7 +529,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir55',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 34,
                 'user_type' => 'kurir',
@@ -538,7 +538,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir56',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 35,
                 'user_type' => 'kurir',
@@ -547,7 +547,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir57',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 36,
                 'user_type' => 'kurir',
@@ -556,7 +556,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir58',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 37,
                 'user_type' => 'kurir',
@@ -565,7 +565,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir59',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 38,
                 'user_type' => 'kurir',
@@ -574,7 +574,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir60',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 39,
                 'user_type' => 'kurir',
@@ -583,7 +583,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir61',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 41,
                 'user_type' => 'kurir',
@@ -592,7 +592,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir62',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 41,
                 'user_type' => 'kurir',
@@ -601,7 +601,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir63',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 41,
                 'user_type' => 'kurir',
@@ -610,7 +610,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir64',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 42,
                 'user_type' => 'kurir',
@@ -619,7 +619,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir65',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 43,
                 'user_type' => 'kurir',
@@ -628,7 +628,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir66',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 44,
                 'user_type' => 'kurir',
@@ -637,7 +637,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir67',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 45,
                 'user_type' => 'kurir',
@@ -646,7 +646,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir68',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 46,
                 'user_type' => 'kurir',
@@ -655,7 +655,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir69',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 47,
                 'user_type' => 'kurir',
@@ -664,7 +664,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kurir70',
-                'password' => bcrypt(Str::random(10)),
+                'password' => Crypt::encryptString('kurir15'),
                 'nama' => Str::random(5),
                 'area_id' => 48,
                 'user_type' => 'kurir',

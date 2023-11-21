@@ -16,9 +16,11 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
+  CInputGroup,
+  CFormInput
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilPen, cilTrash, cilUserPlus } from '@coreui/icons'
+import { cilPen, cilTrash, cilUserPlus, cilSearch } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
 const KelolaDataDataRoti = () => {
@@ -77,16 +79,23 @@ const KelolaDataDataRoti = () => {
     })
   }
 
-  const filteredData = dataRoti.filter((user) => {
-    return (
-      searchText === '' ||
-      user.kode_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.nama_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.stok_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.rasa_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.harga_satuan_roti.toLowerCase().includes(searchText.toLowerCase())
-    )
-  })
+  const filteredData = dataRoti.filter((roti) => {
+    const searchableFields = [
+      'kode_roti',
+      'nama_roti',
+      'stok_roti',
+      'rasa_roti',
+      'harga_satuan_roti',
+    ];
+
+    return searchText === '' || searchableFields.some((field) => {
+      const fieldValue = roti[field];
+
+      // Check if the field value is a string before applying toLowerCase()
+      return typeof fieldValue === 'string' && fieldValue.toLowerCase().includes(searchText.toLowerCase());
+    });
+  });
+
   return (
     <div>
       <CRow>
@@ -97,6 +106,19 @@ const KelolaDataDataRoti = () => {
               <CForm className="mb-3">
                 <CRow>
                   <CCol md={8} xs={6}>
+                    <CInputGroup>
+                      <CFormInput
+                        type="text"
+                        placeholder="Search..."
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                      />
+                      <CButton variant="outline" className="ms-2">
+                        <CIcon icon={cilSearch} />
+                      </CButton>
+                    </CInputGroup>
+                  </CCol>
+                  <CCol md={4} xs={6}>
                     <Link to="/roti/tambah">
                       <CButton variant="outline">
                         <CIcon icon={cilUserPlus} className="mx-8" />
@@ -109,7 +131,7 @@ const KelolaDataDataRoti = () => {
               <CTable striped bordered responsive>
                 <CTableHead>
                   <CTableRow>
-                    <CTableHeaderCell>Kode Roti</CTableHeaderCell>
+                    <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Nama Roti</CTableHeaderCell>
                     <CTableHeaderCell>Stok Roti</CTableHeaderCell>
                     <CTableHeaderCell>Rasa Roti</CTableHeaderCell>
@@ -125,9 +147,9 @@ const KelolaDataDataRoti = () => {
                       </td>
                     </tr>
                   ) : (
-                    filteredData.map((user) => (
-                      <CTableRow key={user.id}>
-                        <CTableDataCell>{user.kode_roti}</CTableDataCell>
+                    filteredData.map((user, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{index + 1}</CTableDataCell>
                         <CTableDataCell>{user.nama_roti}</CTableDataCell>
                         <CTableDataCell>{user.stok_roti}</CTableDataCell>
                         <CTableDataCell>{user.rasa_roti}</CTableDataCell>

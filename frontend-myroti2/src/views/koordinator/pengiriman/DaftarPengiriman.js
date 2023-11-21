@@ -213,8 +213,8 @@ const DaftarPengiriman = () => {
                             lapak.status === 'ready'
                               ? 'green' // Assuming 'ready' status should display green text
                               : lapak.status === 'on delivery'
-                              ? 'red' // 'on delivery' status will display red text
-                              : 'blue',
+                                ? 'red' // 'on delivery' status will display red text
+                                : 'blue',
                         }}
                       >
                         {lapak.status}

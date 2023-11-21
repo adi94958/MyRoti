@@ -142,7 +142,7 @@ const DaftarPengiriman = () => {
     }
   }
 
-  const handleSubmit = async (item, index) => {
+  const handleSubmit = async (item) => {
     const kodeRotiArray = inputDataRotiBasi.map((roti) => roti.kode_roti)
     const jumlahRotiArray = inputDataRotiBasi.map((roti) => roti.jumlah_roti)
 
@@ -277,7 +277,7 @@ const DaftarPengiriman = () => {
                           variant="outline"
                           className="ms-2"
                           title="submit"
-                          onClick={() => handleSubmit(lapak, index)}
+                          onClick={() => handleSubmit(lapak)}
                         >
                           Submit
                         </CButton>

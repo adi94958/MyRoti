@@ -11,14 +11,19 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CForm,
+  CInputGroup,
+  CFormInput,
+  CCol,
+  CRow,
+  CForm
 } from '@coreui/react'
-import { cilCart } from '@coreui/icons'
+import { cilCart, cilSearch } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useNavigate } from 'react-router-dom'
 
 const Pengiriman = () => {
   const [data, setData] = useState([])
+  const [searchText, setSearchText] = useState('') //State untuk seatch
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -50,25 +55,59 @@ const Pengiriman = () => {
     navigate('/pengiriman/kelola/kirim')
   }
 
+  const filteredData = data.filter((lapak) => {
+    const searchableFields = [
+      'nama_lapak',
+      'nama_kurir',
+    ];
+
+    return searchText === '' || searchableFields.some((field) => {
+      const fieldValue = lapak[field];
+
+      // Check if the field value is a string before applying toLowerCase()
+      return typeof fieldValue === 'string' && fieldValue.toLowerCase().includes(searchText.toLowerCase());
+    });
+  });
+
   return (
     <CCard>
       <CCardHeader>Data Pengiriman</CCardHeader>
       <CCardBody>
-        <CForm className="mb-3"></CForm>
+        <CForm className="mb-3">
+          <CRow>
+            <CCol md={8} xs={6}>
+              <CInputGroup>
+                <CFormInput
+                  type="text"
+                  placeholder="Search..."
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                />
+                <CButton variant="outline" className="ms-2">
+                  <CIcon icon={cilSearch} />
+                </CButton>
+              </CInputGroup>
+            </CCol>
+          </CRow>
+        </CForm>
         <CTable striped bordered responsive>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell>No.</CTableHeaderCell>
+              <CTableHeaderCell>No</CTableHeaderCell>
               <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
               <CTableHeaderCell>Kurir</CTableHeaderCell>
               <CTableHeaderCell>Action</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {data.map((item, index) => {
-              const isLast = index === data.length - 1
-
-              return (
+            {filteredData.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="text-center">
+                  Tidak ada data.
+                </td>
+              </tr>
+            ) : (
+              filteredData.map((item, index) => (
                 <CTableRow key={index}>
                   <CTableDataCell>{index + 1}</CTableDataCell>
                   <CTableDataCell>{item.nama_lapak}</CTableDataCell>
@@ -85,8 +124,8 @@ const Pengiriman = () => {
                     </CButton>
                   </CTableDataCell>
                 </CTableRow>
-              )
-            })}
+              ))
+            )}
           </CTableBody>
         </CTable>
       </CCardBody>
