@@ -43,7 +43,6 @@ class LapakController extends Controller
                     'area_id' => $area->area_id,
                     'id_kurir' => $kurir->id_kurir,
                     'alamat_lapak' => $request->alamat_lapak,
-                    'status' => 'enable'
                 ]);
                 return response()->json(['message' => 'Lapak berhasil didaftarkan']);
             }
