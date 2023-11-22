@@ -16,9 +16,11 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
+  CInputGroup,
+  CFormInput,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilPen, cilTrash, cilUserPlus } from '@coreui/icons'
+import { cilPen, cilTrash, cilUserPlus, cilSearch } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
 const Lapak = () => {
@@ -80,14 +82,20 @@ const Lapak = () => {
     })
   }
 
-  const filteredData = dataLapak.filter((user) => {
+  const filteredData = dataLapak.filter((lapak) => {
+    const searchableFields = ['kode_lapak', 'nama_lapak', 'nama_kurir', 'area', 'alamat_lapak']
+
     return (
       searchText === '' ||
-      user.kode_lapak.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.nama_lapak.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.nama_kurir.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.area.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.alamat_lapak.toLowerCase().includes(searchText.toLowerCase())
+      searchableFields.some((field) => {
+        const fieldValue = lapak[field]
+
+        // Check if the field value is a string before applying toLowerCase()
+        return (
+          typeof fieldValue === 'string' &&
+          fieldValue.toLowerCase().includes(searchText.toLowerCase())
+        )
+      })
     )
   })
 
@@ -101,6 +109,19 @@ const Lapak = () => {
               <CForm className="mb-3">
                 <CRow>
                   <CCol md={8} xs={6}>
+                    <CInputGroup>
+                      <CFormInput
+                        type="text"
+                        placeholder="Search..."
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                      />
+                      <CButton variant="outline" className="ms-2">
+                        <CIcon icon={cilSearch} />
+                      </CButton>
+                    </CInputGroup>
+                  </CCol>
+                  <CCol md={4} xs={6}>
                     <Link to="/lapak/tambah">
                       <CButton variant="outline">
                         <CIcon icon={cilUserPlus} className="mx-8" />
@@ -128,8 +149,8 @@ const Lapak = () => {
                       </td>
                     </tr>
                   ) : (
-                    filteredData.map((user) => (
-                      <CTableRow key={user.id}>
+                    filteredData.map((user, index) => (
+                      <CTableRow key={index}>
                         <CTableDataCell>{user.nama_lapak}</CTableDataCell>
                         <CTableDataCell>{user.area_distribusi}</CTableDataCell>
                         <CTableDataCell>{user.alamat_lapak}</CTableDataCell>

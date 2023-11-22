@@ -69,33 +69,87 @@ const FormPengiriman = () => {
 
   const handleJumlahRoti = (item, event, index) => {
     const inputValue = event.target.value
-    const jumlahRoti = inputValue !== '' ? parseInt(inputValue, 10) : 0 // Mengonversi nilai input menjadi integer, atau set nilai 0 jika input kosong
-    const newData = [...inputDataRotiArray]
-    newData[index] = {
-      ...newData[index],
-      jumlah_roti: jumlahRoti,
-      kode_roti: item.kode_roti,
-      nama_roti: item.nama_roti,
-      rasa_roti: item.rasa_roti,
-      harga_satuan_roti: item.harga_satuan_roti,
-      stok_roti: item.stok_roti,
-    }
-    setInputDataRotiArray(newData)
+    const jumlahRoti = inputValue !== '' ? parseInt(inputValue, 10) : 0
+
+    setInputDataRotiArray((prevData) => {
+      const newData = prevData.map((existingItem) => {
+        // Jika kode roti sudah ada dalam array, lakukan pembaruan
+        if (existingItem.kode_roti === item.kode_roti) {
+          return {
+            ...existingItem,
+            jumlah_roti: jumlahRoti,
+            kode_roti: item.kode_roti,
+            nama_roti: item.nama_roti,
+            rasa_roti: item.rasa_roti,
+            harga_satuan_roti: item.harga_satuan_roti,
+            stok_roti: item.stok_roti,
+            // tambahkan properti lain yang perlu diperbarui
+          }
+        }
+        // Jika kode roti belum ada dalam array, tambahkan item baru
+        return existingItem
+      })
+
+      // Jika kode roti belum ada dalam array, tambahkan item baru
+      if (!newData.some((existingItem) => existingItem.kode_roti === item.kode_roti)) {
+        newData.push({
+          jumlah_roti: jumlahRoti,
+          kode_roti: item.kode_roti,
+          nama_roti: item.nama_roti,
+          rasa_roti: item.rasa_roti,
+          harga_satuan_roti: item.harga_satuan_roti,
+          stok_roti: item.stok_roti,
+        })
+      }
+
+      console.log(newData) // Output yang diperbarui
+      return newData
+    })
   }
 
   const tambahRoti = () => {
-    const isValid = inputDataRotiArray.every(
-      (item, index) => item.jumlah_roti <= dataRoti[index].stok_roti && item.jumlah_roti > 0,
-    )
+    const isValid = inputDataRotiArray.every((item) => {
+      const stokRoti = dataRoti.find((roti) => roti.kode_roti === item.kode_roti).stok_roti
+      return item.jumlah_roti <= stokRoti && item.jumlah_roti > 0
+    })
+
     if (isValid) {
       const newDataArray = inputDataRotiArray.filter((item) => item.jumlah_roti > 0)
       setDataArray(newDataArray)
       setModalRoti(false)
       navigate('/pengiriman/kelola/kirim')
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer
+          toast.onmouseleave = Swal.resumeTimer
+        },
+      })
+      Toast.fire({
+        icon: 'success',
+        title: 'Berhasil Pilih Roti',
+      })
     } else {
-      alert(
-        'Ada jumlah roti yang melebihi stok yang tersedia atau memiliki nilai 0. Silakan periksa kembali jumlah roti yang dimasukkan.',
-      )
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 7000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer
+          toast.onmouseleave = Swal.resumeTimer
+        },
+      })
+      Toast.fire({
+        icon: 'warning',
+        title:
+          'Ada jumlah roti yang melebihi stok yang tersedia atau jumlah roti belum diisi. Silakan periksa kembali jumlah roti yang dimasukan!',
+      })
     }
   }
 
@@ -110,32 +164,61 @@ const FormPengiriman = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const updatedDataRoti = [...dataArray]
-        // const updatedInputDataRoti = [...inputDataRotiArray];
         updatedDataRoti.splice(index, 1)
-        //updatedInputDataRoti.splice(index, 1);
         setDataArray(updatedDataRoti)
-        //setInputDataRotiArray(updatedInputDataRoti); // Memastikan bahwa indeks di kedua array sesuai
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
       }
     })
   }
-
   const handleSubmitTransaksi = async (e) => {
     e.preventDefault()
-    setLoading(true)
+
     const nonZeroDataArray = dataArray.filter((item) => item.jumlah_roti > 0)
+
+    if (nonZeroDataArray.length === 0) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer
+          toast.onmouseleave = Swal.resumeTimer
+        },
+      })
+      Toast.fire({
+        icon: 'warning',
+        title: 'Silakan untuk memilih roti yang akan di kirim!',
+      })
+      return
+    }
+
+    setLoading(true)
+
     const kodeRotiArray = nonZeroDataArray.map((item) => item.kode_roti.toString())
     const jumlahRotiArray = nonZeroDataArray.map((item) => item.jumlah_roti)
+
     const transaksi = {
       kode_roti: kodeRotiArray,
       jumlah_roti: jumlahRotiArray,
     }
 
-    axios
-      .post(
-        `http://localhost:8000/api/koordinator/transaksi/create/${formData.kode_lapak}`,
-        transaksi,
-      )
+    axios.post(
+      `http://localhost:8000/api/koordinator/transaksi/create/${formData.kode_lapak}`,
+      transaksi,
+    )
+    Swal.fire({
+      title: 'Berhasil',
+      text: `Berhasil melakukan pengiriman`,
+      icon: 'success',
+      confirmButtonText: 'OK',
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/pengiriman/kelola'
+        }
+      })
       .then((response) => {
         console.log('Cart sent successfully', response.data)
         localStorage.removeItem('dataTransaksi')
@@ -199,16 +282,14 @@ const FormPengiriman = () => {
             <CCard className="mt-4">
               <CCardHeader>Data Roti</CCardHeader>
               <CCardBody>
-                <CForm className="mb-3">
-                  <CRow>
-                    <CCol md={8} xs={6}>
-                      <CButton variant="outline" onClick={handleRotiModal}>
-                        <CIcon icon={cilBurger} className="mx-8 me-2" />
-                        Pilih Roti
-                      </CButton>
-                    </CCol>
-                  </CRow>
-                </CForm>
+                <CRow>
+                  <CCol md={8} xs={6}>
+                    <CButton variant="outline" onClick={handleRotiModal}>
+                      <CIcon icon={cilBurger} className="mx-8 me-2" />
+                      Pilih Roti
+                    </CButton>
+                  </CCol>
+                </CRow>
                 <CTable striped bordered responsive>
                   <CTableHead>
                     <CTableRow>
@@ -229,7 +310,7 @@ const FormPengiriman = () => {
                       </tr>
                     ) : (
                       dataArray.map((item, index) => (
-                        <CTableRow key={item.id}>
+                        <CTableRow key={index}>
                           <CTableDataCell>{index + 1}</CTableDataCell>
                           <CTableDataCell>{item.nama_roti}</CTableDataCell>
                           <CTableDataCell>{item.rasa_roti}</CTableDataCell>
@@ -304,7 +385,7 @@ const FormPengiriman = () => {
           <CTable striped bordered responsive>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell>Kode Roti</CTableHeaderCell>
+                <CTableHeaderCell>No</CTableHeaderCell>
                 <CTableHeaderCell>Nama Roti</CTableHeaderCell>
                 <CTableHeaderCell>Stok Roti</CTableHeaderCell>
                 <CTableHeaderCell>Rasa Roti</CTableHeaderCell>
@@ -320,25 +401,27 @@ const FormPengiriman = () => {
                   </td>
                 </tr>
               ) : (
-                dataRoti.map((item, index) => (
-                  <CTableRow key={item.id}>
-                    <CTableDataCell>{item.kode_roti}</CTableDataCell>
-                    <CTableDataCell>{item.nama_roti}</CTableDataCell>
-                    <CTableDataCell>{item.stok_roti}</CTableDataCell>
-                    <CTableDataCell>{item.rasa_roti}</CTableDataCell>
-                    <CTableDataCell>{item.harga_satuan_roti}</CTableDataCell>
+                dataRoti.map((roti, index) => (
+                  <CTableRow key={index}>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableDataCell>{roti.nama_roti}</CTableDataCell>
+                    <CTableDataCell>{roti.stok_roti}</CTableDataCell>
+                    <CTableDataCell>{roti.rasa_roti}</CTableDataCell>
+                    <CTableDataCell>{roti.harga_satuan_roti}</CTableDataCell>
                     <CTableDataCell>
                       <CForm>
                         <CFormInput
                           size="sm"
                           name="jumlah_roti"
                           value={
-                            (inputDataRotiArray[index] && inputDataRotiArray[index].jumlah_roti) ??
+                            (inputDataRotiArray.find((item) => item.kode_roti === roti.kode_roti) &&
+                              inputDataRotiArray.find((item) => item.kode_roti === roti.kode_roti)
+                                .jumlah_roti) ??
                             0
                           }
-                          onChange={(e) => handleJumlahRoti(item, e, index)}
+                          onChange={(e) => handleJumlahRoti(roti, e)}
                           required
-                        ></CFormInput>
+                        />
                       </CForm>
                     </CTableDataCell>
                   </CTableRow>

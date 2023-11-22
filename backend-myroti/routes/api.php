@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\KeuanganController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataKurirController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\DataRotiController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DataKeuanganController;
 use App\Http\Controllers\DataPemilikController;
+use App\Http\Controllers\PemilikController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\RiwayatTransaksiController;
 
@@ -47,7 +49,6 @@ Route::delete('/keuangan/delete/{id}', [DataKeuanganController::class, 'deleteKe
 
 
 // Koordinator routes here
-Route::get('/dashboard/koordinator', [DashboardController::class, 'koordinatorDashboard']);
 Route::get('/koordinator/lapak', [LapakController::class, 'readDataLapak']);
 Route::post('/koordinator/lapak/registrasi', [LapakController::class, 'registerLapak']);
 Route::put('/koordinator/lapak/update/{id}', [LapakController::class, 'updateLapak']);
@@ -78,7 +79,16 @@ Route::get('/kurir/transaksi/{id}', [PenjualanController::class, 'totalharga']);
 Route::post('/kurir/penjualan/{id}', [PenjualanController::class, 'createPenjualan']);
 
 // Kurir routes here
-Route::get('/kurir/riwayat', [TransaksiController::class, 'RiwayatTransaksiKurir']);
-Route::get('/kurir/penghasilan/{id}', [DataKurirController::class, 'getPenghasilan']);
-Route::get('/kurir/riwayat-transaksi/{id_transaksi}', [RiwayatTransaksiController::class, 'detailRoti']);
 
+Route::get('/kurir/riwayat', [RiwayatTransaksiController::class, 'RiwayatTransaksiKurir']);
+Route::get('/kurir/riwayat-transaksi/{id}', [RiwayatTransaksiController::class, 'detailRoti']);
+Route::get('/kurir/datapenjualan', [RiwayatTransaksiController::class, 'readDataPenjualan']);
+Route::get('/kurir/penghasilan/{id}', [DataKurirController::class, 'getPenghasilan']);
+
+// Keuangan routes here
+Route::get('/keuangan/kurir', [KeuanganController::class, 'getDataKeuangan']);
+
+// Pemilik routes here
+Route::get('/pemilik/income', [PemilikController::class, 'getOwnerIncome']);
+Route::get('/pemilik/minggu', [PemilikController::class, 'getDataPerMinggu']);
+Route::get('/pemilik/bulan', [PemilikController::class, 'getDataPerBulan']);

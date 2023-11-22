@@ -27,6 +27,12 @@ const FormUpdateKurir = React.lazy(() => import('./views/admin/kurir/FormUpdateK
 // Pengiriman
 const Pengiriman = React.lazy(() => import('./views/koordinator/pengiriman/Pengiriman'))
 const FormPengiriman = React.lazy(() => import('./views/koordinator/pengiriman/FormPengiriman'))
+const DaftarPengirimanKoor = React.lazy(() =>
+  import('./views/koordinator/pengiriman/DaftarPengiriman'),
+)
+const RiwayatPengiriman = React.lazy(() =>
+  import('./views/koordinator/pengiriman/RiwayatPengiriman'),
+)
 
 // Roti
 const Roti = React.lazy(() => import('./views/koordinator/roti/DataRoti'))
@@ -43,11 +49,19 @@ const Riwayat = React.lazy(() => import('./views/kurir/Riwayat'))
 const PengirimanKurir = React.lazy(() => import('./views/kurir/KurirPengiriman'))
 const DaftarPengiriman = React.lazy(() => import('./views/kurir/DaftarPengiriman'))
 
+// Keuangan
+const Keuangan = React.lazy(() => import('./views/Keuangan/DataKeuangan'))
+
+// Pemilik
+const Pemilik = React.lazy(() => import('./views/Pemilik/DataPemilik'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/admin', name: 'Admin', exact: true, element: KelolaDataKoordinator },
   { path: '/koordinator', name: 'Koordinator', exact: true, element: Pengiriman },
   { path: '/kurir', name: 'Kurir', exact: true, element: PengirimanKurir },
+  { path: '/keuangan', name: 'Keuangan', exact: true, element: Keuangan },
+  { path: '/pemilik', name: 'Pemilik', exact: true, element: Pemilik },
   { path: '/kurir/daftar-pengiriman', name: 'Daftar Pengiriman Kurir', element: DaftarPengiriman },
   { path: '/kurir/pengiriman', name: 'Pengiriman Kurir', element: PengirimanKurir },
   { path: '/admin/koordinator', name: 'Koordinator', element: KelolaDataKoordinator },
@@ -65,7 +79,8 @@ const routes = [
   { path: '/pengiriman', name: 'Pengiriman', element: Pengiriman },
   { path: '/pengiriman/kelola', name: 'Kelola Pengiriman', element: Pengiriman },
   { path: '/pengiriman/kelola/kirim', name: 'Form Pengiriman', element: FormPengiriman },
-  { path: '/pengiriman/list', name: 'Daftar Pengiriman', element: Pengiriman },
+  { path: '/pengiriman/list', name: 'Daftar Pengiriman', element: DaftarPengirimanKoor },
+  { path: '/pengiriman/riwayat', name: 'Riwayat Pengiriman', element: RiwayatPengiriman },
   { path: '/roti', name: 'Roti', element: Roti },
   { path: '/roti/update', name: 'Form Update Roti', element: FormUpdateRoti },
   { path: '/roti/tambah', name: 'Form Tambah Roti', element: FormTambahRoti },

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('no_telp', 15)->nullable();
             $table->foreignId('id_kurir')->constrained('kurirs', 'id_kurir');
             $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
-            $table->enum('status', ['enable', 'disable'])->default('enable');  
+            $table->enum('status', ['enable', 'disable'])->default('enable');
             $table->softDeletes();
             $table->timestamps();
         });

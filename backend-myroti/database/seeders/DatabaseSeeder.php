@@ -20,13 +20,14 @@ class DatabaseSeeder extends Seeder
         // ]);
 //         URUTAN SEEDER
         $this->call(AreaSeeder::class);
+        $this->call(RotiSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(LapakSeeder::class);
-        $this->call(RotiSeeder::class);
         $this->call(TransaksiSeeder::class);
         $this->call(KoordinatorSeeder::class);
         $this->call(TransaksiRotiSeeder::class);
         $this->call(DataPenjualanSeeder::class);
         $this->call(RotiBasiSeeder::class);
+        $this->call(PenghasilanSeeder::class);
     }
 }

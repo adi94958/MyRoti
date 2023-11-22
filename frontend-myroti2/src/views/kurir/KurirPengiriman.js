@@ -58,7 +58,7 @@ const DataPengiriman = () => {
   const filteredData = dataTransaksi.filter((lapak) => {
     const lapakName = lapak?.nama_lapak?.toString()?.toLowerCase() || ''
     const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
-    const isStatus = lapak?.status !== 'delivered' && lapak?.status !== 'closed'
+    const isStatus = lapak?.status !== 'delivered' && lapak?.status !== 'finished'
     const isKurirMatch = lapak?.id_kurir === kurir_id
     return lapakNameMatch && isStatus && isKurirMatch
   })
@@ -156,6 +156,7 @@ const DataPengiriman = () => {
                   <CTableRow>
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Alamat Lengkap</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
@@ -163,73 +164,83 @@ const DataPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {filteredData.map((lapak, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color="primary"
-                          variant="outline"
-                          className="ms-2"
-                          title="Daftar Roti"
-                          onClick={() => handleRotiClick(lapak)}
-                        >
-                          <CIcon icon={cilSearch} className="mx-12 me-2" />
-                          Open Detail
-                        </CButton>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <CFormInput
-                            type="file"
-                            size="sm"
-                            id="formFileSm"
-                            accept="image/jpeg, image/jpg, image/png"
-                            onChange={(e) => handleFoto(e, index)}
-                            disabled={lapak.status === 'ready'}
-                            style={{ width: '70%' }}
-                          />
+                  {filteredData.length === 0 ? (
+                    <tr>
+                      <td colSpan="9" className="text-center">
+                        Tidak ada data.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredData.map((lapak, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{index + 1}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
+                        <CTableDataCell>
                           <CButton
+                            color="primary"
                             variant="outline"
-                            size="sm"
-                            className="mx-2"
-                            onClick={() => handleFile(index)}
-                            disabled={lapak.status === 'ready'}
+                            className="ms-2"
+                            title="Daftar Roti"
+                            onClick={() => handleRotiClick(lapak)}
                           >
-                            Lihat
+                            <CIcon icon={cilSearch} className="mx-12 me-2" />
+                            Open Detail
                           </CButton>
-                          <CButton
-                            variant="outline"
-                            size="sm"
-                            className="mx-1"
-                            onClick={() => handleSubmit(lapak, index)}
-                            disabled={lapak.status === 'ready'}
-                          >
-                            Submit Foto
-                          </CButton>
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color={lapak.status === 'ready' ? 'success' : 'danger'}
-                          style={{ color: 'white' }}
-                          disabled
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <CFormInput
+                              type="file"
+                              size="sm"
+                              id="formFileSm"
+                              accept="image/jpeg, image/jpg, image/png"
+                              onChange={(e) => handleFoto(e, index)}
+                              disabled={lapak.status === 'ready'}
+                              style={{ width: '60%' }}
+                            />
+                            <CButton
+                              variant="outline"
+                              size="sm"
+                              className="mx-2"
+                              onClick={() => handleFile(index)}
+                              disabled={lapak.status === 'ready'}
+                            >
+                              Lihat
+                            </CButton>
+                            <CButton
+                              variant="outline"
+                              size="sm"
+                              className="mx-1"
+                              onClick={() => handleSubmit(lapak, index)}
+                              disabled={lapak.status === 'ready'}
+                            >
+                              Submit Foto
+                            </CButton>
+                          </div>
+                        </CTableDataCell>
+                        <CTableDataCell
+                          style={{
+                            color:
+                              lapak.status === 'ready'
+                                ? 'green' // Assuming 'ready' status should display green text
+                                : 'red',
+                          }}
                         >
                           {lapak.status}
-                        </CButton>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          variant="outline"
-                          onClick={() => handleStatus(lapak)}
-                          disabled={lapak.status === 'on delivery'}
-                        >
-                          Accept
-                        </CButton>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            variant="outline"
+                            onClick={() => handleStatus(lapak)}
+                            disabled={lapak.status === 'on delivery'}
+                          >
+                            Accept
+                          </CButton>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
+                  )}
                 </CTableBody>
               </CTable>
             </CCardBody>

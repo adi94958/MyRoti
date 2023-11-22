@@ -53,7 +53,7 @@ const Login = () => {
       })
       const infoLogin = response.data.user
       console.log(response)
-      if (infoLogin.user_type === 'admin') {
+      if (infoLogin && infoLogin.user_type === 'admin') {
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -76,7 +76,7 @@ const Login = () => {
             user_type: infoLogin.user_type,
           }),
         )
-      } else if (infoLogin.user_type === 'kurir') {
+      } else if (infoLogin && infoLogin.user_type === 'kurir') {
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
