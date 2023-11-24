@@ -48,6 +48,7 @@ const FormUpdateLapak = React.lazy(() => import('./views/koordinator/lapak/FormU
 const Riwayat = React.lazy(() => import('./views/kurir/Riwayat'))
 const PengirimanKurir = React.lazy(() => import('./views/kurir/KurirPengiriman'))
 const DaftarPengiriman = React.lazy(() => import('./views/kurir/DaftarPengiriman'))
+const EditKurir = React.lazy(() => import('./views/kurir/EditKurir'))
 
 // Keuangan
 const Keuangan = React.lazy(() => import('./views/Keuangan/DataKeuangan'))
@@ -88,6 +89,7 @@ const routes = [
   { path: '/lapak/update', name: 'Form Update Lapak', element: FormUpdateLapak },
   { path: '/lapak/tambah', name: 'Form Tambah Lapak', element: FormTambahLapak },
   { path: '/kurir/riwayat', name: 'Riwayat Kurir', element: Riwayat },
+  { path: '/kurir/edit', name: 'Edit Data', element: EditKurir },
 ]
 
 export default routes
