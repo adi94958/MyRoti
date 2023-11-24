@@ -38,16 +38,16 @@ const AppHeader = () => {
 
   useEffect(() => {
     const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
-    setLogin(infoLogin)
-    if (infoLogin === null) {
+    if (!infoLogin) {
       navigate('/login')
-    }
-
-    if (infoLogin.user_type === 'kurir') {
-      setShowPenghasilan(true)
-      handleDataPenghasilan(infoLogin.id)
     } else {
-      setShowPenghasilan(false)
+      setLogin(infoLogin)
+      if (infoLogin.user_type === 'kurir') {
+        setShowPenghasilan(true)
+        handleDataPenghasilan(infoLogin.id)
+      } else {
+        setShowPenghasilan(false)
+      }
     }
   }, [])
 
