@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Swal from 'sweetalert2'
 import {
   CModal,
   CModalHeader,
@@ -27,8 +25,7 @@ import {
   CPaginationItem,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilSearch, cilUserPlus } from '@coreui/icons'
-import { Link } from 'react-router-dom'
+import { cilSearch } from '@coreui/icons'
 
 const DataPengiriman = () => {
   const [searchText, setSearchText] = useState('')
@@ -100,7 +97,6 @@ const DataPengiriman = () => {
         status: 'on delivery',
       })
       .then(() => {
-        // The PUT request is successful, now you can refresh the data
         handleData()
       })
       .catch((error) => {
