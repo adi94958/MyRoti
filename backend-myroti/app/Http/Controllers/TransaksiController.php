@@ -40,11 +40,7 @@ class TransaksiController extends Controller
     {
         // $lapakDalamTransaksi = Transaksi::distinct()->pluck('kode_lapak')->toArray();
 
-        $datas = Lapak::where('status', 'enable')
-            ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
-            ->join('kurirs', 'lapak.id_kurir', '=', 'kurirs.id_kurir')
-            ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'areadistribusi.area_distribusi', 'kurirs.nama')
-            ->get();
+        $datas = Lapak::where('status', 'enable')->with('Kurir')->get();
 
         return response()->json($datas, 200);
     }

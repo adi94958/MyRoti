@@ -33,6 +33,7 @@ import { Link } from 'react-router-dom'
 const RiwayatPengiriman = () => {
   const [searchText, setSearchText] = useState('')
   const [dataRoti, setDataRoti] = useState([])
+  const [dataRotiBasi, setDataRotiBasi] = useState([])
   const [visible, setVisible] = useState(false)
   const [open, setOpen] = useState(false)
   const [foto, setFoto] = useState('')
@@ -44,7 +45,7 @@ const RiwayatPengiriman = () => {
 
   const handleData = () => {
     axios
-      .get('http://localhost:8000/api/kurir/transaksi')
+      .get('http://localhost:8000/api/kurir/riwayat')
       .then((response) => {
         console.log(response.data)
         setDataTransaksi(response.data)
@@ -64,26 +65,32 @@ const RiwayatPengiriman = () => {
     return formattedDate
   }
 
-  const filteredData = dataTransaksi.filter((lapak) => {
-    const lapakName = lapak?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
-    const kurirName = lapak?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
-    const status = lapak?.status?.toLowerCase() || ''
-    const tanggalPengiriman = formatDate(lapak.tanggal_pengiriman)
+  const filteredData = dataTransaksi.filter((penjualan) => {
+    const lapakName = penjualan?.transaksi?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
+    const kurirName = penjualan?.transaksi?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
+    const status = penjualan?.transaksi?.status?.toLowerCase() || ''
+    const tanggalPengiriman = formatDate(penjualan.tanggal_pengambilan)
 
     const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
     const kurirNameMatch = kurirName.includes(searchText.toLowerCase())
     const statusMatch = status.includes(searchText.toLowerCase())
     const tanggalPengirimanMatch = tanggalPengiriman.includes(searchText.toLowerCase())
 
-    const isStatus = lapak?.status !== 'closed'
-    return (lapakNameMatch || kurirNameMatch || statusMatch || tanggalPengirimanMatch) && isStatus
+    return (lapakNameMatch || kurirNameMatch || statusMatch || tanggalPengirimanMatch)
   })
 
-  const handleRotiClick = (lapak) => {
-    setDataRoti(lapak.transaksi_roti)
+  const handleRotiClick = (penjualan) => {
+    setDataRoti(penjualan.transaksi.transaksi_roti)
     setVisible(true)
     console.log(dataTransaksi)
     console.log(dataRoti)
+  }
+
+  const handleRotiBasiClick = (penjualan) => {
+    setDataRoti(penjualan.rotibasi)
+    setVisible(true)
+    console.log(dataTransaksi)
+    console.log(dataRotiBasi)
   }
 
   const handleFoto = (lapak) => {
@@ -158,7 +165,7 @@ const RiwayatPengiriman = () => {
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader>Data Pengiriman Kurir</CCardHeader>
+            <CCardHeader>Riwayat Pengiriman</CCardHeader>
             <CCardBody>
               <CForm className="mb-3">
                 <CRow>
@@ -183,8 +190,9 @@ const RiwayatPengiriman = () => {
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Kurir</CTableHeaderCell>
-                    <CTableHeaderCell>Tanggal Pengiriman</CTableHeaderCell>
+                    <CTableHeaderCell>Tanggal Pengambilan</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
+                    <CTableHeaderCell>Roti Basi</CTableHeaderCell>
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -202,7 +210,7 @@ const RiwayatPengiriman = () => {
                           size="sm"
                           className="ms-2"
                           title="Daftar Roti"
-                          onClick={() => handleRotiClick(lapak)}
+                          onClick={() => handleRotiClick(penjualan)}
                         >
                           <CIcon icon={cilSearch} className="mx-12 me-2" />
                           Open Detail
