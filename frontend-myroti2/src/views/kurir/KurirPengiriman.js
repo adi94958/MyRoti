@@ -292,62 +292,61 @@ const DataPengiriman = () => {
           </CCard>
         </CCol>
       </CRow>
-      {visible && (
-        <CModal
-          alignment="center"
-          visible={visible}
-          onClose={() => setVisible(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CTable striped bordered responsive>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell>Nama Roti</CTableHeaderCell>
-                  <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+      <CModal
+        backdrop="static"
+        visible={visible}
+        className="modal"
+        onClose={() => {
+          setVisible(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CTable striped bordered responsive>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>Nama Roti</CTableHeaderCell>
+                <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {dataRoti.map((roti, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
+                  <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
                 </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {dataRoti.map((roti, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
-                    <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setVisible(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
-      {open && (
-        <CModal
-          size="lg"
-          alignment="center"
-          visible={open}
-          onClose={() => setOpen(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setOpen(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
+              ))}
+            </CTableBody>
+          </CTable>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setVisible(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
+      <CModal
+        backdrop="static"
+        visible={open}
+        className="modal"
+        onClose={() => {
+          setOpen(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setOpen(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </div>
   )
 }

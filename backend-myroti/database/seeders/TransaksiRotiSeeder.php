@@ -40,7 +40,7 @@ class TransaksiRotiSeeder extends Seeder
                 'jumlah_roti' => '20',
             ],
             [
-                'id_transaksi' => '5',
+                'id_transaksi' => '6',
                 'kode_roti' => '6',
                 'jumlah_roti' => '20',
             ],
@@ -86,6 +86,11 @@ class TransaksiRotiSeeder extends Seeder
             ],
             [
                 'id_transaksi' => '15',
+                'kode_roti' => '19',
+                'jumlah_roti' => '20',
+            ],
+            [
+                'id_transaksi' => '16',
                 'kode_roti' => '19',
                 'jumlah_roti' => '20',
             ],

@@ -39,6 +39,7 @@ const Pengiriman = () => {
       .get('http://localhost:8000/api/koordinator/transaksi')
       .then((response) => {
         setData(response.data);
+        console.log(response.data)
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -51,7 +52,7 @@ const Pengiriman = () => {
       JSON.stringify({
         kode_lapak: item.kode_lapak,
         nama_lapak: item.nama_lapak,
-        nama_kurir: item.nama,
+        nama_kurir: item.kurir.nama,
       })
     );
     navigate('/pengiriman/kelola/kirim');
@@ -122,8 +123,8 @@ const Pengiriman = () => {
                   <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
                   <CTableDataCell>{item.nama_lapak}</CTableDataCell>
                   <CTableDataCell>{item.no_telp}</CTableDataCell>
-                  <CTableDataCell>{item.nama}</CTableDataCell>
-                  <CTableDataCell>{item.no_telp_kurir}</CTableDataCell>
+                  <CTableDataCell>{item.kurir.nama}</CTableDataCell>
+                  <CTableDataCell>{item.kurir.no_telp}</CTableDataCell>
                   <CTableDataCell>
                     <CButton
                       color="warning"

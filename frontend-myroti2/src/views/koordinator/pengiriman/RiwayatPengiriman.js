@@ -28,12 +28,10 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSearch, cilUserPlus, cilTrash } from '@coreui/icons'
-import { Link } from 'react-router-dom'
 
 const RiwayatPengiriman = () => {
   const [searchText, setSearchText] = useState('')
   const [dataRoti, setDataRoti] = useState([])
-  const [dataRotiBasi, setDataRotiBasi] = useState([])
   const [visible, setVisible] = useState(false)
   const [open, setOpen] = useState(false)
   const [foto, setFoto] = useState('')
@@ -45,7 +43,7 @@ const RiwayatPengiriman = () => {
 
   const handleData = () => {
     axios
-      .get('http://localhost:8000/api/kurir/riwayat')
+      .get('http://localhost:8000/api/kurir/transaksi')
       .then((response) => {
         console.log(response.data)
         setDataTransaksi(response.data)
@@ -65,32 +63,26 @@ const RiwayatPengiriman = () => {
     return formattedDate
   }
 
-  const filteredData = dataTransaksi.filter((penjualan) => {
-    const lapakName = penjualan?.transaksi?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
-    const kurirName = penjualan?.transaksi?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
-    const status = penjualan?.transaksi?.status?.toLowerCase() || ''
-    const tanggalPengiriman = formatDate(penjualan.tanggal_pengambilan)
+  const filteredData = dataTransaksi.filter((lapak) => {
+    const lapakName = lapak?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
+    const kurirName = lapak?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
+    const status = lapak?.status?.toLowerCase() || ''
+    const tanggalPengiriman = formatDate(lapak.tanggal_pengiriman)
 
     const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
     const kurirNameMatch = kurirName.includes(searchText.toLowerCase())
     const statusMatch = status.includes(searchText.toLowerCase())
     const tanggalPengirimanMatch = tanggalPengiriman.includes(searchText.toLowerCase())
 
-    return (lapakNameMatch || kurirNameMatch || statusMatch || tanggalPengirimanMatch)
+    const isStatus = lapak?.status !== 'finished'
+    return (lapakNameMatch || kurirNameMatch || statusMatch || tanggalPengirimanMatch) && isStatus
   })
 
-  const handleRotiClick = (penjualan) => {
-    setDataRoti(penjualan.transaksi.transaksi_roti)
+  const handleRotiClick = (lapak) => {
+    setDataRoti(lapak.transaksi_roti)
     setVisible(true)
     console.log(dataTransaksi)
     console.log(dataRoti)
-  }
-
-  const handleRotiBasiClick = (penjualan) => {
-    setDataRoti(penjualan.rotibasi)
-    setVisible(true)
-    console.log(dataTransaksi)
-    console.log(dataRotiBasi)
   }
 
   const handleFoto = (lapak) => {
@@ -131,31 +123,8 @@ const RiwayatPengiriman = () => {
     }
   }
 
-  const handleDelete = (data) => {
-    Swal.fire({
-      title: `Apakah anda yakin ingin menghapus transaksi lapak ${data.lapak.nama_lapak}?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Delete',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`http://localhost:8000/api/koordinator/transaksi/delete/${data.id_transaksi}`)
-          .then((response) => {
-            Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
-            window.location.href = '/pengiriman/list'
-          })
-          .catch((error) => {
-            console.error('Error deleting data:', error)
-          })
-      }
-    })
-  }
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Jumlah data per halaman
+  const itemsPerPage = 10;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = filteredData.slice(startIndex, endIndex);
@@ -165,7 +134,7 @@ const RiwayatPengiriman = () => {
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader>Riwayat Pengiriman</CCardHeader>
+            <CCardHeader>Data Pengiriman Kurir</CCardHeader>
             <CCardBody>
               <CForm className="mb-3">
                 <CRow>
@@ -190,9 +159,8 @@ const RiwayatPengiriman = () => {
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Kurir</CTableHeaderCell>
-                    <CTableHeaderCell>Tanggal Pengambilan</CTableHeaderCell>
+                    <CTableHeaderCell>Tanggal Pengiriman</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
-                    <CTableHeaderCell>Roti Basi</CTableHeaderCell>
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -210,7 +178,7 @@ const RiwayatPengiriman = () => {
                           size="sm"
                           className="ms-2"
                           title="Daftar Roti"
-                          onClick={() => handleRotiClick(penjualan)}
+                          onClick={() => handleRotiClick(lapak)}
                         >
                           <CIcon icon={cilSearch} className="mx-12 me-2" />
                           Open Detail
@@ -266,63 +234,61 @@ const RiwayatPengiriman = () => {
           </CCard>
         </CCol>
       </CRow>
-      {visible && (
-        <CModal
-          alignment="center"
-          visible={visible}
-          className="modal"
-          onClose={() => setVisible(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CTable striped bordered responsive>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell>Nama Roti</CTableHeaderCell>
-                  <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+      <CModal
+        backdrop="static"
+        visible={visible}
+        className="modal"
+        onClose={() => {
+          setVisible(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CTable striped bordered responsive>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>Nama Roti</CTableHeaderCell>
+                <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {dataRoti.map((roti, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
+                  <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
                 </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {dataRoti.map((roti, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
-                    <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setVisible(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
-      {open && (
-        <CModal
-          size="lg"
-          alignment="center"
-          visible={open}
-          onClose={() => setOpen(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setOpen(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
+              ))}
+            </CTableBody>
+          </CTable>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setVisible(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
+      <CModal
+        backdrop="static"
+        visible={open}
+        className="modal"
+        onClose={() => {
+          setOpen(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setOpen(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </div>
   )
 }

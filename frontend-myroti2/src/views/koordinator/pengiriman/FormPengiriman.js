@@ -45,6 +45,7 @@ const FormPengiriman = () => {
 
   useEffect(() => {
     const dataTransaksi = JSON.parse(localStorage.getItem('dataTransaksi'))
+    console.log(dataTransaksi)
     setFormData({
       ...formData,
       kode_lapak: dataTransaksi.kode_lapak,
