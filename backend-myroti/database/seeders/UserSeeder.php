@@ -6,14 +6,9 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
-
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DB::table('keuangans')->insert([
@@ -47,7 +42,7 @@ class UserSeeder extends Seeder
                 'nama' => 'Adrian',
                 'area_id' => '1',
                 'user_type' => 'kurir',
-                'no_telp'=> '09876543',
+                'no_telp' => '09876543',
                 'created_at' => now()->subDays(14),
                 'updated_at' => now(),
             ],

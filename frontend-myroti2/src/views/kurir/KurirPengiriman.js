@@ -23,6 +23,8 @@ import {
   CForm,
   CFormInput,
   CInputGroup,
+  CPagination,
+  CPaginationItem,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSearch, cilUserPlus } from '@coreui/icons'
@@ -127,6 +129,12 @@ const DataPengiriman = () => {
     }
   }
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Jumlah data per halaman
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+
   return (
     <div>
       <CRow>
@@ -164,16 +172,16 @@ const DataPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {filteredData.length === 0 ? (
+                  {paginatedData.length === 0 ? (
                     <tr>
-                      <td colSpan="9" className="text-center">
+                      <td colSpan="7" className="text-center">
                         Tidak ada data.
                       </td>
                     </tr>
                   ) : (
-                    filteredData.map((lapak, index) => (
+                    paginatedData.map((lapak, index) => (
                       <CTableRow key={index}>
-                        <CTableDataCell>{index + 1}</CTableDataCell>
+                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
                         <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
                         <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
                         <CTableDataCell>
@@ -243,6 +251,43 @@ const DataPengiriman = () => {
                   )}
                 </CTableBody>
               </CTable>
+              <CPagination
+                activePage={currentPage}
+                pages={Math.ceil(filteredData.length / itemsPerPage)}
+                onActivePageChange={setCurrentPage}
+                align="center"
+                doubleArrows={false} // Menghilangkan tombol "Garis ganda"
+              >
+                <CPaginationItem
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+                >
+                  Sebelumnya
+                </CPaginationItem>
+
+                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => (
+                  <CPaginationItem
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
+                    style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+                  >
+                    {index + 1}
+                  </CPaginationItem>
+                ))}
+
+                <CPaginationItem
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
+                  style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+                >
+                  Berikutnya
+                </CPaginationItem>
+              </CPagination>
+              <div className="text-muted mt-2">
+                Total Data: {filteredData.length}
+              </div>
             </CCardBody>
           </CCard>
         </CCol>
