@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-//         URUTAN SEEDER
+        //         URUTAN SEEDER
         $this->call(AreaSeeder::class);
         $this->call(RotiSeeder::class);
         $this->call(UserSeeder::class);
