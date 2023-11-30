@@ -28,15 +28,28 @@ import Swal from 'sweetalert2'
 
 const AppHeaderDropdown = () => {
   const [Login, setLogin] = useState([])
+  const [statusKurir, setStatusKurir] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
     const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
-    setLogin(infoLogin)
-    if (infoLogin === null) {
+    if (!infoLogin) {
       navigate('/login')
+    } else {
+      setLogin(infoLogin)
+      if (infoLogin.user_type === 'kurir') setStatusKurir(true)
     }
   }, [])
+
+  const handleEdit = () => {
+    localStorage.setItem(
+      'lsDataEditKurir',
+      JSON.stringify({
+        id_kurir: Login.id,
+      }),
+    )
+    navigate('/kurir/edit')
+  }
 
   const handleLogOut = () => {
     localStorage.removeItem('dataLogin')
@@ -65,6 +78,13 @@ const AppHeaderDropdown = () => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
+
+        {statusKurir && (
+          <CDropdownItem onClick={handleEdit}>
+            <CIcon icon={cilSettings} className="me-2" />
+            Edit Akun
+          </CDropdownItem>
+        )}
         <CDropdownItem onClick={handleLogOut}>
           <CIcon icon={cilBell} className="me-2" />
           Sign Out
