@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import {
   CButton,
   CCard,
@@ -18,32 +18,32 @@ import {
   CForm,
   CPagination,
   CPaginationItem,
-} from '@coreui/react';
-import { cilCart, cilSearch } from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
-import { useNavigate } from 'react-router-dom';
+} from '@coreui/react'
+import { cilCart, cilSearch } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
+import { useNavigate } from 'react-router-dom'
 
 const Pengiriman = () => {
-  const [data, setData] = useState([]);
-  const [searchText, setSearchText] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Jumlah data per halaman
-  const navigate = useNavigate();
+  const [data, setData] = useState([])
+  const [searchText, setSearchText] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10 // Jumlah data per halaman
+  const navigate = useNavigate()
 
   useEffect(() => {
-    handleData();
-  }, []);
+    handleData()
+  }, [])
 
   function handleData() {
     axios
       .get('http://localhost:8000/api/koordinator/transaksi')
       .then((response) => {
-        setData(response.data);
+        setData(response.data)
         console.log(response.data)
       })
       .catch((error) => {
-        console.error('Error:', error);
-      });
+        console.error('Error:', error)
+      })
   }
 
   function handleKirim(item) {
@@ -53,30 +53,30 @@ const Pengiriman = () => {
         kode_lapak: item.kode_lapak,
         nama_lapak: item.nama_lapak,
         nama_kurir: item.kurir.nama,
-      })
-    );
-    navigate('/pengiriman/kelola/kirim');
+      }),
+    )
+    navigate('/pengiriman/kelola/kirim')
   }
 
   const filteredData = data.filter((lapak) => {
-    const searchableFields = ['nama_lapak', 'nama_kurir'];
+    const searchableFields = ['nama_lapak', 'nama_kurir']
 
     return (
       searchText === '' ||
       searchableFields.some((field) => {
-        const fieldValue = lapak[field];
+        const fieldValue = lapak[field]
 
         return (
           typeof fieldValue === 'string' &&
           fieldValue.toLowerCase().includes(searchText.toLowerCase())
-        );
+        )
       })
-    );
-  });
+    )
+  })
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedData = filteredData.slice(startIndex, endIndex);
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedData = filteredData.slice(startIndex, endIndex)
 
   return (
     <CCard>
@@ -176,12 +176,10 @@ const Pengiriman = () => {
             Berikutnya
           </CPaginationItem>
         </CPagination>
-        <div className="text-muted mt-2">
-          Total Data: {filteredData.length}
-        </div>
+        <div className="text-muted mt-2">Total Data: {filteredData.length}</div>
       </CCardBody>
     </CCard>
-  );
-};
+  )
+}
 
-export default Pengiriman;
+export default Pengiriman

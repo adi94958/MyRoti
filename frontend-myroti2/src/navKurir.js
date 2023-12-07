@@ -1,10 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilCarAlt,
-  cilMoney,
-  cilNotes,
-} from '@coreui/icons'
+import { cilCarAlt, cilMoney, cilNotes } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const navKurir = [
@@ -29,7 +25,7 @@ const navKurir = [
     name: 'Riwayat Pengiriman',
     to: '/kurir/riwayat',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-  }
+  },
 ]
 
 export default navKurir

@@ -21,8 +21,8 @@ class TransaksiSeeder extends Seeder
                 'status' => 'finished'
             ],
             [
-                'kode_lapak' => '2',
-                'id_kurir' => '3',
+                'kode_lapak' => '1',
+                'id_kurir' => '1',
                 'tanggal_pengiriman' => now(),
                 'bukti_pengiriman' => 'bukti2',
                 'status' => 'finished'

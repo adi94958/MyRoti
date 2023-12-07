@@ -218,11 +218,11 @@ const DaftarPengiriman = () => {
     })
   }
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Jumlah data per halaman
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedData = filteredData.slice(startIndex, endIndex);
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10 // Jumlah data per halaman
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedData = filteredData.slice(startIndex, endIndex)
 
   return (
     <>
@@ -362,9 +362,7 @@ const DaftarPengiriman = () => {
               Berikutnya
             </CPaginationItem>
           </CPagination>
-          <div className="text-muted mt-2">
-            Total Data: {filteredData.length}
-          </div>
+          <div className="text-muted mt-2">Total Data: {filteredData.length}</div>
         </CCardBody>
       </CCard>
       <CModal

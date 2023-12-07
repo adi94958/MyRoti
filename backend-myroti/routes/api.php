@@ -15,6 +15,7 @@ use App\Http\Controllers\DataKeuanganController;
 use App\Http\Controllers\DataPemilikController;
 use App\Http\Controllers\PemilikController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\RiwayatTransaksiController;
 
 /*
@@ -64,6 +65,8 @@ Route::get('/koordinator/listtransaksi', [TransaksiController::class, 'readTrans
 Route::post('/koordinator/transaksi/create/{id}', [TransaksiController::class, 'createTransaksi']);
 Route::delete('/koordinator/transaksi/delete/{id_transaksi}', [TransaksiController::class, 'deleteTransaksi']);
 Route::get('/koordinator/{path}', [TransaksiController::class, 'getImage']);
+
+Route::get('/rekomendasi', [RekomendasiController::class, 'readRiwayatPenjualan']);
 
 Route::get('/area', [AreaController::class, 'readArea']);
 

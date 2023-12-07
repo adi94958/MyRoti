@@ -125,11 +125,11 @@ const DataPengiriman = () => {
     }
   }
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Jumlah data per halaman
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedData = filteredData.slice(startIndex, endIndex);
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10 // Jumlah data per halaman
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedData = filteredData.slice(startIndex, endIndex)
 
   return (
     <div>
@@ -262,16 +262,19 @@ const DataPengiriman = () => {
                   Sebelumnya
                 </CPaginationItem>
 
-                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => (
-                  <CPaginationItem
-                    key={index + 1}
-                    active={index + 1 === currentPage}
-                    onClick={() => setCurrentPage(index + 1)}
-                    style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
-                  >
-                    {index + 1}
-                  </CPaginationItem>
-                ))}
+                {Array.from(
+                  { length: Math.ceil(filteredData.length / itemsPerPage) },
+                  (_, index) => (
+                    <CPaginationItem
+                      key={index + 1}
+                      active={index + 1 === currentPage}
+                      onClick={() => setCurrentPage(index + 1)}
+                      style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+                    >
+                      {index + 1}
+                    </CPaginationItem>
+                  ),
+                )}
 
                 <CPaginationItem
                   onClick={() => setCurrentPage(currentPage + 1)}
@@ -281,9 +284,7 @@ const DataPengiriman = () => {
                   Berikutnya
                 </CPaginationItem>
               </CPagination>
-              <div className="text-muted mt-2">
-                Total Data: {filteredData.length}
-              </div>
+              <div className="text-muted mt-2">Total Data: {filteredData.length}</div>
             </CCardBody>
           </CCard>
         </CCol>
