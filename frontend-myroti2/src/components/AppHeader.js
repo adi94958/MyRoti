@@ -18,7 +18,7 @@ import {
   CButton,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
+import { cilMenu } from '@coreui/icons'
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
@@ -90,6 +90,7 @@ const AppHeader = () => {
           <AppBreadcrumb />
         </CContainer>
       </CHeader>
+<<<<<<< Updated upstream
       {open && (
         <CModal
           size="md"
@@ -109,6 +110,26 @@ const AppHeader = () => {
           </CModalFooter>
         </CModal>
       )}
+=======
+      <CModal
+        backdrop="static"
+        visible={open}
+        className="modal"
+        onClose={() => {
+          setOpen(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Penghasilan Harian</CModalTitle>
+        </CModalHeader>
+        <CModalBody>Penghasilan Hari Ini: {PenghasilanHarian}</CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setOpen(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
+>>>>>>> Stashed changes
     </>
   )
 }

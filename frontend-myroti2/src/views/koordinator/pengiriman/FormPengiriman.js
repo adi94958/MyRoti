@@ -199,6 +199,7 @@ const FormPengiriman = () => {
             <CCard className="mt-4">
               <CCardHeader>Data Roti</CCardHeader>
               <CCardBody>
+<<<<<<< Updated upstream
                 <CForm className="mb-3">
                   <CRow>
                     <CCol md={8} xs={6}>
@@ -209,6 +210,16 @@ const FormPengiriman = () => {
                     </CCol>
                   </CRow>
                 </CForm>
+=======
+                <CRow>
+                  <CCol md={8} xs={6} className='mb-3'>
+                    <CButton variant="outline" onClick={handleRotiModal}>
+                      <CIcon icon={cilBurger} className="mx-8 me-2" />
+                      Pilih Roti
+                    </CButton>
+                  </CCol>
+                </CRow>
+>>>>>>> Stashed changes
                 <CTable striped bordered responsive>
                   <CTableHead>
                     <CTableRow>

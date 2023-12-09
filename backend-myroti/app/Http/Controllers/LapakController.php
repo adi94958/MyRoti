@@ -16,7 +16,7 @@ class LapakController extends Controller
         $datas = Lapak::select('kode_lapak', 'nama_lapak', 'id_kurir', 'area_id', 'alamat_lapak')
             ->join('areadistribusi', 'lapak.area_id', '=', 'areadistribusi.area_id')
             ->join('kurirs', 'lapak.id_kurir', '=', 'kurirs.id_kurir')
-            ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'kurirs.nama', 'areadistribusi.area_distribusi', 'lapak.alamat_lapak', 'lapak.area_id', 'lapak.id_kurir', 'lapak.status')
+            ->select('lapak.kode_lapak', 'lapak.nama_lapak', 'kurirs.nama', 'areadistribusi.area_distribusi', 'lapak.no_telp', 'lapak.alamat_lapak', 'lapak.area_id', 'lapak.id_kurir', 'lapak.status')
             ->get();
 
         return response()->json($datas, 200);
@@ -29,7 +29,8 @@ class LapakController extends Controller
             'nama_lapak' => 'required',
             'area_id' => 'required',
             'id_kurir' => 'required',
-            'alamat_lapak' => 'required'
+            'alamat_lapak' => 'required',
+            'no_telp' => 'required'
         ]);
 
         $kurir = Kurir::where('id_kurir', $request->id_kurir)->first();
@@ -43,7 +44,11 @@ class LapakController extends Controller
                     'area_id' => $area->area_id,
                     'id_kurir' => $kurir->id_kurir,
                     'alamat_lapak' => $request->alamat_lapak,
+<<<<<<< Updated upstream
                     'status' => 'enable'
+=======
+                    'no_telp' => $request->no_telp
+>>>>>>> Stashed changes
                 ]);
                 return response()->json(['message' => 'Lapak berhasil didaftarkan']);
             }
@@ -63,6 +68,7 @@ class LapakController extends Controller
 
         $request->validate([
             'nama_lapak' => 'required',
+            'no_telp' => 'required',
             'id_kurir' => 'required',
             'area_id' => 'required',
             'alamat_lapak' => 'required'
@@ -73,6 +79,7 @@ class LapakController extends Controller
         if ($area) {
             $lapak->update([
                 'nama_lapak' => $request->nama_lapak,
+                'no_telp' => $request->no_telp,
                 'id_kurir' => $request->id_kurir,
                 'area_id' => $area->area_id,
                 'alamat_lapak' => $request->alamat_lapak

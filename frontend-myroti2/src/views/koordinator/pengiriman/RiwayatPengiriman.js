@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import {
@@ -21,12 +20,18 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
+  CFormLabel,
+  CFormSelect,
   CFormInput,
   CInputGroup,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+<<<<<<< Updated upstream
 import { cilSearch, cilUserPlus, cilTrash } from '@coreui/icons'
 import { Link } from 'react-router-dom'
+=======
+import { cilSearch } from '@coreui/icons'
+>>>>>>> Stashed changes
 
 const RiwayatPengiriman = () => {
   const [searchText, setSearchText] = useState('')
@@ -35,6 +40,9 @@ const RiwayatPengiriman = () => {
   const [open, setOpen] = useState(false)
   const [foto, setFoto] = useState('')
   const [dataTransaksi, setDataTransaksi] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const itemsPerPageOptions = [10, 25, 50, dataTransaksi.length]; // Jumlah data per halaman
 
   useEffect(() => {
     handleData()
@@ -122,6 +130,7 @@ const RiwayatPengiriman = () => {
     }
   }
 
+<<<<<<< Updated upstream
   const handleDelete = (data) => {
     Swal.fire({
       title: `Apakah anda yakin ingin menghapus transaksi lapak ${data.lapak.nama_lapak}?`,
@@ -144,6 +153,19 @@ const RiwayatPengiriman = () => {
       }
     })
   }
+=======
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+>>>>>>> Stashed changes
+
+  const handleItemsPerPageChange = (value) => {
+    setCurrentPage(1);
+    setItemsPerPage(value);
+  };
+
+  const startRange = startIndex + 1;
+  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
   return (
     <div>
@@ -167,6 +189,22 @@ const RiwayatPengiriman = () => {
                       </CButton>
                     </CInputGroup>
                   </CCol>
+                  <CCol md={2} xs={3}>
+                    <CFormLabel>Rows Per Page:</CFormLabel>
+                  </CCol>
+                  <CCol md={2} xs={3}>
+                    <CFormSelect
+                      className="form-select"
+                      value={itemsPerPage}
+                      onChange={(e) => handleItemsPerPageChange(parseInt(e.target.value))}
+                    >
+                      {itemsPerPageOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option === dataTransaksi.length ? 'All' : option}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                  </CCol>
                 </CRow>
               </CForm>
               <CTable striped bordered responsive>
@@ -181,6 +219,7 @@ const RiwayatPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
+<<<<<<< Updated upstream
                   {filteredData.map((lapak, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
@@ -209,6 +248,122 @@ const RiwayatPengiriman = () => {
                   ))}
                 </CTableBody>
               </CTable>
+=======
+                  {paginatedData.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="text-center">
+                        Tidak ada data.
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedData.map((lapak, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
+                        <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            size="sm"
+                            className="ms-2"
+                            title="Daftar Roti"
+                            onClick={() => handleRotiClick(lapak)}
+                          >
+                            <CIcon icon={cilSearch} className="mx-12 me-2" />
+                            Open Detail
+                          </CButton>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <CButton variant="outline" size="sm" onClick={() => handleFoto(lapak)}>
+                            Lihat
+                          </CButton>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
+                  )}
+                </CTableBody>
+              </CTable>
+              <CRow className='mt-2 mb-2'>
+                <CCol md={4} xs={8}>
+                  Total Rows: {filteredData.length} Page: {startRange} of {endRange}
+                </CCol>
+              </CRow>
+              <CPagination
+                activepage={currentPage}
+                pages={Math.ceil(filteredData.length / itemsPerPage)}
+                onActivePageChange={setCurrentPage}
+                align="center"
+                doublearrows="false"
+              >
+                <CPaginationItem
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Prev
+                </CPaginationItem>
+
+                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => {
+                  const pageIndex = index + 1;
+                  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+                  // Display three consecutive pages centered around the current page
+                  if (
+                    (pageIndex >= currentPage - 1 && pageIndex <= currentPage + 1) ||
+                    (totalPages <= 3 || (currentPage === 1 && pageIndex <= 3) || (currentPage === totalPages && pageIndex >= totalPages - 2))
+                  ) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        active={pageIndex === currentPage}
+                        onClick={() => setCurrentPage(pageIndex)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {pageIndex}
+                      </CPaginationItem>
+                    );
+                  }
+
+                  // Display ellipses for pages before the current page
+                  if (pageIndex === 1 && currentPage > 2) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        disabled
+                        style={{ cursor: 'default' }}
+                      >
+                        ...
+                      </CPaginationItem>
+                    );
+                  }
+
+                  // Display ellipses for pages after the current page
+                  if (pageIndex === totalPages && currentPage < totalPages - 1) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        disabled
+                        style={{ cursor: 'default' }}
+                      >
+                        ...
+                      </CPaginationItem>
+                    );
+                  }
+
+                  return null;
+                })}
+
+                <CPaginationItem
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Next
+                </CPaginationItem>
+              </CPagination>
+>>>>>>> Stashed changes
             </CCardBody>
           </CCard>
         </CCol>

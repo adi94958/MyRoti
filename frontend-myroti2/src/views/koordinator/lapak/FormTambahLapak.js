@@ -28,6 +28,7 @@ const FormTambahLapak = () => {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     nama_lapak: '',
+    no_telp: '',
     alamat: '',
   })
 
@@ -106,6 +107,7 @@ const FormTambahLapak = () => {
 
     const newLapak = {
       nama_lapak: formData.nama_lapak,
+      no_telp: formData.no_telp,
       area_id: selectedArea,
       alamat_lapak: formData.alamat,
       id_kurir: selectedKurir,
@@ -154,6 +156,18 @@ const FormTambahLapak = () => {
                     value={formData.nama_lapak}
                     required
                     onChange={(e) => setFormData({ ...formData, nama_lapak: e.target.value })}
+                  />
+                </CInputGroup>
+              </CCol>
+              <CCol xs={12}>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    name="no_telp"
+                    placeholder="No Telp"
+                    floatingLabel="No Telp"
+                    value={formData.no_telp}
+                    required
+                    onChange={(e) => setFormData({ ...formData, no_telp: e.target.value })}
                   />
                 </CInputGroup>
               </CCol>

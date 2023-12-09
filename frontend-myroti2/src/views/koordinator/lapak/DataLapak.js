@@ -16,6 +16,15 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
+<<<<<<< Updated upstream
+=======
+  CFormLabel,
+  CFormSelect,
+  CInputGroup,
+  CFormInput,
+  CPagination,
+  CPaginationItem,
+>>>>>>> Stashed changes
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPen, cilTrash, cilUserPlus } from '@coreui/icons'
@@ -25,6 +34,9 @@ const Lapak = () => {
   const [searchText, setSearchText] = useState('') //State untuk seatch
   const [dataLapak, setDataLapak] = useState([])
   const navigate = useNavigate()
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const itemsPerPageOptions = [10, 25, 50, dataLapak.length]; // Jumlah data per halaman
 
   useEffect(() => {
     // Menggunakan Axios untuk mengambil data dari API
@@ -46,6 +58,7 @@ const Lapak = () => {
       JSON.stringify({
         kode_lapak: data.kode_lapak,
         nama_lapak: data.nama_lapak,
+        no_telp: data.no_telp,
         nama_kurir: data.nama,
         id_kurir: data.id_kurir,
         area: data.area_distribusi,
@@ -80,6 +93,7 @@ const Lapak = () => {
     })
   }
 
+<<<<<<< Updated upstream
   const filteredData = dataLapak.filter((user) => {
     return (
       searchText === '' ||
@@ -91,6 +105,37 @@ const Lapak = () => {
     )
   })
 
+=======
+  const searchableFields = ['kode_lapak', 'nama_lapak', 'no_telp', 'nama', 'area_distribusi', 'alamat_lapak']
+
+  const filteredData = dataLapak.filter((lapak) => {
+    return (
+      searchText === '' ||
+      searchableFields.some((field) => {
+        const fieldValue = lapak[field];
+
+        // Check if the field value is a string before applying toLowerCase()
+        return (
+          typeof fieldValue === 'string' &&
+          fieldValue.toLowerCase().includes(searchText.toLowerCase())
+        );
+      })
+    );
+  });
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = itemsPerPage === dataLapak.length ? dataLapak.length : startIndex + itemsPerPage;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+
+  const handleItemsPerPageChange = (value) => {
+    setCurrentPage(1);
+    setItemsPerPage(value);
+  };
+
+  const startRange = startIndex + 1;
+  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
+
+>>>>>>> Stashed changes
   return (
     <div>
       <CRow>
@@ -100,7 +145,24 @@ const Lapak = () => {
             <CCardBody>
               <CForm className="mb-3">
                 <CRow>
+<<<<<<< Updated upstream
                   <CCol md={8} xs={6}>
+=======
+                  <CCol md={6} xs={8}>
+                    <CInputGroup>
+                      <CFormInput
+                        type="text"
+                        placeholder="Search..."
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                      />
+                      <CButton variant="outline" className="ms-2">
+                        <CIcon icon={cilSearch} />
+                      </CButton>
+                    </CInputGroup>
+                  </CCol>
+                  <CCol md={2} xs={4}>
+>>>>>>> Stashed changes
                     <Link to="/lapak/tambah">
                       <CButton variant="outline">
                         <CIcon icon={cilUserPlus} className="mx-8" />
@@ -108,12 +170,32 @@ const Lapak = () => {
                       </CButton>
                     </Link>
                   </CCol>
+                  <CCol md={2} xs={3}>
+                    <CFormLabel>Rows Per Page:</CFormLabel>
+                  </CCol>
+                  <CCol md={2} xs={3}>
+                    <CFormSelect
+                      className="form-select"
+                      value={itemsPerPage}
+                      onChange={(e) => handleItemsPerPageChange(parseInt(e.target.value))}
+                    >
+                      {itemsPerPageOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option === dataLapak.length ? 'All' : option}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                  </CCol>
                 </CRow>
               </CForm>
               <CTable striped bordered responsive>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
+<<<<<<< Updated upstream
+=======
+                    <CTableHeaderCell>No Telp</CTableHeaderCell>
+>>>>>>> Stashed changes
                     <CTableHeaderCell>Kecamatan</CTableHeaderCell>
                     <CTableHeaderCell>Alamat</CTableHeaderCell>
                     <CTableHeaderCell>Nama Kurir</CTableHeaderCell>
@@ -131,6 +213,10 @@ const Lapak = () => {
                     filteredData.map((user) => (
                       <CTableRow key={user.id}>
                         <CTableDataCell>{user.nama_lapak}</CTableDataCell>
+<<<<<<< Updated upstream
+=======
+                        <CTableDataCell>{user.no_telp}</CTableDataCell>
+>>>>>>> Stashed changes
                         <CTableDataCell>{user.area_distribusi}</CTableDataCell>
                         <CTableDataCell>{user.alamat_lapak}</CTableDataCell>
                         <CTableDataCell>{user.nama}</CTableDataCell>
@@ -161,6 +247,87 @@ const Lapak = () => {
                   )}
                 </CTableBody>
               </CTable>
+<<<<<<< Updated upstream
+=======
+              <CRow className='mt-2 mb-2'>
+                <CCol md={4} xs={8}>
+                  Total Rows: {filteredData.length} Page: {startRange} of {endRange}
+                </CCol>
+              </CRow>
+              <CPagination
+                activepage={currentPage}
+                pages={Math.ceil(filteredData.length / itemsPerPage)}
+                onActivePageChange={setCurrentPage}
+                align="center"
+                doublearrows="false"
+              >
+                <CPaginationItem
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Prev
+                </CPaginationItem>
+
+                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => {
+                  const pageIndex = index + 1;
+                  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+                  // Display three consecutive pages centered around the current page
+                  if (
+                    (pageIndex >= currentPage - 1 && pageIndex <= currentPage + 1) ||
+                    (totalPages <= 3 || (currentPage === 1 && pageIndex <= 3) || (currentPage === totalPages && pageIndex >= totalPages - 2))
+                  ) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        active={pageIndex === currentPage}
+                        onClick={() => setCurrentPage(pageIndex)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {pageIndex}
+                      </CPaginationItem>
+                    );
+                  }
+
+                  // Display ellipses for pages before the current page
+                  if (pageIndex === 1 && currentPage > 2) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        disabled
+                        style={{ cursor: 'default' }}
+                      >
+                        ...
+                      </CPaginationItem>
+                    );
+                  }
+
+                  // Display ellipses for pages after the current page
+                  if (pageIndex === totalPages && currentPage < totalPages - 1) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        disabled
+                        style={{ cursor: 'default' }}
+                      >
+                        ...
+                      </CPaginationItem>
+                    );
+                  }
+
+                  return null;
+                })}
+
+                <CPaginationItem
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Next
+                </CPaginationItem>
+              </CPagination>
+>>>>>>> Stashed changes
             </CCardBody>
           </CCard>
         </CCol>
