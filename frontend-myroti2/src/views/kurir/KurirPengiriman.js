@@ -133,7 +133,10 @@ const DataPengiriman = () => {
   }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
   const paginatedData = filteredData.slice(startIndex, endIndex);
@@ -146,6 +149,9 @@ const DataPengiriman = () => {
   const startRange = startIndex + 1;
   const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   return (
     <div>
@@ -272,7 +278,10 @@ const DataPengiriman = () => {
                 </CTableBody>
               </CTable>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
               <CRow className='mt-2 mb-2'>
                 <CCol md={4} xs={8}>
                   Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -351,6 +360,9 @@ const DataPengiriman = () => {
                   Next
                 </CPaginationItem>
               </CPagination>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             </CCardBody>
           </CCard>

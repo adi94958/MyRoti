@@ -30,6 +30,9 @@ import {
   CPaginationItem,
   CFormLabel,
   CFormSelect,
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 } from '@coreui/react'
 import { cilPen, cilSearch } from '@coreui/icons'
@@ -133,12 +136,18 @@ const DaftarPengiriman = () => {
   function handleModalRoti(lapak) {
 >>>>>>> Stashed changes
     setModalRoti(true)
+<<<<<<< Updated upstream
   }
 
 <<<<<<< Updated upstream
   function handleModalRotiBasi() {
     console.log(modalRoti)
 =======
+=======
+    setDataRotiDipilih(lapak.transaksi_roti)
+  }
+
+>>>>>>> Stashed changes
   function handleModalRotiBasi(lapak) {
 >>>>>>> Stashed changes
     setModalRotiBasi(true)
@@ -299,6 +308,14 @@ const DaftarPengiriman = () => {
   const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
   const paginatedData = filteredData.slice(startIndex, endIndex);
 >>>>>>> Stashed changes
+
+  const handleItemsPerPageChange = (value) => {
+    setCurrentPage(1);
+    setItemsPerPage(value);
+  };
+
+  const startRange = startIndex + 1;
+  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
   const handleItemsPerPageChange = (value) => {
     setCurrentPage(1);
@@ -579,6 +596,9 @@ const DaftarPengiriman = () => {
               Next
             </CPaginationItem>
           </CPagination>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         </CCardBody>
       </CCard>

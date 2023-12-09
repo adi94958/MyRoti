@@ -13,6 +13,7 @@ import {
   CTableRow,
   CForm,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 } from '@coreui/react'
 import { cilCart } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -22,6 +23,8 @@ const Pengiriman = () => {
   const [data, setData] = useState([])
   const navigate = useNavigate()
 =======
+=======
+>>>>>>> Stashed changes
   CFormLabel,
   CFormSelect,
   CPagination,
@@ -49,8 +52,13 @@ const Pengiriman = () => {
       .get('http://localhost:8000/api/koordinator/transaksi')
       .then((response) => {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         setData(response.data)
         console.log(response.data)
+=======
+        setData(response.data);
+        console.log(response.data);
+>>>>>>> Stashed changes
 =======
         setData(response.data);
         console.log(response.data);
@@ -75,7 +83,10 @@ const Pengiriman = () => {
   }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
   const searchableFields = ['nama_lapak', 'alamat_lapak', 'no_telp', 'kurir.nama', 'kurir.no_telp'];
 
   const filteredData = data.filter((lapak) => {
@@ -111,6 +122,9 @@ const Pengiriman = () => {
   const startRange = startIndex + 1;
   const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   return (
     <CCard>
@@ -159,14 +173,20 @@ const Pengiriman = () => {
               <CTableHeaderCell>No.</CTableHeaderCell>
               <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               <CTableHeaderCell>Kurir</CTableHeaderCell>
               <CTableHeaderCell>Action</CTableHeaderCell>
 =======
+=======
+>>>>>>> Stashed changes
               <CTableHeaderCell>Alamat Lapak</CTableHeaderCell>
               <CTableHeaderCell>No Telp Lapak</CTableHeaderCell>
               <CTableHeaderCell>Kurir</CTableHeaderCell>
               <CTableHeaderCell>No Telp Kurir</CTableHeaderCell>
               <CTableHeaderCell>Aksi</CTableHeaderCell>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             </CTableRow>
           </CTableHead>
@@ -177,12 +197,17 @@ const Pengiriman = () => {
               return (
                 <CTableRow key={index}>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                   <CTableDataCell>{index + 1}</CTableDataCell>
                   <CTableDataCell>{item.nama_lapak}</CTableDataCell>
                   <CTableDataCell>{item.nama}</CTableDataCell>
 =======
                   <CTableDataCell>{startRange + index}</CTableDataCell>
                   <CTableDataCell>{item.nama_lapak}</CTableDataCell>
+=======
+                  <CTableDataCell>{startRange + index}</CTableDataCell>
+                  <CTableDataCell>{item.nama_lapak}</CTableDataCell>
+>>>>>>> Stashed changes
                   <CTableDataCell>{item.alamat_lapak}</CTableDataCell>
                   <CTableDataCell>{item.no_telp}</CTableDataCell>
                   <CTableDataCell>{item.kurir.nama}</CTableDataCell>
@@ -205,7 +230,10 @@ const Pengiriman = () => {
           </CTableBody>
         </CTable>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
         <CRow className='mt-2 mb-2'>
           <CCol md={4} xs={8}>
             Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -284,6 +312,9 @@ const Pengiriman = () => {
             Next
           </CPaginationItem>
         </CPagination>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       </CCardBody>
     </CCard>
@@ -291,7 +322,11 @@ const Pengiriman = () => {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export default Pengiriman
+=======
+export default Pengiriman;
+>>>>>>> Stashed changes
 =======
 export default Pengiriman;
 >>>>>>> Stashed changes

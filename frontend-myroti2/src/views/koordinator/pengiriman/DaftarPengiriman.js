@@ -157,7 +157,10 @@ const DaftarPengiriman = () => {
   }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
   const paginatedData = filteredData.slice(startIndex, endIndex);
@@ -170,6 +173,9 @@ const DaftarPengiriman = () => {
   const startRange = startIndex + 1;
   const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   return (
     <div>
@@ -225,6 +231,7 @@ const DaftarPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                   {filteredData.map((lapak, index) => (
                     <CTableRow key={index}>
@@ -337,6 +344,67 @@ const DaftarPengiriman = () => {
                   )}
                 </CTableBody>
               </CTable>
+=======
+                  {paginatedData.length === 0 ? (
+                    <tr>
+                      <td colSpan="8" className="text-center">
+                        Tidak ada data.
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedData.map((lapak, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
+                        <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            size="sm"
+                            className="ms-2"
+                            title="Daftar Roti"
+                            onClick={() => handleRotiClick(lapak)}
+                          >
+                            <CIcon icon={cilSearch} className="mx-12 me-2" />
+                            Open Detail
+                          </CButton>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <CButton variant="outline" size="sm" onClick={() => handleFoto(lapak)}>
+                            Lihat
+                          </CButton>
+                        </CTableDataCell>
+                        <CTableDataCell
+                          style={{
+                            color:
+                              lapak.status === 'ready'
+                                ? 'green' // Assuming 'ready' status should display green text
+                                : lapak.status === 'on delivery'
+                                  ? 'red' // 'on delivery' status will display red text
+                                  : 'blue',
+                          }}
+                        >
+                          {lapak.status}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color="danger"
+                            variant="outline"
+                            className="ms-2"
+                            title="Hapus Data Roti"
+                            onClick={() => handleDelete(lapak)}
+                          >
+                            <CIcon icon={cilTrash} />
+                          </CButton>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
+                  )}
+                </CTableBody>
+              </CTable>
+>>>>>>> Stashed changes
               <CRow className='mt-2 mb-2'>
                 <CCol md={4} xs={8}>
                   Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -415,6 +483,9 @@ const DaftarPengiriman = () => {
                   Next
                 </CPaginationItem>
               </CPagination>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             </CCardBody>
           </CCard>

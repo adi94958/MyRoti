@@ -27,8 +27,12 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { cilSearch, cilUserPlus, cilTrash } from '@coreui/icons'
 import { Link } from 'react-router-dom'
+=======
+import { cilSearch } from '@coreui/icons'
+>>>>>>> Stashed changes
 =======
 import { cilSearch } from '@coreui/icons'
 >>>>>>> Stashed changes
@@ -131,6 +135,7 @@ const RiwayatPengiriman = () => {
   }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const handleDelete = (data) => {
     Swal.fire({
       title: `Apakah anda yakin ingin menghapus transaksi lapak ${data.lapak.nama_lapak}?`,
@@ -154,10 +159,20 @@ const RiwayatPengiriman = () => {
     })
   }
 =======
+=======
+>>>>>>> Stashed changes
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
   const paginatedData = filteredData.slice(startIndex, endIndex);
 >>>>>>> Stashed changes
+
+  const handleItemsPerPageChange = (value) => {
+    setCurrentPage(1);
+    setItemsPerPage(value);
+  };
+
+  const startRange = startIndex + 1;
+  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
   const handleItemsPerPageChange = (value) => {
     setCurrentPage(1);
@@ -219,6 +234,7 @@ const RiwayatPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                   {filteredData.map((lapak, index) => (
                     <CTableRow key={index}>
@@ -285,6 +301,44 @@ const RiwayatPengiriman = () => {
                   )}
                 </CTableBody>
               </CTable>
+=======
+                  {paginatedData.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="text-center">
+                        Tidak ada data.
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedData.map((lapak, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
+                        <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            size="sm"
+                            className="ms-2"
+                            title="Daftar Roti"
+                            onClick={() => handleRotiClick(lapak)}
+                          >
+                            <CIcon icon={cilSearch} className="mx-12 me-2" />
+                            Open Detail
+                          </CButton>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <CButton variant="outline" size="sm" onClick={() => handleFoto(lapak)}>
+                            Lihat
+                          </CButton>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
+                  )}
+                </CTableBody>
+              </CTable>
+>>>>>>> Stashed changes
               <CRow className='mt-2 mb-2'>
                 <CCol md={4} xs={8}>
                   Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -363,6 +417,9 @@ const RiwayatPengiriman = () => {
                   Next
                 </CPaginationItem>
               </CPagination>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             </CCardBody>
           </CCard>

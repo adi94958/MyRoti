@@ -91,6 +91,7 @@ const AppHeader = () => {
         </CContainer>
       </CHeader>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       {open && (
         <CModal
           size="md"
@@ -111,6 +112,8 @@ const AppHeader = () => {
         </CModal>
       )}
 =======
+=======
+>>>>>>> Stashed changes
       <CModal
         backdrop="static"
         visible={open}
@@ -129,6 +132,9 @@ const AppHeader = () => {
           </CButton>
         </CModalFooter>
       </CModal>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     </>
   )

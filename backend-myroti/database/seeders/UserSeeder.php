@@ -40,6 +40,7 @@ class UserSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
         DB::table('kurirs')->insert([
             [
@@ -673,6 +674,8 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ]
         ]);
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     }

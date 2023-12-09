@@ -37,20 +37,27 @@ const DataPengiriman = () => {
   const [dataRoti, setDataRoti] = useState([])
   const [visible, setVisible] = useState(false)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const [open, setOpen] = useState(false)
   const [kurir_id, setKurirId] = useState('')
   const [dataTransaksi, setDataTransaksi] = useState([])
 =======
+=======
+>>>>>>> Stashed changes
   const [idKurir, setKurirId] = useState('')
   const [dataPenjualan, setDataPenjualan] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const itemsPerPageOptions = [10, 25, 50, dataPenjualan.length]; // Jumlah data per halaman
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
   useEffect(() => {
     const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
     setKurirId(infoLogin.id)
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     handleData()
   }, [])
@@ -65,6 +72,11 @@ const DataPengiriman = () => {
     handlePenjualan()
   }, [])
 
+=======
+    handlePenjualan()
+  }, [])
+
+>>>>>>> Stashed changes
   const handlePenjualan = () => {
     axios
       .get('http://localhost:8000/api/kurir/datapenjualan')
@@ -94,6 +106,9 @@ const DataPengiriman = () => {
     return isStatus && isKurirMatch && lapakNameMatch
   })
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
   const handleRotiClick = async (lapak) => {
@@ -102,10 +117,15 @@ const DataPengiriman = () => {
         `http://localhost:8000/api/kurir/riwayat-transaksi/${lapak.id_transaksi}`,
       )
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       console.log('Response:', response) // Tambahkan ini untuk melihat respons dari API
       if (response.status >= 200 && response.status < 300) {
         const data = response.data
         console.log('Data Roti:', data.detail_roti) // Tambahkan ini untuk melihat data roti
+=======
+      if (response.status >= 200 && response.status < 300) {
+        const data = response.data
+>>>>>>> Stashed changes
 =======
       if (response.status >= 200 && response.status < 300) {
         const data = response.data
@@ -186,6 +206,7 @@ const DataPengiriman = () => {
                 </CTableHead>
                 <CTableBody>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                   {filteredData.map((lapak, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
@@ -214,6 +235,8 @@ const DataPengiriman = () => {
                     </CTableRow>
                   ))}
 =======
+=======
+>>>>>>> Stashed changes
                   {paginatedData.length === 0 ? (
                     <tr>
                       <td colSpan="7" className="text-center">
@@ -250,6 +273,9 @@ const DataPengiriman = () => {
                       </CTableRow>
                     ))
                   )}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 </CTableBody>
               </CTable>

@@ -17,7 +17,10 @@ import {
   CTableRow,
   CForm,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
   CFormLabel,
   CFormSelect,
   CInputGroup,
@@ -90,8 +93,11 @@ const KelolaDataDataRoti = () => {
   }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const filteredData = dataRoti.filter((user) => {
 =======
+=======
+>>>>>>> Stashed changes
   const searchableFields = [
     'kode_roti',
     'nama_roti',
@@ -101,6 +107,9 @@ const KelolaDataDataRoti = () => {
   ]
 
   const filteredData = dataRoti.filter((roti) => {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     return (
       searchText === '' ||
@@ -126,6 +135,9 @@ const KelolaDataDataRoti = () => {
   const startRange = startIndex + 1;
   const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   return (
     <div>
@@ -137,8 +149,11 @@ const KelolaDataDataRoti = () => {
               <CForm className="mb-3">
                 <CRow>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                   <CCol md={8} xs={6}>
 =======
+=======
+>>>>>>> Stashed changes
                   <CCol md={6} xs={8}>
                     <CInputGroup>
                       <CFormInput
@@ -153,6 +168,9 @@ const KelolaDataDataRoti = () => {
                     </CInputGroup>
                   </CCol>
                   <CCol md={2} xs={4}>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     <Link to="/roti/tambah">
                       <CButton variant="outline">
@@ -233,7 +251,10 @@ const KelolaDataDataRoti = () => {
                 </CTableBody>
               </CTable>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
               <CRow className='mt-2 mb-2'>
                 <CCol md={4} xs={8}>
                   Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -312,6 +333,9 @@ const KelolaDataDataRoti = () => {
                   Next
                 </CPaginationItem>
               </CPagination>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             </CCardBody>
           </CCard>
