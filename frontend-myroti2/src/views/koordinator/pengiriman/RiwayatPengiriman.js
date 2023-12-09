@@ -32,12 +32,10 @@ import { cilSearch, cilUserPlus, cilTrash } from '@coreui/icons'
 const RiwayatPengiriman = () => {
   const [searchText, setSearchText] = useState('')
   const [dataRoti, setDataRoti] = useState([])
-  const [dataRotiBasi, setDataRotiBasi] = useState([])
   const [visible, setVisible] = useState(false)
-  const [enable, setEnable] = useState(false)
   const [open, setOpen] = useState(false)
   const [foto, setFoto] = useState('')
-  const [dataPenjualan, setDataPenjualan] = useState([])
+  const [dataTransaksi, setDataTransaksi] = useState([])
 
   useEffect(() => {
     handleData()
@@ -45,10 +43,10 @@ const RiwayatPengiriman = () => {
 
   const handleData = () => {
     axios
-      .get('http://localhost:8000/api/kurir/riwayat')
+      .get('http://localhost:8000/api/kurir/transaksi')
       .then((response) => {
         console.log(response.data)
-        setDataPenjualan(response.data)
+        setDataTransaksi(response.data)
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -65,37 +63,33 @@ const RiwayatPengiriman = () => {
     return formattedDate
   }
 
-  const filteredData = dataPenjualan.filter((lapak) => {
-    const lapakName = lapak?.transaksi?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
-    const kurirName = lapak?.transaksi?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
-    const tanggalPengiriman = formatDate(lapak.transaksi.tanggal_pengiriman)
+  const filteredData = dataTransaksi.filter((lapak) => {
+    const lapakName = lapak?.lapak?.nama_lapak?.toString()?.toLowerCase() || ''
+    const kurirName = lapak?.lapak?.kurir?.nama?.toString()?.toLowerCase() || ''
+    const status = lapak?.status?.toLowerCase() || ''
+    const tanggalPengiriman = formatDate(lapak.tanggal_pengiriman)
 
     const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
     const kurirNameMatch = kurirName.includes(searchText.toLowerCase())
+    const statusMatch = status.includes(searchText.toLowerCase())
     const tanggalPengirimanMatch = tanggalPengiriman.includes(searchText.toLowerCase())
 
-    return lapakNameMatch || kurirNameMatch || tanggalPengirimanMatch
+    const isStatus = lapak?.status !== 'finished'
+    return (lapakNameMatch || kurirNameMatch || statusMatch || tanggalPengirimanMatch) && isStatus
   })
 
   const handleRotiClick = (lapak) => {
-    setDataRoti(lapak.transaksi.transaksi_roti)
+    setDataRoti(lapak.transaksi_roti)
     setVisible(true)
-    console.log(dataPenjualan)
+    console.log(dataTransaksi)
     console.log(dataRoti)
   }
 
-  const handleRotiBasiClick = (lapak) => {
-    setDataRotiBasi(lapak.rotibasi)
-    setEnable(true)
-    console.log(dataPenjualan)
-    console.log(dataRotiBasi)
-  }
-
   const handleFoto = (lapak) => {
-    if (lapak.transaksi.status === 'finished') {
-      console.log(lapak.transaksi.bukti_pengiriman)
+    if (lapak.status === 'delivered') {
+      console.log(lapak.bukti_pengiriman)
       axios
-        .get('http://localhost:8000/api/koordinator/' + lapak.transaksi.bukti_pengiriman, {
+        .get('http://localhost:8000/api/koordinator/' + lapak.bukti_pengiriman, {
           responseType: 'blob',
         })
         .then((response) => {
@@ -129,18 +123,18 @@ const RiwayatPengiriman = () => {
     }
   }
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 10
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const paginatedData = filteredData.slice(startIndex, endIndex)
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
 
   return (
     <div>
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader>Riwayat Pengiriman</CCardHeader>
+            <CCardHeader>Data Pengiriman Kurir</CCardHeader>
             <CCardBody>
               <CForm className="mb-3">
                 <CRow>
@@ -166,10 +160,7 @@ const RiwayatPengiriman = () => {
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Kurir</CTableHeaderCell>
                     <CTableHeaderCell>Tanggal Pengiriman</CTableHeaderCell>
-                    <CTableHeaderCell>Tanggal Pengembalian</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
-                    <CTableHeaderCell>Roti Basi</CTableHeaderCell>
-                    {/* <CTableHeaderCell>Catatan Penjualan</CTableHeaderCell> */}
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -177,12 +168,9 @@ const RiwayatPengiriman = () => {
                   {paginatedData.map((lapak, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
-                      <CTableDataCell>{lapak.transaksi.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>{lapak.transaksi.lapak.kurir.nama}</CTableDataCell>
-                      <CTableDataCell>
-                        {formatDate(lapak.transaksi.tanggal_pengiriman)}
-                      </CTableDataCell>
-                      <CTableDataCell>{formatDate(lapak.tanggal_pengambilan)}</CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                      <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
+                      <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="primary"
@@ -191,19 +179,6 @@ const RiwayatPengiriman = () => {
                           className="ms-2"
                           title="Daftar Roti"
                           onClick={() => handleRotiClick(lapak)}
-                        >
-                          <CIcon icon={cilSearch} className="mx-12 me-2" />
-                          Open Detail
-                        </CButton>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color="primary"
-                          variant="outline"
-                          size="sm"
-                          className="ms-2"
-                          title="Daftar Roti Basi"
-                          onClick={() => handleRotiBasiClick(lapak)}
                         >
                           <CIcon icon={cilSearch} className="mx-12 me-2" />
                           Open Detail
@@ -233,19 +208,16 @@ const RiwayatPengiriman = () => {
                   Sebelumnya
                 </CPaginationItem>
 
-                {Array.from(
-                  { length: Math.ceil(filteredData.length / itemsPerPage) },
-                  (_, index) => (
-                    <CPaginationItem
-                      key={index + 1}
-                      active={index + 1 === currentPage}
-                      onClick={() => setCurrentPage(index + 1)}
-                      style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
-                    >
-                      {index + 1}
-                    </CPaginationItem>
-                  ),
-                )}
+                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => (
+                  <CPaginationItem
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
+                    style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+                  >
+                    {index + 1}
+                  </CPaginationItem>
+                ))}
 
                 <CPaginationItem
                   onClick={() => setCurrentPage(currentPage + 1)}
@@ -255,7 +227,9 @@ const RiwayatPengiriman = () => {
                   Berikutnya
                 </CPaginationItem>
               </CPagination>
-              <div className="text-muted mt-2">Total Data: {filteredData.length}</div>
+              <div className="text-muted mt-2">
+                Total Data: {filteredData.length}
+              </div>
             </CCardBody>
           </CCard>
         </CCol>
@@ -291,41 +265,6 @@ const RiwayatPengiriman = () => {
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
-        </CModalFooter>
-      </CModal>
-      <CModal
-        backdrop="static"
-        visible={enable}
-        className="modal"
-        onClose={() => {
-          setEnable(false)
-        }}
-      >
-        <CModalHeader>
-          <CModalTitle id="VerticallyCenteredExample">Data Roti Basi</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CTable striped bordered responsive>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell>Nama Roti Basi</CTableHeaderCell>
-                <CTableHeaderCell>Jumlah Roti Basi</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {dataRotiBasi.map((roti, index) => (
-                <CTableRow key={index}>
-                  <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
-                  <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
-                </CTableRow>
-              ))}
-            </CTableBody>
-          </CTable>
-        </CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" onClick={() => setEnable(false)}>
             Close
           </CButton>
         </CModalFooter>

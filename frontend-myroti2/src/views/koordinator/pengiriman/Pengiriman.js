@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   CButton,
   CCard,
@@ -16,34 +16,37 @@ import {
   CCol,
   CRow,
   CForm,
+  CFormLabel,
+  CFormSelect,
   CPagination,
   CPaginationItem,
-} from '@coreui/react'
-import { cilCart, cilSearch } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import { useNavigate } from 'react-router-dom'
+} from '@coreui/react';
+import { cilCart, cilSearch } from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
+import { useNavigate } from 'react-router-dom';
 
 const Pengiriman = () => {
-  const [data, setData] = useState([])
-  const [searchText, setSearchText] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 10 // Jumlah data per halaman
-  const navigate = useNavigate()
+  const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const itemsPerPageOptions = [10, 25, 50, data.length]; // Jumlah data per halaman
+  const navigate = useNavigate();
 
   useEffect(() => {
-    handleData()
-  }, [])
+    handleData();
+  }, []);
 
   function handleData() {
     axios
       .get('http://localhost:8000/api/koordinator/transaksi')
       .then((response) => {
-        setData(response.data)
-        console.log(response.data)
+        setData(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
-        console.error('Error:', error)
-      })
+        console.error('Error:', error);
+      });
   }
 
   function handleKirim(item) {
@@ -53,30 +56,45 @@ const Pengiriman = () => {
         kode_lapak: item.kode_lapak,
         nama_lapak: item.nama_lapak,
         nama_kurir: item.kurir.nama,
-      }),
-    )
-    navigate('/pengiriman/kelola/kirim')
+      })
+    );
+    navigate('/pengiriman/kelola/kirim');
   }
 
-  const filteredData = data.filter((lapak) => {
-    const searchableFields = ['nama_lapak', 'nama_kurir']
+  const searchableFields = ['nama_lapak', 'alamat_lapak', 'no_telp', 'kurir.nama', 'kurir.no_telp'];
 
+  const filteredData = data.filter((lapak) => {
     return (
       searchText === '' ||
       searchableFields.some((field) => {
-        const fieldValue = lapak[field]
+        const fieldKeys = field.split('.'); // Pisahkan kunci objek bersarang
+        const fieldValue = getFieldNestedValue(lapak, fieldKeys);
 
         return (
           typeof fieldValue === 'string' &&
           fieldValue.toLowerCase().includes(searchText.toLowerCase())
-        )
+        );
       })
-    )
-  })
+    );
+  });
 
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const paginatedData = filteredData.slice(startIndex, endIndex)
+  // Fungsi untuk mendapatkan nilai dari objek bersarang
+  function getFieldNestedValue(obj, keys) {
+    return keys.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : ''), obj);
+  }
+
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = itemsPerPage === data.length ? data.length : startIndex + itemsPerPage;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+
+  const handleItemsPerPageChange = (value) => {
+    setCurrentPage(1);
+    setItemsPerPage(value);
+  };
+
+  const startRange = startIndex + 1;
+  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
   return (
     <CCard>
@@ -97,6 +115,22 @@ const Pengiriman = () => {
                 </CButton>
               </CInputGroup>
             </CCol>
+            <CCol md={2} xs={3}>
+              <CFormLabel>Rows Per Page:</CFormLabel>
+            </CCol>
+            <CCol md={2} xs={3}>
+              <CFormSelect
+                className="form-select"
+                value={itemsPerPage}
+                onChange={(e) => handleItemsPerPageChange(parseInt(e.target.value))}
+              >
+                {itemsPerPageOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option === data.length ? 'All' : option}
+                  </option>
+                ))}
+              </CFormSelect>
+            </CCol>
           </CRow>
         </CForm>
         <CTable striped bordered responsive>
@@ -104,10 +138,11 @@ const Pengiriman = () => {
             <CTableRow>
               <CTableHeaderCell>No</CTableHeaderCell>
               <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
+              <CTableHeaderCell>Alamat Lapak</CTableHeaderCell>
               <CTableHeaderCell>No Telp Lapak</CTableHeaderCell>
               <CTableHeaderCell>Kurir</CTableHeaderCell>
               <CTableHeaderCell>No Telp Kurir</CTableHeaderCell>
-              <CTableHeaderCell>Action</CTableHeaderCell>
+              <CTableHeaderCell>Aksi</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -120,8 +155,9 @@ const Pengiriman = () => {
             ) : (
               paginatedData.map((item, index) => (
                 <CTableRow key={index}>
-                  <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
+                  <CTableDataCell>{startRange + index}</CTableDataCell>
                   <CTableDataCell>{item.nama_lapak}</CTableDataCell>
+                  <CTableDataCell>{item.alamat_lapak}</CTableDataCell>
                   <CTableDataCell>{item.no_telp}</CTableDataCell>
                   <CTableDataCell>{item.kurir.nama}</CTableDataCell>
                   <CTableDataCell>{item.kurir.no_telp}</CTableDataCell>
@@ -142,44 +178,87 @@ const Pengiriman = () => {
             )}
           </CTableBody>
         </CTable>
+        <CRow className='mt-2 mb-2'>
+          <CCol md={4} xs={8}>
+            Total Rows: {filteredData.length} Page: {startRange} of {endRange}
+          </CCol>
+        </CRow>
         <CPagination
-          activePage={currentPage}
+          activepage={currentPage}
           pages={Math.ceil(filteredData.length / itemsPerPage)}
           onActivePageChange={setCurrentPage}
           align="center"
-          doubleArrows={false} // Menghilangkan tombol "Garis ganda"
+          doublearrows="false"
         >
           <CPaginationItem
             onClick={() => setCurrentPage(currentPage - 1)}
             disabled={currentPage === 1}
-            style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+            style={{ cursor: 'pointer' }}
           >
-            Sebelumnya
+            Prev
           </CPaginationItem>
 
-          {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => (
-            <CPaginationItem
-              key={index + 1}
-              active={index + 1 === currentPage}
-              onClick={() => setCurrentPage(index + 1)}
-              style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
-            >
-              {index + 1}
-            </CPaginationItem>
-          ))}
+          {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => {
+            const pageIndex = index + 1;
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            // Display three consecutive pages centered around the current page
+            if (
+              (pageIndex >= currentPage - 1 && pageIndex <= currentPage + 1) ||
+              (totalPages <= 3 || (currentPage === 1 && pageIndex <= 3) || (currentPage === totalPages && pageIndex >= totalPages - 2))
+            ) {
+              return (
+                <CPaginationItem
+                  key={pageIndex}
+                  active={pageIndex === currentPage}
+                  onClick={() => setCurrentPage(pageIndex)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {pageIndex}
+                </CPaginationItem>
+              );
+            }
+
+            // Display ellipses for pages before the current page
+            if (pageIndex === 1 && currentPage > 2) {
+              return (
+                <CPaginationItem
+                  key={pageIndex}
+                  disabled
+                  style={{ cursor: 'default' }}
+                >
+                  ...
+                </CPaginationItem>
+              );
+            }
+
+            // Display ellipses for pages after the current page
+            if (pageIndex === totalPages && currentPage < totalPages - 1) {
+              return (
+                <CPaginationItem
+                  key={pageIndex}
+                  disabled
+                  style={{ cursor: 'default' }}
+                >
+                  ...
+                </CPaginationItem>
+              );
+            }
+
+            return null;
+          })}
 
           <CPaginationItem
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
-            style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+            style={{ cursor: 'pointer' }}
           >
-            Berikutnya
+            Next
           </CPaginationItem>
         </CPagination>
-        <div className="text-muted mt-2">Total Data: {filteredData.length}</div>
       </CCardBody>
     </CCard>
-  )
-}
+  );
+};
 
-export default Pengiriman
+export default Pengiriman;

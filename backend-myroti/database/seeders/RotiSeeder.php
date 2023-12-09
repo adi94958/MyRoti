@@ -15,15 +15,15 @@ class RotiSeeder extends Seeder
     {
         DB::table('dataroti')->insert([
             [
-                'nama_roti' => 'croissant',
-                'stok_roti' =>  50, 
-                'rasa_roti'=> 'strawberry',
+                'nama_roti' => 'Croissant',
+                'stok_roti' =>  50,
+                'rasa_roti' => 'strawberry',
                 'harga_satuan_roti' => 5000,
             ],
             [
-                'nama_roti' => 'macaron',
-                'stok_roti' =>  50, 
-                'rasa_roti'=> 'strawberry',
+                'nama_roti' => 'Macaron',
+                'stok_roti' =>  50,
+                'rasa_roti' => 'strawberry',
                 'harga_satuan_roti' => 5000,
             ],
             [
@@ -146,6 +146,6 @@ class RotiSeeder extends Seeder
                 'rasa_roti' => 'oreo',
                 'harga_satuan_roti' => 9000
             ]
-            ]);
+        ]);
     }
 }

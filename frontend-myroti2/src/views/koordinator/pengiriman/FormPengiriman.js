@@ -284,7 +284,7 @@ const FormPengiriman = () => {
               <CCardHeader>Data Roti</CCardHeader>
               <CCardBody>
                 <CRow>
-                  <CCol md={8} xs={6}>
+                  <CCol md={8} xs={6} className='mb-3'>
                     <CButton variant="outline" onClick={handleRotiModal}>
                       <CIcon icon={cilBurger} className="mx-8 me-2" />
                       Pilih Roti

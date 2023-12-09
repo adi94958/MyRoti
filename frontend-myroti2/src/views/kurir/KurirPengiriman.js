@@ -19,6 +19,8 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
+  CFormLabel,
+  CFormSelect,
   CFormInput,
   CInputGroup,
   CPagination,
@@ -36,6 +38,9 @@ const DataPengiriman = () => {
   const [dataFoto, setDataFoto] = useState([])
   const [kurir_id, setKurirId] = useState('')
   const [dataTransaksi, setDataTransaksi] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const itemsPerPageOptions = [10, 25, 50, dataTransaksi.length]; // Jumlah data per halaman
 
   useEffect(() => {
     const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
@@ -55,7 +60,7 @@ const DataPengiriman = () => {
       })
   }
   const filteredData = dataTransaksi.filter((lapak) => {
-    const lapakName = lapak?.nama_lapak?.toString()?.toLowerCase() || ''
+    const lapakName = lapak?.lapak.nama_lapak?.toString()?.toLowerCase() || ''
     const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
     const isStatus = lapak?.status !== 'delivered' && lapak?.status !== 'finished'
     const isKurirMatch = lapak?.id_kurir === kurir_id
@@ -125,11 +130,17 @@ const DataPengiriman = () => {
     }
   }
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 10 // Jumlah data per halaman
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const paginatedData = filteredData.slice(startIndex, endIndex)
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+
+  const handleItemsPerPageChange = (value) => {
+    setCurrentPage(1);
+    setItemsPerPage(value);
+  };
+
+  const startRange = startIndex + 1;
+  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
   return (
     <div>
@@ -152,6 +163,22 @@ const DataPengiriman = () => {
                         <CIcon icon={cilSearch} />
                       </CButton>
                     </CInputGroup>
+                  </CCol>
+                  <CCol md={2} xs={3}>
+                    <CFormLabel>Rows Per Page:</CFormLabel>
+                  </CCol>
+                  <CCol md={2} xs={3}>
+                    <CFormSelect
+                      className="form-select"
+                      value={itemsPerPage}
+                      onChange={(e) => handleItemsPerPageChange(parseInt(e.target.value))}
+                    >
+                      {itemsPerPageOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option === dataTransaksi.length ? 'All' : option}
+                        </option>
+                      ))}
+                    </CFormSelect>
                   </CCol>
                 </CRow>
               </CForm>
@@ -247,44 +274,84 @@ const DataPengiriman = () => {
                   )}
                 </CTableBody>
               </CTable>
+              <CRow className='mt-2 mb-2'>
+                <CCol md={4} xs={8}>
+                  Total Rows: {filteredData.length} Page: {startRange} of {endRange}
+                </CCol>
+              </CRow>
               <CPagination
-                activePage={currentPage}
+                activepage={currentPage}
                 pages={Math.ceil(filteredData.length / itemsPerPage)}
                 onActivePageChange={setCurrentPage}
                 align="center"
-                doubleArrows={false} // Menghilangkan tombol "Garis ganda"
+                doublearrows="false"
               >
                 <CPaginationItem
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+                  style={{ cursor: 'pointer' }}
                 >
-                  Sebelumnya
+                  Prev
                 </CPaginationItem>
 
-                {Array.from(
-                  { length: Math.ceil(filteredData.length / itemsPerPage) },
-                  (_, index) => (
-                    <CPaginationItem
-                      key={index + 1}
-                      active={index + 1 === currentPage}
-                      onClick={() => setCurrentPage(index + 1)}
-                      style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
-                    >
-                      {index + 1}
-                    </CPaginationItem>
-                  ),
-                )}
+                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => {
+                  const pageIndex = index + 1;
+                  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+                  // Display three consecutive pages centered around the current page
+                  if (
+                    (pageIndex >= currentPage - 1 && pageIndex <= currentPage + 1) ||
+                    (totalPages <= 3 || (currentPage === 1 && pageIndex <= 3) || (currentPage === totalPages && pageIndex >= totalPages - 2))
+                  ) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        active={pageIndex === currentPage}
+                        onClick={() => setCurrentPage(pageIndex)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {pageIndex}
+                      </CPaginationItem>
+                    );
+                  }
+
+                  // Display ellipses for pages before the current page
+                  if (pageIndex === 1 && currentPage > 2) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        disabled
+                        style={{ cursor: 'default' }}
+                      >
+                        ...
+                      </CPaginationItem>
+                    );
+                  }
+
+                  // Display ellipses for pages after the current page
+                  if (pageIndex === totalPages && currentPage < totalPages - 1) {
+                    return (
+                      <CPaginationItem
+                        key={pageIndex}
+                        disabled
+                        style={{ cursor: 'default' }}
+                      >
+                        ...
+                      </CPaginationItem>
+                    );
+                  }
+
+                  return null;
+                })}
 
                 <CPaginationItem
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
-                  style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+                  style={{ cursor: 'pointer' }}
                 >
-                  Berikutnya
+                  Next
                 </CPaginationItem>
               </CPagination>
-              <div className="text-muted mt-2">Total Data: {filteredData.length}</div>
             </CCardBody>
           </CCard>
         </CCol>
