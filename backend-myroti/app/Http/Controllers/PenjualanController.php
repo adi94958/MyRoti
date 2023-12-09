@@ -11,53 +11,52 @@ use App\Models\TransaksiRoti;
 
 class PenjualanController extends Controller
 {
-    public function readDataPenjualan(){
-
+    public function readDataPenjualan()
+    {
     }
 
-    public function createRotiBasi($kode_roti, $jumlah_roti, $id_penjualan, $id_transaksi){
+    public function createRotiBasi($kode_roti, $jumlah_roti, $id_penjualan, $id_transaksi)
+    {
         $roti = TransaksiRoti::where('id_transaksi', $id_transaksi)
-        ->where('kode_roti', $kode_roti)
-        ->first();
+            ->where('kode_roti', $kode_roti)
+            ->first();
 
-        if($roti){
-        RotiBasi::create([
-            'id_penjualan' => $id_penjualan,
-            'kode_roti' => $kode_roti,
-            'jumlah_roti' => $jumlah_roti
-        ]);
-        // tambahkan logika jika RotiBasi berhasil dibuat
+        if ($roti) {
+            RotiBasi::create([
+                'id_penjualan' => $id_penjualan,
+                'kode_roti' => $kode_roti,
+                'jumlah_roti' => $jumlah_roti
+            ]);
+            // tambahkan logika jika RotiBasi berhasil dibuat
 
-        } 
+        }
     }
 
-    public function hitungUangSetoran($kode_roti, $jumlah_roti){
+    public function hitungUangSetoran($kode_roti, $jumlah_roti)
+    {
         $jumlahharga = 0;
 
         $roti = Roti::where('kode_roti', $kode_roti)->first();
 
-        if($roti){
-            $jumlahharga= $roti->harga_satuan_roti*$jumlah_roti;
+        if ($roti) {
+            $jumlahharga = $roti->harga_satuan_roti * $jumlah_roti;
 
             return $jumlahharga;
-        }
-
-        else{
+        } else {
 
             return response()->json(['message' => 'Tidak ada roti tersebut']);
         }
-
-
     }
 
-    public function totalharga($id_transaksi){
+    public function totalharga($id_transaksi)
+    {
         // $transaksi = Transaksi::where('id_transaksi', $id_transaksi)->first();
 
         $transaksiroti = TransaksiRoti::where('id_transaksi',  $id_transaksi)->get();
 
         $total = 0;
 
-        foreach($transaksiroti as $roti){
+        foreach ($transaksiroti as $roti) {
             $kode_roti = $roti->kode_roti;
             $jumlah_roti = $roti->jumlah_roti;
 
@@ -76,14 +75,14 @@ class PenjualanController extends Controller
         $transaksi = Transaksi::find($id_transaksi);
         // Validasi input
         $request->validate([
-            'kode_roti.*' => 'required',
-            'jumlah_roti.*' => 'required',
-            'catatan_penjual' => 'required',
+            'kode_roti.*',
+            'jumlah_roti.*',
+            'catatan_penjual',
             'total_harga'  => 'required',
             'total_dengan_rotibasi'  => 'required',
             'uang_setoran' => 'required',
         ]);
-    
+
         // Buat koordinator baru
         if ($transaksi) {
             // Membuat transaksi
@@ -103,7 +102,6 @@ class PenjualanController extends Controller
             foreach ($request->kode_roti as $key => $kode_roti) {
                 $jumlah_roti = $request->jumlah_roti[$key];
                 $this->createRotiBasi($kode_roti, $jumlah_roti, $id_penjualan, $id_transaksi);
-
             }
 
             $transaksi->status = 'finished';
@@ -111,7 +109,6 @@ class PenjualanController extends Controller
 
 
             return response()->json(['message' => 'Data Penjualan berhasil dibuat']);
-                
         } else {
             return response()->json(['message' => 'Transaksi tidak ditemukan']);
         }

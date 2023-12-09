@@ -48,14 +48,23 @@ const FormUpdateLapak = React.lazy(() => import('./views/koordinator/lapak/FormU
 const Riwayat = React.lazy(() => import('./views/kurir/Riwayat'))
 const PengirimanKurir = React.lazy(() => import('./views/kurir/KurirPengiriman'))
 const DaftarPengiriman = React.lazy(() => import('./views/kurir/DaftarPengiriman'))
+const EditKurir = React.lazy(() => import('./views/kurir/EditKurir'))
+
+// Keuangan
+const Keuangan = React.lazy(() => import('./views/Keuangan/DataKeuangan'))
+
+// Pemilik
+const Pemilik = React.lazy(() => import('./views/Pemilik/DataPemilik'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/admin', name: 'Admin', exact: true, element: KelolaDataKoordinator },
   { path: '/koordinator', name: 'Koordinator', exact: true, element: Pengiriman },
   { path: '/kurir', name: 'Kurir', exact: true, element: PengirimanKurir },
-  { path: '/kurir/daftar-pengiriman', name: 'Daftar Pengiriman Kurir', element: DaftarPengiriman },
-  { path: '/kurir/pengiriman', name: 'Pengiriman Kurir', element: PengirimanKurir },
+  { path: '/keuangan', name: 'Keuangan', exact: true, element: Keuangan },
+  { path: '/pemilik', name: 'Pemilik', exact: true, element: Pemilik },
+  { path: '/kurir/daftar-pengiriman', name: 'Penerimaan Uang Roti', element: DaftarPengiriman },
+  { path: '/kurir/pengiriman', name: 'Pengiriman Roti', element: PengirimanKurir },
   { path: '/admin/koordinator', name: 'Koordinator', element: KelolaDataKoordinator },
   { path: '/admin/koordinator/tambah', name: 'Tambah Koordinator', element: FormTambahKoordinator },
   { path: '/admin/koordinator/update', name: 'Edit Koordinator', element: FormUpdateKoordinator },
@@ -80,6 +89,7 @@ const routes = [
   { path: '/lapak/update', name: 'Form Update Lapak', element: FormUpdateLapak },
   { path: '/lapak/tambah', name: 'Form Tambah Lapak', element: FormTambahLapak },
   { path: '/kurir/riwayat', name: 'Riwayat Kurir', element: Riwayat },
+  { path: '/kurir/edit', name: 'Edit Data', element: EditKurir },
 ]
 
 export default routes
