@@ -84,19 +84,8 @@ class RiwayatTransaksiController extends Controller
      */
     public function RiwayatTransaksiKurir()
     {
-        // $idKurir = session('id_kurir');
 
-        //general
-        // $riwayatKurir = Transaksi::where('status', 'finished')
-        //     // ->where('transaksi.id_kurir', $idKurir) 
-        //     ->join('lapak', 'transaksi.kode_lapak', '=', 'lapak.kode_lapak')
-        //     ->leftjoin('datapenjualan', 'transaksi.id_transaksi', '=', 'datapenjualan.id_transaksi')
-        //     ->select('lapak.nama_lapak', 'lapak.alamat_lapak', 'datapenjualan.catatan_penjual', 'transaksi.status')
-        //     ->get();
-
-        // return response()->json($riwayatKurir);
-
-        $datas = DataPenjualan::with(['rotibasi.roti', 'transaksi.lapak.kurir'])->get();
+        $datas = DataPenjualan::with(['rotibasi.roti', 'transaksi.lapak.kurir', 'transaksi.transaksi_roti.roti'])->get();
     
         return response()->json($datas, 200);
     }
