@@ -137,7 +137,7 @@ const Pengiriman = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell>No</CTableHeaderCell>
-              <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
+              <CTableHeaderCell>Lapak</CTableHeaderCell>
               <CTableHeaderCell>Alamat Lapak</CTableHeaderCell>
               <CTableHeaderCell>No Telp Lapak</CTableHeaderCell>
               <CTableHeaderCell>Kurir</CTableHeaderCell>

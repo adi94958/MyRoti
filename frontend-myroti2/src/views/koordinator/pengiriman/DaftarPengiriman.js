@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import {
@@ -214,12 +213,12 @@ const DaftarPengiriman = () => {
                   <CTableRow>
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Alamat Lapak</CTableHeaderCell>
                     <CTableHeaderCell>Kurir</CTableHeaderCell>
                     <CTableHeaderCell>Tanggal Pengiriman</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
                     <CTableHeaderCell>Bukti Pengiriman</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
-                    <CTableHeaderCell>Aksi</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -234,6 +233,7 @@ const DaftarPengiriman = () => {
                       <CTableRow key={index}>
                         <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
                         <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
                         <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
                         <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
                         <CTableDataCell>
@@ -265,17 +265,6 @@ const DaftarPengiriman = () => {
                           }}
                         >
                           {lapak.status}
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CButton
-                            color="danger"
-                            variant="outline"
-                            className="ms-2"
-                            title="Hapus Data Roti"
-                            onClick={() => handleDelete(lapak)}
-                          >
-                            <CIcon icon={cilTrash} />
-                          </CButton>
                         </CTableDataCell>
                       </CTableRow>
                     ))
