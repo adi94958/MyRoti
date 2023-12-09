@@ -34,6 +34,7 @@ const RiwayatPengiriman = () => {
   const [dataRoti, setDataRoti] = useState([])
   const [dataRotiBasi, setDataRotiBasi] = useState([])
   const [visible, setVisible] = useState(false)
+  const [enable, setEnable] = useState(false)
   const [open, setOpen] = useState(false)
   const [foto, setFoto] = useState('')
   const [dataPenjualan, setDataPenjualan] = useState([])
@@ -85,7 +86,7 @@ const RiwayatPengiriman = () => {
 
   const handleRotiBasiClick = (lapak) => {
     setDataRotiBasi(lapak.rotibasi)
-    setVisible(true)
+    setEnable(true)
     console.log(dataPenjualan)
     console.log(dataRotiBasi)
   }
@@ -296,10 +297,10 @@ const RiwayatPengiriman = () => {
       </CModal>
       <CModal
         backdrop="static"
-        visible={open}
+        visible={enable}
         className="modal"
         onClose={() => {
-          setOpen(false)
+          setEnable(false)
         }}
       >
         <CModalHeader>
@@ -324,7 +325,7 @@ const RiwayatPengiriman = () => {
           </CTable>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          <CButton color="secondary" onClick={() => setEnable(false)}>
             Close
           </CButton>
         </CModalFooter>
