@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Swal from 'sweetalert2'
 import {
   CModal,
   CModalHeader,
@@ -25,10 +23,11 @@ import {
   CFormSelect,
   CFormInput,
   CInputGroup,
+  CPagination,
+  CPaginationItem,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilSearch, cilUserPlus } from '@coreui/icons'
-import { Link } from 'react-router-dom'
+import { cilSearch } from '@coreui/icons'
 
 const DataPengiriman = () => {
   const [searchText, setSearchText] = useState('')
@@ -103,7 +102,6 @@ const DataPengiriman = () => {
         status: 'on delivery',
       })
       .then(() => {
-        // The PUT request is successful, now you can refresh the data
         handleData()
       })
       .catch((error) => {
@@ -132,11 +130,6 @@ const DataPengiriman = () => {
     }
   }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
   const paginatedData = filteredData.slice(startIndex, endIndex);
@@ -149,10 +142,6 @@ const DataPengiriman = () => {
   const startRange = startIndex + 1;
   const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   return (
     <div>
       <CRow>
@@ -206,82 +195,85 @@ const DataPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {filteredData.map((lapak, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color="primary"
-                          variant="outline"
-                          className="ms-2"
-                          title="Daftar Roti"
-                          onClick={() => handleRotiClick(lapak)}
+                  {paginatedData.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" className="text-center">
+                        Tidak ada data.
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedData.map((lapak, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
+                        <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            className="ms-2"
+                            title="Daftar Roti"
+                            onClick={() => handleRotiClick(lapak)}
+                          >
+                            <CIcon icon={cilSearch} className="mx-12 me-2" />
+                            Open Detail
+                          </CButton>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <CFormInput
+                              type="file"
+                              size="sm"
+                              id="formFileSm"
+                              accept="image/jpeg, image/jpg, image/png"
+                              onChange={(e) => handleFoto(e, index)}
+                              disabled={lapak.status === 'ready'}
+                              style={{ width: '60%' }}
+                            />
+                            <CButton
+                              variant="outline"
+                              size="sm"
+                              className="mx-2"
+                              onClick={() => handleFile(index)}
+                              disabled={lapak.status === 'ready'}
+                            >
+                              Lihat
+                            </CButton>
+                            <CButton
+                              variant="outline"
+                              size="sm"
+                              className="mx-1"
+                              onClick={() => handleSubmit(lapak, index)}
+                              disabled={lapak.status === 'ready'}
+                            >
+                              Submit Foto
+                            </CButton>
+                          </div>
+                        </CTableDataCell>
+                        <CTableDataCell
+                          style={{
+                            color:
+                              lapak.status === 'ready'
+                                ? 'green' // Assuming 'ready' status should display green text
+                                : 'red',
+                          }}
                         >
-                          <CIcon icon={cilSearch} className="mx-12 me-2" />
-                          Open Detail
-                        </CButton>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <CFormInput
-                            type="file"
-                            size="sm"
-                            id="formFileSm"
-                            accept="image/jpeg, image/jpg, image/png"
-                            onChange={(e) => handleFoto(e, index)}
-                            disabled={lapak.status === 'ready'}
-                            style={{ width: '60%' }}
-                          />
+                          {lapak.status}
+                        </CTableDataCell>
+                        <CTableDataCell>
                           <CButton
                             variant="outline"
-                            size="sm"
-                            className="mx-2"
-                            onClick={() => handleFile(index)}
-                            disabled={lapak.status === 'ready'}
+                            onClick={() => handleStatus(lapak)}
+                            disabled={lapak.status === 'on delivery'}
                           >
-                            Lihat
+                            Accept
                           </CButton>
-                          <CButton
-                            variant="outline"
-                            size="sm"
-                            className="mx-1"
-                            onClick={() => handleSubmit(lapak, index)}
-                            disabled={lapak.status === 'ready'}
-                          >
-                            Submit Foto
-                          </CButton>
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell
-                        style={{
-                          color:
-                            lapak.status === 'ready'
-                              ? 'green' // Assuming 'ready' status should display green text
-                              : 'red',
-                        }}
-                      >
-                        {lapak.status}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          variant="outline"
-                          onClick={() => handleStatus(lapak)}
-                          disabled={lapak.status === 'on delivery'}
-                        >
-                          Accept
-                        </CButton>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
+                  )}
                 </CTableBody>
               </CTable>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
               <CRow className='mt-2 mb-2'>
                 <CCol md={4} xs={8}>
                   Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -360,70 +352,65 @@ const DataPengiriman = () => {
                   Next
                 </CPaginationItem>
               </CPagination>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
-      {visible && (
-        <CModal
-          alignment="center"
-          visible={visible}
-          onClose={() => setVisible(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CTable striped bordered responsive>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell>Nama Roti</CTableHeaderCell>
-                  <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+      <CModal
+        backdrop="static"
+        visible={visible}
+        className="modal"
+        onClose={() => {
+          setVisible(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CTable striped bordered responsive>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>Nama Roti</CTableHeaderCell>
+                <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {dataRoti.map((roti, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
+                  <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
                 </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {dataRoti.map((roti, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
-                    <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setVisible(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
-      {open && (
-        <CModal
-          size="lg"
-          alignment="center"
-          visible={open}
-          onClose={() => setOpen(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setOpen(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
+              ))}
+            </CTableBody>
+          </CTable>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setVisible(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
+      <CModal
+        backdrop="static"
+        visible={open}
+        className="modal"
+        onClose={() => {
+          setOpen(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setOpen(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </div>
   )
 }

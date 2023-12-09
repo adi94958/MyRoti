@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import {
@@ -20,22 +21,13 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
-  CFormLabel,
-  CFormSelect,
   CFormInput,
   CInputGroup,
+  CPagination,
+  CPaginationItem,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import { cilSearch, cilUserPlus, cilTrash } from '@coreui/icons'
-import { Link } from 'react-router-dom'
-=======
-import { cilSearch } from '@coreui/icons'
->>>>>>> Stashed changes
-=======
-import { cilSearch } from '@coreui/icons'
->>>>>>> Stashed changes
 
 const RiwayatPengiriman = () => {
   const [searchText, setSearchText] = useState('')
@@ -44,9 +36,6 @@ const RiwayatPengiriman = () => {
   const [open, setOpen] = useState(false)
   const [foto, setFoto] = useState('')
   const [dataTransaksi, setDataTransaksi] = useState([])
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const itemsPerPageOptions = [10, 25, 50, dataTransaksi.length]; // Jumlah data per halaman
 
   useEffect(() => {
     handleData()
@@ -85,7 +74,7 @@ const RiwayatPengiriman = () => {
     const statusMatch = status.includes(searchText.toLowerCase())
     const tanggalPengirimanMatch = tanggalPengiriman.includes(searchText.toLowerCase())
 
-    const isStatus = lapak?.status !== 'closed'
+    const isStatus = lapak?.status !== 'finished'
     return (lapakNameMatch || kurirNameMatch || statusMatch || tanggalPengirimanMatch) && isStatus
   })
 
@@ -134,53 +123,11 @@ const RiwayatPengiriman = () => {
     }
   }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  const handleDelete = (data) => {
-    Swal.fire({
-      title: `Apakah anda yakin ingin menghapus transaksi lapak ${data.lapak.nama_lapak}?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Delete',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`http://localhost:8000/api/koordinator/transaksi/delete/${data.id_transaksi}`)
-          .then((response) => {
-            Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
-            window.location.href = '/pengiriman/list'
-          })
-          .catch((error) => {
-            console.error('Error deleting data:', error)
-          })
-      }
-    })
-  }
-=======
-=======
->>>>>>> Stashed changes
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
   const paginatedData = filteredData.slice(startIndex, endIndex);
->>>>>>> Stashed changes
-
-  const handleItemsPerPageChange = (value) => {
-    setCurrentPage(1);
-    setItemsPerPage(value);
-  };
-
-  const startRange = startIndex + 1;
-  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
-
-  const handleItemsPerPageChange = (value) => {
-    setCurrentPage(1);
-    setItemsPerPage(value);
-  };
-
-  const startRange = startIndex + 1;
-  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
   return (
     <div>
@@ -204,22 +151,6 @@ const RiwayatPengiriman = () => {
                       </CButton>
                     </CInputGroup>
                   </CCol>
-                  <CCol md={2} xs={3}>
-                    <CFormLabel>Rows Per Page:</CFormLabel>
-                  </CCol>
-                  <CCol md={2} xs={3}>
-                    <CFormSelect
-                      className="form-select"
-                      value={itemsPerPage}
-                      onChange={(e) => handleItemsPerPageChange(parseInt(e.target.value))}
-                    >
-                      {itemsPerPageOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option === dataTransaksi.length ? 'All' : option}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  </CCol>
                 </CRow>
               </CForm>
               <CTable striped bordered responsive>
@@ -234,11 +165,9 @@ const RiwayatPengiriman = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  {filteredData.map((lapak, index) => (
+                  {paginatedData.map((lapak, index) => (
                     <CTableRow key={index}>
-                      <CTableDataCell>{index + 1}</CTableDataCell>
+                      <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
                       <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
@@ -264,224 +193,102 @@ const RiwayatPengiriman = () => {
                   ))}
                 </CTableBody>
               </CTable>
-=======
-                  {paginatedData.length === 0 ? (
-                    <tr>
-                      <td colSpan="6" className="text-center">
-                        Tidak ada data.
-                      </td>
-                    </tr>
-                  ) : (
-                    paginatedData.map((lapak, index) => (
-                      <CTableRow key={index}>
-                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
-                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                        <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
-                        <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
-                        <CTableDataCell>
-                          <CButton
-                            color="primary"
-                            variant="outline"
-                            size="sm"
-                            className="ms-2"
-                            title="Daftar Roti"
-                            onClick={() => handleRotiClick(lapak)}
-                          >
-                            <CIcon icon={cilSearch} className="mx-12 me-2" />
-                            Open Detail
-                          </CButton>
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CButton variant="outline" size="sm" onClick={() => handleFoto(lapak)}>
-                            Lihat
-                          </CButton>
-                        </CTableDataCell>
-                      </CTableRow>
-                    ))
-                  )}
-                </CTableBody>
-              </CTable>
-=======
-                  {paginatedData.length === 0 ? (
-                    <tr>
-                      <td colSpan="6" className="text-center">
-                        Tidak ada data.
-                      </td>
-                    </tr>
-                  ) : (
-                    paginatedData.map((lapak, index) => (
-                      <CTableRow key={index}>
-                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
-                        <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                        <CTableDataCell>{lapak.lapak.kurir.nama}</CTableDataCell>
-                        <CTableDataCell>{formatDate(lapak.tanggal_pengiriman)}</CTableDataCell>
-                        <CTableDataCell>
-                          <CButton
-                            color="primary"
-                            variant="outline"
-                            size="sm"
-                            className="ms-2"
-                            title="Daftar Roti"
-                            onClick={() => handleRotiClick(lapak)}
-                          >
-                            <CIcon icon={cilSearch} className="mx-12 me-2" />
-                            Open Detail
-                          </CButton>
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CButton variant="outline" size="sm" onClick={() => handleFoto(lapak)}>
-                            Lihat
-                          </CButton>
-                        </CTableDataCell>
-                      </CTableRow>
-                    ))
-                  )}
-                </CTableBody>
-              </CTable>
->>>>>>> Stashed changes
-              <CRow className='mt-2 mb-2'>
-                <CCol md={4} xs={8}>
-                  Total Rows: {filteredData.length} Page: {startRange} of {endRange}
-                </CCol>
-              </CRow>
               <CPagination
-                activepage={currentPage}
+                activePage={currentPage}
                 pages={Math.ceil(filteredData.length / itemsPerPage)}
                 onActivePageChange={setCurrentPage}
                 align="center"
-                doublearrows="false"
+                doubleArrows={false} // Menghilangkan tombol "Garis ganda"
               >
                 <CPaginationItem
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
                 >
-                  Prev
+                  Sebelumnya
                 </CPaginationItem>
 
-                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => {
-                  const pageIndex = index + 1;
-                  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
-                  // Display three consecutive pages centered around the current page
-                  if (
-                    (pageIndex >= currentPage - 1 && pageIndex <= currentPage + 1) ||
-                    (totalPages <= 3 || (currentPage === 1 && pageIndex <= 3) || (currentPage === totalPages && pageIndex >= totalPages - 2))
-                  ) {
-                    return (
-                      <CPaginationItem
-                        key={pageIndex}
-                        active={pageIndex === currentPage}
-                        onClick={() => setCurrentPage(pageIndex)}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        {pageIndex}
-                      </CPaginationItem>
-                    );
-                  }
-
-                  // Display ellipses for pages before the current page
-                  if (pageIndex === 1 && currentPage > 2) {
-                    return (
-                      <CPaginationItem
-                        key={pageIndex}
-                        disabled
-                        style={{ cursor: 'default' }}
-                      >
-                        ...
-                      </CPaginationItem>
-                    );
-                  }
-
-                  // Display ellipses for pages after the current page
-                  if (pageIndex === totalPages && currentPage < totalPages - 1) {
-                    return (
-                      <CPaginationItem
-                        key={pageIndex}
-                        disabled
-                        style={{ cursor: 'default' }}
-                      >
-                        ...
-                      </CPaginationItem>
-                    );
-                  }
-
-                  return null;
-                })}
+                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => (
+                  <CPaginationItem
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
+                    style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
+                  >
+                    {index + 1}
+                  </CPaginationItem>
+                ))}
 
                 <CPaginationItem
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer' }} // Tambahkan properti CSS ini
                 >
-                  Next
+                  Berikutnya
                 </CPaginationItem>
               </CPagination>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+              <div className="text-muted mt-2">
+                Total Data: {filteredData.length}
+              </div>
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
-      {visible && (
-        <CModal
-          alignment="center"
-          visible={visible}
-          className="modal"
-          onClose={() => setVisible(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CTable striped bordered responsive>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell>Nama Roti</CTableHeaderCell>
-                  <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+      <CModal
+        backdrop="static"
+        visible={visible}
+        className="modal"
+        onClose={() => {
+          setVisible(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CTable striped bordered responsive>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>Nama Roti</CTableHeaderCell>
+                <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {dataRoti.map((roti, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
+                  <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
                 </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {dataRoti.map((roti, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{roti.roti.nama_roti}</CTableDataCell>
-                    <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setVisible(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
-      {open && (
-        <CModal
-          size="lg"
-          alignment="center"
-          visible={open}
-          onClose={() => setOpen(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setOpen(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
+              ))}
+            </CTableBody>
+          </CTable>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setVisible(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
+      <CModal
+        backdrop="static"
+        visible={open}
+        className="modal"
+        onClose={() => {
+          setOpen(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Preview Foto</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <img src={foto} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setOpen(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </div>
   )
 }

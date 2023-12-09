@@ -16,21 +16,15 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
   CFormLabel,
   CFormSelect,
   CInputGroup,
   CFormInput,
   CPagination,
   CPaginationItem,
->>>>>>> Stashed changes
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilPen, cilTrash, cilUserPlus } from '@coreui/icons'
+import { cilPen, cilTrash, cilSearch, cilBurger } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
 const KelolaDataDataRoti = () => {
@@ -92,12 +86,6 @@ const KelolaDataDataRoti = () => {
     })
   }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  const filteredData = dataRoti.filter((user) => {
-=======
-=======
->>>>>>> Stashed changes
   const searchableFields = [
     'kode_roti',
     'nama_roti',
@@ -107,21 +95,19 @@ const KelolaDataDataRoti = () => {
   ]
 
   const filteredData = dataRoti.filter((roti) => {
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     return (
       searchText === '' ||
-      user.kode_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.nama_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.stok_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.rasa_roti.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.harga_satuan_roti.toLowerCase().includes(searchText.toLowerCase())
+      searchableFields.some((field) => {
+        const fieldValue = roti[field]
+
+        // Check if the field value is a string before applying toLowerCase()
+        return (
+          typeof fieldValue === 'string' &&
+          fieldValue.toLowerCase().includes(searchText.toLowerCase())
+        )
+      })
     )
   })
-<<<<<<< Updated upstream
-=======
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = itemsPerPage === dataRoti.length ? dataRoti.length : startIndex + itemsPerPage;
@@ -135,10 +121,6 @@ const KelolaDataDataRoti = () => {
   const startRange = startIndex + 1;
   const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   return (
     <div>
       <CRow>
@@ -148,12 +130,6 @@ const KelolaDataDataRoti = () => {
             <CCardBody>
               <CForm className="mb-3">
                 <CRow>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  <CCol md={8} xs={6}>
-=======
-=======
->>>>>>> Stashed changes
                   <CCol md={6} xs={8}>
                     <CInputGroup>
                       <CFormInput
@@ -168,13 +144,9 @@ const KelolaDataDataRoti = () => {
                     </CInputGroup>
                   </CCol>
                   <CCol md={2} xs={4}>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                     <Link to="/roti/tambah">
                       <CButton variant="outline">
-                        <CIcon icon={cilUserPlus} className="mx-8" />
+                        <CIcon icon={cilBurger} className="mx-8 me-2" />
                         Tambah Roti
                       </CButton>
                     </Link>
@@ -200,7 +172,7 @@ const KelolaDataDataRoti = () => {
               <CTable striped bordered responsive>
                 <CTableHead>
                   <CTableRow>
-                    <CTableHeaderCell>Kode Roti</CTableHeaderCell>
+                    <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Nama Roti</CTableHeaderCell>
                     <CTableHeaderCell>Stok Roti</CTableHeaderCell>
                     <CTableHeaderCell>Rasa Roti</CTableHeaderCell>
@@ -209,16 +181,16 @@ const KelolaDataDataRoti = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {filteredData.length === 0 ? (
+                  {paginatedData.length === 0 ? (
                     <tr>
                       <td colSpan="6" className="text-center">
                         Tidak ada data.
                       </td>
                     </tr>
                   ) : (
-                    filteredData.map((user) => (
-                      <CTableRow key={user.id}>
-                        <CTableDataCell>{user.kode_roti}</CTableDataCell>
+                    paginatedData.map((user, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
                         <CTableDataCell>{user.nama_roti}</CTableDataCell>
                         <CTableDataCell>{user.stok_roti}</CTableDataCell>
                         <CTableDataCell>{user.rasa_roti}</CTableDataCell>
@@ -250,11 +222,6 @@ const KelolaDataDataRoti = () => {
                   )}
                 </CTableBody>
               </CTable>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
               <CRow className='mt-2 mb-2'>
                 <CCol md={4} xs={8}>
                   Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -333,10 +300,6 @@ const KelolaDataDataRoti = () => {
                   Next
                 </CPaginationItem>
               </CPagination>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             </CCardBody>
           </CCard>
         </CCol>

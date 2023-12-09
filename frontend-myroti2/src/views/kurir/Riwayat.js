@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Swal from 'sweetalert2'
 import {
   CModal,
   CModalHeader,
@@ -29,74 +27,34 @@ import {
   CPaginationItem,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilSearch, cilUserPlus } from '@coreui/icons'
-import { Link } from 'react-router-dom'
+import { cilSearch } from '@coreui/icons'
 
 const DataPengiriman = () => {
   const [searchText, setSearchText] = useState('')
   const [dataRoti, setDataRoti] = useState([])
   const [visible, setVisible] = useState(false)
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  const [open, setOpen] = useState(false)
-  const [kurir_id, setKurirId] = useState('')
-  const [dataTransaksi, setDataTransaksi] = useState([])
-=======
-=======
->>>>>>> Stashed changes
   const [idKurir, setKurirId] = useState('')
   const [dataPenjualan, setDataPenjualan] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const itemsPerPageOptions = [10, 25, 50, dataPenjualan.length]; // Jumlah data per halaman
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
   useEffect(() => {
     const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
     setKurirId(infoLogin.id)
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    handleData()
-  }, [])
-
-  const handleData = () => {
-    axios
-      .get('http://localhost:8000/api/kurir/transaksi')
-      .then((response) => {
-        console.log(response.data)
-        setDataTransaksi(response.data)
-=======
     handlePenjualan()
   }, [])
 
-=======
-    handlePenjualan()
-  }, [])
-
->>>>>>> Stashed changes
   const handlePenjualan = () => {
     axios
       .get('http://localhost:8000/api/kurir/datapenjualan')
       .then((response) => {
         setDataPenjualan(response.data)
->>>>>>> Stashed changes
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
       })
   }
-<<<<<<< Updated upstream
-  const filteredData = dataTransaksi.filter((lapak) => {
-    const lapakName = lapak?.nama_lapak?.toString()?.toLowerCase() || ''
-    const lapakNameMatch = lapakName.includes(searchText.toLowerCase())
-    const isStatus = lapak?.status == 'finished'
-    const isKurirMatch = lapak?.id_kurir === kurir_id
-    return lapakNameMatch && isStatus && isKurirMatch
-  })
-=======
 
   const filteredData = dataPenjualan.filter((lapak) => {
     const lapakName = lapak?.nama_lapak?.toString()?.toLowerCase() || ''
@@ -106,30 +64,14 @@ const DataPengiriman = () => {
     return isStatus && isKurirMatch && lapakNameMatch
   })
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
   const handleRotiClick = async (lapak) => {
     try {
       const response = await axios.get(
         `http://localhost:8000/api/kurir/riwayat-transaksi/${lapak.id_transaksi}`,
       )
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      console.log('Response:', response) // Tambahkan ini untuk melihat respons dari API
       if (response.status >= 200 && response.status < 300) {
         const data = response.data
-        console.log('Data Roti:', data.detail_roti) // Tambahkan ini untuk melihat data roti
-=======
-      if (response.status >= 200 && response.status < 300) {
-        const data = response.data
->>>>>>> Stashed changes
-=======
-      if (response.status >= 200 && response.status < 300) {
-        const data = response.data
->>>>>>> Stashed changes
         setDataRoti(data.detail_roti)
         setVisible(true)
       } else {
@@ -159,8 +101,6 @@ const DataPengiriman = () => {
           <CCard>
             <CCardHeader>Data Pengiriman Kurir</CCardHeader>
             <CCardBody>
-<<<<<<< Updated upstream
-=======
               <CForm className="mb-3">
                 <CRow>
                   <CCol md={8} xs={6}>
@@ -194,49 +134,19 @@ const DataPengiriman = () => {
                   </CCol>
                 </CRow>
               </CForm>
->>>>>>> Stashed changes
               <CTable striped bordered responsive>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Alamat Lapak</CTableHeaderCell>
+                    <CTableHeaderCell>Tanggal Pengambilan</CTableHeaderCell>
                     <CTableHeaderCell>Roti</CTableHeaderCell>
+                    <CTableHeaderCell>Uang Setoran</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  {filteredData.map((lapak, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color="primary"
-                          variant="outline"
-                          className="ms-2"
-                          title="Daftar Roti"
-                          onClick={() => handleRotiClick(lapak)}
-                        >
-                          <CIcon icon={cilSearch} className="mx-12 me-2" />
-                          Open Detail
-                        </CButton>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton
-                          color={lapak.status === 'ready' ? 'success' : 'danger'}
-                          style={{ color: 'white' }}
-                          disabled
-                        >
-                          {lapak.status}
-                        </CButton>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
-=======
-=======
->>>>>>> Stashed changes
                   {paginatedData.length === 0 ? (
                     <tr>
                       <td colSpan="7" className="text-center">
@@ -273,10 +183,6 @@ const DataPengiriman = () => {
                       </CTableRow>
                     ))
                   )}
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                 </CTableBody>
               </CTable>
               <CRow className='mt-2 mb-2'>
@@ -361,43 +267,43 @@ const DataPengiriman = () => {
           </CCard>
         </CCol>
       </CRow>
-      {visible && (
-        <CModal
-          alignment="center"
-          visible={visible}
-          onClose={() => setVisible(false)}
-          aria-labelledby="VerticallyCenteredExample"
-        >
-          <CModalHeader>
-            <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CTable striped bordered responsive>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell>Nama Roti</CTableHeaderCell>
-                  <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
-                  <CTableHeaderCell>Jumlah Roti Basi</CTableHeaderCell>
+      <CModal
+        backdrop="static"
+        visible={visible}
+        className="modal"
+        onClose={() => {
+          setVisible(false)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle id="VerticallyCenteredExample">Data Roti</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CTable striped bordered responsive>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>Nama Roti</CTableHeaderCell>
+                <CTableHeaderCell>Jumlah Roti</CTableHeaderCell>
+                <CTableHeaderCell>Jumlah Roti Basi</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {dataRoti.map((roti, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{roti.nama_roti}</CTableDataCell>
+                  <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
+                  <CTableDataCell>{roti.jumlah_roti_basi}</CTableDataCell>
                 </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {dataRoti.map((roti, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{roti.nama_roti}</CTableDataCell>
-                    <CTableDataCell>{roti.jumlah_roti}</CTableDataCell>
-                    <CTableDataCell>{roti.jumlah_roti_basi}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setVisible(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
-        </CModal>
-      )}
+              ))}
+            </CTableBody>
+          </CTable>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setVisible(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </div>
   )
 }

@@ -16,21 +16,15 @@ import {
   CTableHeaderCell,
   CTableRow,
   CForm,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
   CFormLabel,
   CFormSelect,
   CInputGroup,
   CFormInput,
   CPagination,
   CPaginationItem,
->>>>>>> Stashed changes
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilPen, cilTrash, cilUserPlus } from '@coreui/icons'
+import { cilPen, cilTrash, cilUserPlus, cilSearch } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
 const Lapak = () => {
@@ -96,26 +90,8 @@ const Lapak = () => {
     })
   }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  const filteredData = dataLapak.filter((user) => {
-    return (
-      searchText === '' ||
-      user.kode_lapak.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.nama_lapak.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.nama_kurir.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.area.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.alamat_lapak.toLowerCase().includes(searchText.toLowerCase())
-    )
-  })
-
-=======
   const searchableFields = ['kode_lapak', 'nama_lapak', 'no_telp', 'nama', 'area_distribusi', 'alamat_lapak']
 
-=======
-  const searchableFields = ['kode_lapak', 'nama_lapak', 'no_telp', 'nama', 'area_distribusi', 'alamat_lapak']
-
->>>>>>> Stashed changes
   const filteredData = dataLapak.filter((lapak) => {
     return (
       searchText === '' ||
@@ -143,10 +119,6 @@ const Lapak = () => {
   const startRange = startIndex + 1;
   const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   return (
     <div>
       <CRow>
@@ -156,12 +128,6 @@ const Lapak = () => {
             <CCardBody>
               <CForm className="mb-3">
                 <CRow>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  <CCol md={8} xs={6}>
-=======
-=======
->>>>>>> Stashed changes
                   <CCol md={6} xs={8}>
                     <CInputGroup>
                       <CFormInput
@@ -176,13 +142,9 @@ const Lapak = () => {
                     </CInputGroup>
                   </CCol>
                   <CCol md={2} xs={4}>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                     <Link to="/lapak/tambah">
                       <CButton variant="outline">
-                        <CIcon icon={cilUserPlus} className="mx-8" />
+                        <CIcon icon={cilUserPlus} className="mx-8  me-2" />
                         Tambah Lapak
                       </CButton>
                     </Link>
@@ -208,15 +170,9 @@ const Lapak = () => {
               <CTable striped bordered responsive>
                 <CTableHead>
                   <CTableRow>
+                    <CTableHeaderCell>No</CTableHeaderCell>
                     <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
                     <CTableHeaderCell>No Telp</CTableHeaderCell>
->>>>>>> Stashed changes
-=======
-                    <CTableHeaderCell>No Telp</CTableHeaderCell>
->>>>>>> Stashed changes
                     <CTableHeaderCell>Kecamatan</CTableHeaderCell>
                     <CTableHeaderCell>Alamat</CTableHeaderCell>
                     <CTableHeaderCell>Nama Kurir</CTableHeaderCell>
@@ -224,24 +180,18 @@ const Lapak = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {filteredData.length === 0 ? (
+                  {paginatedData.length === 0 ? (
                     <tr>
                       <td colSpan="6" className="text-center">
                         Tidak ada data.
                       </td>
                     </tr>
                   ) : (
-                    filteredData.map((user) => (
-                      <CTableRow key={user.id}>
+                    paginatedData.map((user, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
                         <CTableDataCell>{user.nama_lapak}</CTableDataCell>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
                         <CTableDataCell>{user.no_telp}</CTableDataCell>
->>>>>>> Stashed changes
-=======
-                        <CTableDataCell>{user.no_telp}</CTableDataCell>
->>>>>>> Stashed changes
                         <CTableDataCell>{user.area_distribusi}</CTableDataCell>
                         <CTableDataCell>{user.alamat_lapak}</CTableDataCell>
                         <CTableDataCell>{user.nama}</CTableDataCell>
@@ -272,11 +222,6 @@ const Lapak = () => {
                   )}
                 </CTableBody>
               </CTable>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
               <CRow className='mt-2 mb-2'>
                 <CCol md={4} xs={8}>
                   Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -355,10 +300,6 @@ const Lapak = () => {
                   Next
                 </CPaginationItem>
               </CPagination>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             </CCardBody>
           </CCard>
         </CCol>

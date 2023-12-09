@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   CButton,
   CCard,
@@ -11,20 +11,11 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CInputGroup,
+  CFormInput,
+  CCol,
+  CRow,
   CForm,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-} from '@coreui/react'
-import { cilCart } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import { useNavigate } from 'react-router-dom'
-
-const Pengiriman = () => {
-  const [data, setData] = useState([])
-  const navigate = useNavigate()
-=======
-=======
->>>>>>> Stashed changes
   CFormLabel,
   CFormSelect,
   CPagination,
@@ -41,52 +32,35 @@ const Pengiriman = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const itemsPerPageOptions = [10, 25, 50, data.length]; // Jumlah data per halaman
   const navigate = useNavigate();
->>>>>>> Stashed changes
 
   useEffect(() => {
-    handleData()
-  }, [])
+    handleData();
+  }, []);
 
   function handleData() {
     axios
       .get('http://localhost:8000/api/koordinator/transaksi')
       .then((response) => {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        setData(response.data)
-        console.log(response.data)
-=======
         setData(response.data);
         console.log(response.data);
->>>>>>> Stashed changes
-=======
-        setData(response.data);
-        console.log(response.data);
->>>>>>> Stashed changes
       })
       .catch((error) => {
-        console.error('Error:', error)
-      })
+        console.error('Error:', error);
+      });
   }
 
   function handleKirim(item) {
-    console.log(item)
     localStorage.setItem(
       'dataTransaksi',
       JSON.stringify({
         kode_lapak: item.kode_lapak,
         nama_lapak: item.nama_lapak,
-        nama_kurir: item.nama,
-      }),
-    )
-    navigate('/pengiriman/kelola/kirim')
+        nama_kurir: item.kurir.nama,
+      })
+    );
+    navigate('/pengiriman/kelola/kirim');
   }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
   const searchableFields = ['nama_lapak', 'alamat_lapak', 'no_telp', 'kurir.nama', 'kurir.no_telp'];
 
   const filteredData = data.filter((lapak) => {
@@ -122,17 +96,10 @@ const Pengiriman = () => {
   const startRange = startIndex + 1;
   const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   return (
     <CCard>
       <CCardHeader>Data Pengiriman</CCardHeader>
       <CCardBody>
-<<<<<<< Updated upstream
-        <CForm className="mb-3"></CForm>
-=======
         <CForm className="mb-3">
           <CRow>
             <CCol md={8} xs={6}>
@@ -166,53 +133,34 @@ const Pengiriman = () => {
             </CCol>
           </CRow>
         </CForm>
->>>>>>> Stashed changes
         <CTable striped bordered responsive>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell>No.</CTableHeaderCell>
+              <CTableHeaderCell>No</CTableHeaderCell>
               <CTableHeaderCell>Nama Lapak</CTableHeaderCell>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-              <CTableHeaderCell>Kurir</CTableHeaderCell>
-              <CTableHeaderCell>Action</CTableHeaderCell>
-=======
-=======
->>>>>>> Stashed changes
               <CTableHeaderCell>Alamat Lapak</CTableHeaderCell>
               <CTableHeaderCell>No Telp Lapak</CTableHeaderCell>
               <CTableHeaderCell>Kurir</CTableHeaderCell>
               <CTableHeaderCell>No Telp Kurir</CTableHeaderCell>
               <CTableHeaderCell>Aksi</CTableHeaderCell>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {data.map((item, index) => {
-              const isLast = index === data.length - 1
-
-              return (
+            {paginatedData.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="text-center">
+                  Tidak ada data.
+                </td>
+              </tr>
+            ) : (
+              paginatedData.map((item, index) => (
                 <CTableRow key={index}>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  <CTableDataCell>{index + 1}</CTableDataCell>
-                  <CTableDataCell>{item.nama_lapak}</CTableDataCell>
-                  <CTableDataCell>{item.nama}</CTableDataCell>
-=======
                   <CTableDataCell>{startRange + index}</CTableDataCell>
                   <CTableDataCell>{item.nama_lapak}</CTableDataCell>
-=======
-                  <CTableDataCell>{startRange + index}</CTableDataCell>
-                  <CTableDataCell>{item.nama_lapak}</CTableDataCell>
->>>>>>> Stashed changes
                   <CTableDataCell>{item.alamat_lapak}</CTableDataCell>
                   <CTableDataCell>{item.no_telp}</CTableDataCell>
                   <CTableDataCell>{item.kurir.nama}</CTableDataCell>
                   <CTableDataCell>{item.kurir.no_telp}</CTableDataCell>
->>>>>>> Stashed changes
                   <CTableDataCell>
                     <CButton
                       color="warning"
@@ -221,19 +169,15 @@ const Pengiriman = () => {
                       title="Kirim"
                       onClick={() => handleKirim(item)}
                     >
-                      <CIcon icon={cilCart} className="mx-12" />
+                      <CIcon icon={cilCart} className="mx-12 me-2" />
+                      Kirim
                     </CButton>
                   </CTableDataCell>
                 </CTableRow>
-              )
-            })}
+              ))
+            )}
           </CTableBody>
         </CTable>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
         <CRow className='mt-2 mb-2'>
           <CCol md={4} xs={8}>
             Total Rows: {filteredData.length} Page: {startRange} of {endRange}
@@ -312,21 +256,9 @@ const Pengiriman = () => {
             Next
           </CPaginationItem>
         </CPagination>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
       </CCardBody>
     </CCard>
-  )
-}
+  );
+};
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-export default Pengiriman
-=======
 export default Pengiriman;
->>>>>>> Stashed changes
-=======
-export default Pengiriman;
->>>>>>> Stashed changes

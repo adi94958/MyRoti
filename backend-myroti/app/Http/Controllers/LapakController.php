@@ -44,15 +44,7 @@ class LapakController extends Controller
                     'area_id' => $area->area_id,
                     'id_kurir' => $kurir->id_kurir,
                     'alamat_lapak' => $request->alamat_lapak,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                    'status' => 'enable'
-=======
                     'no_telp' => $request->no_telp
->>>>>>> Stashed changes
-=======
-                    'no_telp' => $request->no_telp
->>>>>>> Stashed changes
                 ]);
                 return response()->json(['message' => 'Lapak berhasil didaftarkan']);
             }

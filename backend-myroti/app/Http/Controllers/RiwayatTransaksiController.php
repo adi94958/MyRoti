@@ -12,12 +12,6 @@ class RiwayatTransaksiController extends Controller
     /**
      * Display a listing of the resource.
      */
-<<<<<<< Updated upstream
-    public function index()
-    {
-        //
-    }
-=======
     public function readDataPenjualan()
 {
     $datas = DataPenjualan::select('datapenjualan.tanggal_pengambilan', 'datapenjualan.uang_setoran', 'datapenjualan.id_transaksi', 'lapak.nama_lapak', 'lapak.alamat_lapak', 'transaksi.status', 'transaksi.id_kurir')
@@ -27,7 +21,6 @@ class RiwayatTransaksiController extends Controller
 
     return response()->json($datas, 200);
 }
->>>>>>> Stashed changes
 
     /**
      * Store a newly created resource in storage.
