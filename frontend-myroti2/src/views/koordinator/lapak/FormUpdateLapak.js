@@ -183,7 +183,7 @@ const FormUpdateRoti = () => {
                     floatingLabel="No Telp"
                     defaultValue={noTelp}
                     required
-                    onChange={(e) => setNotelp(e.target.value)}
+                    onChange={(e) => setNoTelp(e.target.value)}
                   />
                 </CInputGroup>
               </CCol>

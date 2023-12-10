@@ -42,31 +42,31 @@ const DaftarPengiriman = () => {
   const [dataRotiDipilih, setDataRotiDipilih] = useState([])
   const [searchText, setSearchText] = useState('')
   const [formData, setFormData] = useState([])
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const [dataTransaksi, setDataTransaksi] = useState([])
   const [catatanNtotalHarga, setCatatanNtotalHarga] = useState([])
-  const itemsPerPageOptions = [10, 25, 50, dataTransaksi.length]; // Jumlah data per halaman
+  const itemsPerPageOptions = [10, 25, 50, dataTransaksi.length] // Jumlah data per halaman
 
   const [idKurir, setKurirId] = useState('')
   useEffect(() => {
-    fetchData();
+    fetchData()
   }, [])
 
   const fetchData = async () => {
     try {
       // Get infoLogin from localStorage
-      const infoLogin = JSON.parse(localStorage.getItem('dataLogin'));
+      const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
 
-      setKurirId(infoLogin.id);
+      setKurirId(infoLogin.id)
 
-      const response = await axios.get('http://localhost:8000/api/kurir/transaksi');
+      const response = await axios.get('http://localhost:8000/api/kurir/transaksi')
 
-      setDataTransaksi(response.data);
+      setDataTransaksi(response.data)
 
       const initCatatanNtotalHarga = response.data.map((transaksi) => ({
         id_transaksi: transaksi.id_transaksi,
-        catatan_penjual: "",
+        catatan_penjual: '',
         total_dengan_rotibasi: 0,
       }))
       setCatatanNtotalHarga(initCatatanNtotalHarga)
@@ -82,9 +82,9 @@ const DaftarPengiriman = () => {
         setFormData(initRoti)
       })
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error)
     }
-  };
+  }
 
   function handleModalRoti(lapak) {
     setModalRoti(true)
@@ -207,8 +207,10 @@ const DaftarPengiriman = () => {
       }
     })
 
-    const dataTrans = catatanNtotalHarga.find((transaksi) => transaksi.id_transaksi === item.id_transaksi);
-    const catatan = dataTrans.catatan_penjual === "" ? "-" : dataTrans.catatan_penjual;
+    const dataTrans = catatanNtotalHarga.find(
+      (transaksi) => transaksi.id_transaksi === item.id_transaksi,
+    )
+    const catatan = dataTrans.catatan_penjual === '' ? '-' : dataTrans.catatan_penjual
     const informasiPenjualan = {
       kode_roti: kodeRotiArray,
       jumlah_roti: jumlahRotiArray,
@@ -252,17 +254,19 @@ const DaftarPengiriman = () => {
     })
   }
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage;
-  const paginatedData = filteredData.slice(startIndex, endIndex);
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex =
+    itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage
+  const paginatedData = filteredData.slice(startIndex, endIndex)
 
   const handleItemsPerPageChange = (value) => {
-    setCurrentPage(1);
-    setItemsPerPage(value);
-  };
+    setCurrentPage(1)
+    setItemsPerPage(value)
+  }
 
-  const startRange = startIndex + 1;
-  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length);
+  const startRange = startIndex + 1
+  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length)
+  const isDataEmpty = filteredData.length === 0
 
   return (
     <>
@@ -384,7 +388,7 @@ const DaftarPengiriman = () => {
               )}
             </CTableBody>
           </CTable>
-          <CRow className='mt-2 mb-2'>
+          <CRow className="mt-2 mb-2">
             <CCol md={4} xs={8}>
               Total Rows: {filteredData.length} Page: {startRange} of {endRange}
             </CCol>
@@ -397,21 +401,23 @@ const DaftarPengiriman = () => {
             doublearrows="false"
           >
             <CPaginationItem
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              style={{ cursor: 'pointer' }}
+              onClick={() => !isDataEmpty && setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1 || isDataEmpty}
+              style={{ cursor: isDataEmpty ? 'default' : 'pointer' }}
             >
               Prev
             </CPaginationItem>
 
             {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => {
-              const pageIndex = index + 1;
-              const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+              const pageIndex = index + 1
+              const totalPages = Math.ceil(filteredData.length / itemsPerPage)
 
               // Display three consecutive pages centered around the current page
               if (
                 (pageIndex >= currentPage - 1 && pageIndex <= currentPage + 1) ||
-                (totalPages <= 3 || (currentPage === 1 && pageIndex <= 3) || (currentPage === totalPages && pageIndex >= totalPages - 2))
+                totalPages <= 3 ||
+                (currentPage === 1 && pageIndex <= 3) ||
+                (currentPage === totalPages && pageIndex >= totalPages - 2)
               ) {
                 return (
                   <CPaginationItem
@@ -422,41 +428,35 @@ const DaftarPengiriman = () => {
                   >
                     {pageIndex}
                   </CPaginationItem>
-                );
+                )
               }
 
               // Display ellipses for pages before the current page
               if (pageIndex === 1 && currentPage > 2) {
                 return (
-                  <CPaginationItem
-                    key={pageIndex}
-                    disabled
-                    style={{ cursor: 'default' }}
-                  >
+                  <CPaginationItem key={pageIndex} disabled style={{ cursor: 'default' }}>
                     ...
                   </CPaginationItem>
-                );
+                )
               }
 
               // Display ellipses for pages after the current page
               if (pageIndex === totalPages && currentPage < totalPages - 1) {
                 return (
-                  <CPaginationItem
-                    key={pageIndex}
-                    disabled
-                    style={{ cursor: 'default' }}
-                  >
+                  <CPaginationItem key={pageIndex} disabled style={{ cursor: 'default' }}>
                     ...
                   </CPaginationItem>
-                );
+                )
               }
 
-              return null;
+              return null
             })}
             <CPaginationItem
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
-              style={{ cursor: 'pointer' }}
+              onClick={() => !isDataEmpty && setCurrentPage(currentPage + 1)}
+              disabled={
+                currentPage === Math.ceil(filteredData.length / itemsPerPage) || isDataEmpty
+              }
+              style={{ cursor: isDataEmpty ? 'default' : 'pointer' }}
             >
               Next
             </CPaginationItem>
