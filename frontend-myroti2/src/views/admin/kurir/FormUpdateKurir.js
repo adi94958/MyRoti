@@ -26,6 +26,7 @@ const FormUpdateKurir = () => {
     nama: 0,
     username: 0,
     password: 0,
+    no_telp: 0,
   })
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -33,6 +34,7 @@ const FormUpdateKurir = () => {
     nama: '',
     username: '',
     password: '',
+    no_telp: '',
     area: null,
   })
 
@@ -56,12 +58,14 @@ const FormUpdateKurir = () => {
       nama: dataKurir.nama.length,
       username: dataKurir.username.length,
       password: dataKurir.password.length,
+      no_telp: dataKurir.no_telp ? dataKurir.no_telp.length : 0,
     })
     setFormData({
       id: dataKurir.id,
       nama: dataKurir.nama,
       username: dataKurir.username,
       password: dataKurir.password,
+      no_telp: dataKurir.no_telp,
       area: dataKurir.area_id,
     })
   }
@@ -96,6 +100,16 @@ const FormUpdateKurir = () => {
     }
   }
 
+  const handleTelpChange = (e) => {
+    const inputValue = e.target.value
+    if (inputValue.length <= 25) {
+      setFormData({ ...formData, no_telp: inputValue })
+      setCount({ ...count, no_telp: inputValue.length })
+    } else {
+      setFormData({ ...formData, no_telp: inputValue.slice(0, 25) })
+    }
+  }
+
   const handleAreaChange = (e) => {
     const inputValue = e.target.value
     setFormData({ ...formData, area: inputValue })
@@ -108,6 +122,7 @@ const FormUpdateKurir = () => {
       nama: formData.nama,
       username: formData.username,
       password: formData.password,
+      no_telp: formData.no_telp,
       area_id: formData.area,
       user_type: 'kurir',
     }
@@ -186,6 +201,19 @@ const FormUpdateKurir = () => {
                     onChange={handlePasswordChange}
                   />
                   <CInputGroupText size="sm">{count.password}/25</CInputGroupText>
+                </CInputGroup>
+              </CCol>
+              <CCol xs={12}>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    name="No Telp"
+                    placeholder="No Telp"
+                    floatingLabel="No Telp"
+                    value={formData.no_telp}
+                    required
+                    onChange={handleTelpChange}
+                  />
+                  <CInputGroupText size="sm">{count.no_telp}/25</CInputGroupText>
                 </CInputGroup>
               </CCol>
               <CCol xs={12}>

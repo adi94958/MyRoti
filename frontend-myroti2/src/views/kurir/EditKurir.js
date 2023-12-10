@@ -1,4 +1,3 @@
-// EditKurir.js
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import {
@@ -22,43 +21,58 @@ import axios from 'axios'
 
 const EditKurir = () => {
   const [message, setMessage] = useState('')
-  const [dataArea] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [dataArea, setDataArea] = useState([])
+  const [dataKurir, setDataKurir] = useState([])
   const [count, setCount] = useState({
     nama: 0,
     username: 0,
     password: 0,
+    no_telp: 0,
   })
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     id: '',
     nama: '',
     username: '',
-    password: '',
-    area: null,
+    password: '',=
+    no_telp: '',
+    area_id: '',
+    area_distribusi: null,
   })
 
   useEffect(() => {
-    const idFromLocalStorage = JSON.parse(localStorage.getItem('lsDataEditKurir')).id
-    handleData(idFromLocalStorage)
+    const Kurir = JSON.parse(localStorage.getItem('lsDataEditKurir'))
+
+    console.log(Kurir.id_kurir)
+    handleData(Kurir.id_kurir)
   }, [])
 
   const handleData = (id) => {
-    const dataKurir = JSON.parse(localStorage.getItem('lsDataKurir'))
-    // Check if dataKurir is not null or undefined
-    if (dataKurir) {
-      setCount({
-        nama: dataKurir.nama.length,
-        username: dataKurir.username.length,
-        password: dataKurir.password.length,
+    axios
+      .get('http://localhost:8000/api/kurir/edit/' + id)
+      .then((response) => {
+        console.log(response.data)
+        setDataKurir(response.data)
+        const kurirData = response.data
+        setCount({
+          nama: kurirData.nama.length,
+          username: kurirData.username.length,
+          password: kurirData.password.length,
+          no_telp: kurirData.no_telp ? kurirData.no_telp.length : 0,
+        })
+        setFormData({
+          id: kurirData.id_kurir,
+          nama: kurirData.nama,
+          username: kurirData.username,
+          password: kurirData.password,
+          no_telp: kurirData.no_telp,
+          area_id: kurirData.area_id,
+          area_distribusi: kurirData.area__distribusi.area_distribusi,
+        })
       })
-      setFormData({
-        id: dataKurir.id,
-        nama: dataKurir.nama,
-        username: dataKurir.username,
-        password: dataKurir.password,
-        area: dataKurir.area_distribusi,
+      .catch((error) => {
+        console.error('Error fetching data:', error)
       })
-    }
   }
 
   const handleNamaChange = (e) => {
@@ -91,6 +105,16 @@ const EditKurir = () => {
     }
   }
 
+  const handleTelpChange = (e) => {
+    const inputValue = e.target.value
+    if (inputValue.length <= 25) {
+      setFormData({ ...formData, no_telp: inputValue })
+      setCount({ ...count, no_telp: inputValue.length })
+    } else {
+      setFormData({ ...formData, no_telp: inputValue.slice(0, 25) })
+    }
+  }
+  
   const handleAreaChange = (e) => {
     const inputValue = e.target.value
     setFormData({ ...formData, area: inputValue })
@@ -99,19 +123,21 @@ const EditKurir = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    const updatedUser = {
+    const newUser = {
       nama: formData.nama,
       username: formData.username,
       password: formData.password,
-      area_distribusi: formData.area,
+      no_telp: formData.no_telp,
+      area_id: formData.area_id,
       user_type: 'kurir',
     }
-    console.log(updatedUser)
+    console.log(newUser)
+    console.log(formData)
 
     try {
       const response = await axios.put(
         `http://localhost:8000/api/kurir/update/${formData.id}`,
-        updatedUser,
+        newUser,
       )
       Swal.fire({
         title: 'Berhasil',
@@ -120,8 +146,8 @@ const EditKurir = () => {
         confirmButtonText: 'OK',
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.href = '/kurir'
-          console.log('Kurir data updated successfully:', response.data)
+          window.location.href = '/kurir/pengiriman'
+          console.log('User created successfully:', response.data)
         }
       })
     } catch (error) {
@@ -151,6 +177,7 @@ const EditKurir = () => {
                     placeholder="Nama"
                     floatingLabel="Nama"
                     value={formData.nama}
+                    disabled
                     required
                     onChange={handleNamaChange}
                   />
@@ -164,6 +191,7 @@ const EditKurir = () => {
                     placeholder="Username"
                     floatingLabel="Username"
                     value={formData.username}
+                    disabled
                     required
                     onChange={handleUsernameChange}
                   />
@@ -181,6 +209,31 @@ const EditKurir = () => {
                     onChange={handlePasswordChange}
                   />
                   <CInputGroupText size="sm">{count.password}/25</CInputGroupText>
+                </CInputGroup>
+              </CCol>
+              <CCol xs={12}>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    name="No Telp"
+                    placeholder="No Telp"
+                    floatingLabel="No Telp"
+                    value={formData.no_telp}
+                    required
+                    onChange={handleTelpChange}
+                  />
+                  <CInputGroupText size="sm">{count.no_telp}/25</CInputGroupText>
+                </CInputGroup>
+              </CCol>
+              <CCol xs={12}>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    name="Area"
+                    placeholder="Area"
+                    floatingLabel="Area"
+                    value={formData.area_distribusi}
+                    required
+                    disabled
+                  />
                 </CInputGroup>
               </CCol>
             </CRow>
