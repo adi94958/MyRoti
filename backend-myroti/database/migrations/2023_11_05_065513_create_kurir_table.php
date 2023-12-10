@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->string('user_type');
             $table->string('no_telp', 15)->nullable();
-            $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
+            $table->foreignId('area_id')->nullable();
+            $table->foreign('area_id')->references('area_id')->on('areadistribusi')->onDelete('set null');
             $table->timestamps();
         });
     }

@@ -94,12 +94,6 @@ class LapakController extends Controller
             return response()->json(['message' => 'Lapak tidak ditemukan'], 404);
         }
 
-        $transaksi = Transaksi::where('kode_lapak', $kode_lapak)->get();
-
-        foreach ($transaksi as $transaksi1) {
-            $transaksi1->delete();
-        }
-
         $lapak->delete();
 
         return response()->json(['message' => 'Lapak berhasil dihapus']);

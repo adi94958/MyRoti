@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('transaksi_roti', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_transaksi')->constrained('transaksi', 'id_transaksi');
-            $table->foreignId('kode_roti')->constrained('dataroti', 'kode_roti');
+            $table->foreignId('id_transaksi')->nullable();
+            $table->foreign('id_transaksi')->references('id_transaksi')->on('transaksi')->onDelete("cascade");
+            $table->foreignId('kode_roti')->nullable();
+            $table->foreign('kode_roti')->references('kode_roti')->on('dataroti')->onDelete('set null');
             $table->integer('jumlah_roti');
         });
     }
