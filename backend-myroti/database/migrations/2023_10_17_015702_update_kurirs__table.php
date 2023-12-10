@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('password');
             $table->string('nama', 50);
             $table->string('user_type');
-            $table->string('no_telp', 15)->nullable();
-            $table->foreignId('area_id')->nullable();
-            $table->foreign('area_id')->references('area_id')->on('areadistribusi')->onDelete('set null');
+            $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
             $table->timestamps();
+
+            //$table->foreign('area')->references('id')->on('area_distribusi');
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kurir');
+        //
     }
 };

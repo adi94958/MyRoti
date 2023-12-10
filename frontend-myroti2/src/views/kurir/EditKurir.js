@@ -34,7 +34,7 @@ const EditKurir = () => {
     id: '',
     nama: '',
     username: '',
-    password: '',
+    password: '',=
     no_telp: '',
     area_id: '',
     area_distribusi: null,
@@ -114,7 +114,7 @@ const EditKurir = () => {
       setFormData({ ...formData, no_telp: inputValue.slice(0, 25) })
     }
   }
-
+  
   const handleAreaChange = (e) => {
     const inputValue = e.target.value
     setFormData({ ...formData, area: inputValue })
@@ -141,7 +141,7 @@ const EditKurir = () => {
       )
       Swal.fire({
         title: 'Berhasil',
-        text: `Data Kurir berhasil ditambahkan.`,
+        text: `Data kurir telah berhasil diubah.`,
         icon: 'success',
         confirmButtonText: 'OK',
       }).then((result) => {
@@ -167,7 +167,7 @@ const EditKurir = () => {
     <>
       <CCard>
         <CForm onSubmit={handleSubmit}>
-          <CCardHeader>Form Update Kurir</CCardHeader>
+          <CCardHeader>Form Edit Akun Kurir</CCardHeader>
           <CCardBody>
             <CRow>
               <CCol xs={12}>
@@ -241,7 +241,7 @@ const EditKurir = () => {
           <CCardFooter>
             <CRow>
               <CCol md={1}>
-                <Link to={`/admin/kurir`}>
+                <Link to={`/kurir`}>
                   <CButton color="danger" variant="outline" className="ms-2" title="Back">
                     Back
                   </CButton>
@@ -254,7 +254,7 @@ const EditKurir = () => {
                   </CButton>
                 ) : (
                   <CButton color="primary" variant="outline" type="submit">
-                    Submit
+                    Update
                   </CButton>
                 )}
               </CCol>
@@ -268,4 +268,5 @@ const EditKurir = () => {
     </>
   )
 }
+
 export default EditKurir

@@ -98,3 +98,5 @@ Route::get('/keuangan/kurir', [KeuanganController::class, 'getDataKeuangan']);
 Route::get('/pemilik/income', [PemilikController::class, 'getOwnerIncome']);
 Route::get('/pemilik/minggu', [PemilikController::class, 'getDataPerMinggu']);
 Route::get('/pemilik/bulan', [PemilikController::class, 'getDataPerBulan']);
+
+Route::get('/catatan-penjualan', [PenjualanController::class, 'getCatatanPenjual']);

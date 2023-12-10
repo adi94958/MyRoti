@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penghasilan', function (Blueprint $table) {
-            $table->bigIncrements('id_penghasilan');
-            $table->integer('id_kurir')->constrained('kurirs', 'id_kurir');  
-            $table->date('tanggal_pengiriman')->default(now());
-            $table->float('penghasilan');
+        Schema::table('transaksi', function (Blueprint $table) {  
+            $table->integer('id_kurir');             
         });
     }
 
@@ -24,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penghasilan');
+        //
     }
 };

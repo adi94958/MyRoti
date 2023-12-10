@@ -27,7 +27,6 @@ import { useNavigate } from 'react-router-dom'
 
 const Pengiriman = () => {
   const [data, setData] = useState([])
-  const [dataRekomendasi, setDataRekomendasi] = useState([])
   const [searchText, setSearchText] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
@@ -36,7 +35,6 @@ const Pengiriman = () => {
 
   useEffect(() => {
     handleDataTransaksi()
-    handleDataRekomendasiRoti()
   }, [])
 
   function handleDataTransaksi() {
@@ -44,18 +42,6 @@ const Pengiriman = () => {
       .get('http://localhost:8000/api/koordinator/transaksi')
       .then((response) => {
         setData(response.data)
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-      })
-  }
-
-  function handleDataRekomendasiRoti() {
-    axios
-      .get('http://localhost:8000/api/rekomendasi')
-      .then((response) => {
-        setDataRekomendasi(response.data)
-        console.log(response.data)
       })
       .catch((error) => {
         console.error('Error:', error)
