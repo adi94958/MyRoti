@@ -11,9 +11,7 @@ use App\Models\TransaksiRoti;
 
 class PenjualanController extends Controller
 {
-    public function readDataPenjualan()
-    {
-    }
+
 
     public function createRotiBasi($kode_roti, $jumlah_roti, $id_penjualan, $id_transaksi)
     {
@@ -112,5 +110,22 @@ class PenjualanController extends Controller
         } else {
             return response()->json(['message' => 'Transaksi tidak ditemukan']);
         }
+    }
+
+    public function getCatatanPenjual()
+    {
+
+        // return response()->json(['message' => 'Data Penjualan tidak ditemukan']);
+
+        $datas = Transaksi::select('kode_lapak', 'catatan_penjual')
+            ->join('datapenjualan', 'transaksi.id_transaksi', '=', 'datapenjualan.id_transaksi')
+            ->select('transaksi.kode_lapak', 'datapenjualan.catatan_penjual')
+            ->get();
+
+        if($datas->isEmpty()){
+            return response()->json(['message' => 'Data Penjualan tidak ditemukan']);
+        }
+
+        return response()->json($datas, 200);
     }
 }
