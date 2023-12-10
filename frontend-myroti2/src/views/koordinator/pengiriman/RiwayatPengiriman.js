@@ -154,10 +154,10 @@ const RiwayatPengiriman = () => {
                       </CButton>
                     </CInputGroup>
                   </CCol>
-                  <CCol md={2} xs={3}>
+                  <CCol md={2} xs={3} className="text-end mt-1">
                     <CFormLabel>Rows Per Page:</CFormLabel>
                   </CCol>
-                  <CCol md={2} xs={3}>
+                  <CCol md={2} xs={3} className="text-end">
                     <CFormSelect
                       className="form-select"
                       value={itemsPerPage}

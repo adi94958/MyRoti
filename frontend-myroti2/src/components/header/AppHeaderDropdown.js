@@ -19,10 +19,11 @@ import {
   cilSettings,
   cilTask,
   cilUser,
+  cilAccountLogout,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import avatar8 from './../../assets/images/avatars/avatarWa.jpeg'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -86,7 +87,7 @@ const AppHeaderDropdown = () => {
           </CDropdownItem>
         )}
         <CDropdownItem onClick={handleLogOut}>
-          <CIcon icon={cilBell} className="me-2" />
+          <CIcon icon={cilAccountLogout} className="me-2" />
           Sign Out
         </CDropdownItem>
       </CDropdownMenu>

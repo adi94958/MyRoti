@@ -26,12 +26,14 @@ const FormTambahKurir = () => {
     nama: 0,
     username: 0,
     password: 0,
+    no_telp: 0,
   })
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     nama: '',
     username: '',
     password: '',
+    no_telp: '',
     area: null,
   })
 
@@ -77,6 +79,16 @@ const FormTambahKurir = () => {
     }
   }
 
+  const handleTelpChange = (e) => {
+    const inputValue = e.target.value
+    if (inputValue.length <= 25) {
+      setFormData({ ...formData, no_telp: inputValue })
+      setCount({ ...count, no_telp: inputValue.length })
+    } else {
+      setFormData({ ...formData, no_telp: inputValue.slice(0, 25) })
+    }
+  }
+
   const handleAreaChange = (e) => {
     const inputValue = e.target.value
     setFormData({ ...formData, area: inputValue })
@@ -90,6 +102,7 @@ const FormTambahKurir = () => {
       username: formData.username,
       password: formData.password,
       area_id: formData.area,
+      no_telp: formData.no_telp,
       user_type: 'kurir',
     }
     console.log(newUser)
@@ -164,6 +177,19 @@ const FormTambahKurir = () => {
                     onChange={handlePasswordChange}
                   />
                   <CInputGroupText size="sm">{count.password}/25</CInputGroupText>
+                </CInputGroup>
+              </CCol>
+              <CCol xs={12}>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    name="No Telp"
+                    placeholder="No Telp"
+                    floatingLabel="No Telp"
+                    value={formData.no_telp}
+                    required
+                    onChange={handleTelpChange}
+                  />
+                  <CInputGroupText size="sm">{count.no_telp}/25</CInputGroupText>
                 </CInputGroup>
               </CCol>
               <CCol xs={12}>

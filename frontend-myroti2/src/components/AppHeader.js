@@ -107,7 +107,9 @@ const AppHeader = () => {
           </CHeaderNav>
           <CHeaderNav>
             <CNavItem>
-              <span className="bigger-text">{Login.nama}</span>
+              <span style={{ fontFamily: 'sans-serif', fontSize: '18px', color: '#333' }}>
+                {Login.nama}
+              </span>
             </CNavItem>
           </CHeaderNav>
           <CHeaderNav className="">

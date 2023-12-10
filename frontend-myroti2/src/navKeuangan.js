@@ -14,15 +14,20 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
+  cilMoney,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const navKeuangan = [
   {
+    component: CNavTitle,
+    name: 'Kelola Keuangan',
+  },
+  {
     component: CNavItem,
     name: 'Dashboard',
     to: '/keuangan',
-    icon: <CIcon icon={cilBurger} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
   },
 ]
 

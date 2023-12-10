@@ -16,7 +16,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import logo from '../../../assets/images/MyRoti.png'
+import logo from '../../../assets/images/MyRotiLogo.png'
 import axios from 'axios'
 
 const Login = () => {
@@ -152,7 +152,12 @@ const Login = () => {
     }
   }
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div
+      className="min-vh-100 d-flex flex-row align-items-center"
+      style={{
+        background: 'linear-gradient(90deg, #f56040, #fcdfd9, #ffffff)',
+      }}
+    >
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>
@@ -195,10 +200,10 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="bg-warning py-5" style={{ width: '44%' }}>
+              <CCard className="py-5" style={{ backgroundColor: '#f56040', width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <img src={logo} alt="MyRoti Logo" />
+                    <img src={logo} alt="MyRoti Logo" style={{ width: '70%', height: 'auto' }} />
                   </div>
                 </CCardBody>
               </CCard>
