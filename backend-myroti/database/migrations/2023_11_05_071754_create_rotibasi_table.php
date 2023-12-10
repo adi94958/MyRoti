@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('rotibasi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_penjualan')->constrained('datapenjualan', 'id_penjualan');
-            $table->integer('kode_roti');
+            $table->foreignId('id_penjualan')->nullable();
+            $table->foreign('id_penjualan')->references('id_penjualan')->on('datapenjualan')->onDelete("cascade");
+            $table->foreignId('kode_roti')->nullable();
+            $table->foreign('kode_roti')->references('kode_roti')->on('dataroti')->onDelete('set null');
             $table->integer('jumlah_roti');
         });
     }

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('datapenjualan', function (Blueprint $table) {
             $table->bigIncrements('id_penjualan');
-            $table->foreignId('id_transaksi')->constrained('transaksi', 'id_transaksi');
+            $table->foreignId('id_transaksi')->nullable();
+            $table->foreign('id_transaksi')->references('id_transaksi')->on('transaksi')->onDelete("cascade");
             $table->date('tanggal_pengambilan')->default(now());;
             $table->integer('total_harga')->nullable();
             $table->integer('total_dengan_rotibasi')->nullable();
