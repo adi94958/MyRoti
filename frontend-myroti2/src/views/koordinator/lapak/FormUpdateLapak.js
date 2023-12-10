@@ -26,6 +26,7 @@ const FormUpdateRoti = () => {
   const [namaLapak, setNamaLapak] = useState('')
   const [kodeLapak, setKodeLapak] = useState('')
   const [alamat, setAlamat] = useState('')
+  const [noTelp, setNoTelp] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [isKurirDisabled, setIsKurirDisabled] = useState(false)
@@ -38,6 +39,7 @@ const FormUpdateRoti = () => {
     setSelectedArea(dataLapak.area_id)
     setSelectedKurir(dataLapak.id_kurir)
     setKodeLapak(dataLapak.kode_lapak)
+    setNoTelp(dataLapak.no_telp)
     handleArea()
     handleKurir(dataLapak.area_id)
   }, [])
@@ -111,6 +113,7 @@ const FormUpdateRoti = () => {
     const area_id = parseInt(selectedArea, 10)
     const updateLapak = {
       nama_lapak: namaLapak,
+      no_telp: noTelp,
       id_kurir: selectedKurir,
       area_id: area_id,
       alamat_lapak: alamat,
@@ -169,6 +172,18 @@ const FormUpdateRoti = () => {
                     defaultValue={namaLapak}
                     required
                     onChange={(e) => setNamaLapak(e.target.value)}
+                  />
+                </CInputGroup>
+              </CCol>
+              <CCol xs={12}>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    name="NoTelp"
+                    placeholder="No Telp"
+                    floatingLabel="No Telp"
+                    defaultValue={noTelp}
+                    required
+                    onChange={(e) => setNoTelp(e.target.value)}
                   />
                 </CInputGroup>
               </CCol>

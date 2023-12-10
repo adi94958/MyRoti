@@ -42,6 +42,20 @@ class DataKurirController extends Controller
         return response()->json($kurir, 200);
     }
 
+    public function getDataKurir($id_kurir)
+    {
+        $kurir = Kurir::with('Area_Distribusi')->where('id_kurir', $id_kurir)->first();
+    
+        if (!$kurir) {
+            return response()->json(['message' => 'Kurir not found'], 404);
+        }
+
+        $kurir->password = Crypt::decryptString($kurir->password);
+
+        return response()->json($kurir, 200);
+    }
+    
+
     public function registerKurir(Request $request)
     {
         // Validasi input
@@ -126,17 +140,7 @@ class DataKurirController extends Controller
             return response()->json(['message' => 'Kurir tidak ditemukan'], 404);
         }
 
-        $lapaks = Lapak::where('id_kurir', $id_kurir)->get();
-
-        foreach ($lapaks as $lapak) {
-            $transaksi = Transaksi::where('kode_lapak', $lapak->kode_lapak)->get();
-
-            foreach ($transaksi as $transaksi1) {
-                $transaksi1->delete();
-            }
-
-            $lapak->delete();
-        }
+        $kurir->Lapak()->update(['id_kurir' => null]);
 
         $kurir->delete();
 

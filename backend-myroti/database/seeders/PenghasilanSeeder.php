@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use Illuminate\Support\Carbon;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,7 +17,7 @@ class PenghasilanSeeder extends Seeder
             'penghasilan' => 100000,
             'tanggal_pengiriman' => Carbon::today(), // Set the date as today
         ]);
-        
+
         DB::table('penghasilan')->insert([
             'id_kurir' => 1,
             'penghasilan' => 100000,

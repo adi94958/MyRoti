@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('penghasilan', function (Blueprint $table) {
             $table->bigIncrements('id_penghasilan');
-            $table->integer('id_kurir')->constrained('datapenjualan', 'id_penjualan');  
+            $table->integer('id_kurir')->constrained('kurirs', 'id_kurir');  
             $table->date('tanggal_pengiriman')->default(now());
             $table->float('penghasilan');
         });

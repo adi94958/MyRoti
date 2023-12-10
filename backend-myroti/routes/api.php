@@ -15,6 +15,7 @@ use App\Http\Controllers\DataKeuanganController;
 use App\Http\Controllers\DataPemilikController;
 use App\Http\Controllers\PemilikController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\RiwayatTransaksiController;
 
 /*
@@ -65,6 +66,8 @@ Route::post('/koordinator/transaksi/create/{id}', [TransaksiController::class, '
 Route::delete('/koordinator/transaksi/delete/{id_transaksi}', [TransaksiController::class, 'deleteTransaksi']);
 Route::get('/koordinator/{path}', [TransaksiController::class, 'getImage']);
 
+Route::get('/rekomendasi', [RekomendasiController::class, 'readRiwayatPenjualan']);
+
 Route::get('/area', [AreaController::class, 'readArea']);
 
 Route::get('/pemilik', [DataPemilikController::class, 'readDataPemilik']);
@@ -81,9 +84,12 @@ Route::post('/kurir/penjualan/{id}', [PenjualanController::class, 'createPenjual
 // Kurir routes here
 
 Route::get('/kurir/riwayat', [RiwayatTransaksiController::class, 'RiwayatTransaksiKurir']);
+
+
 Route::get('/kurir/riwayat-transaksi/{id}', [RiwayatTransaksiController::class, 'detailRoti']);
 Route::get('/kurir/datapenjualan', [RiwayatTransaksiController::class, 'readDataPenjualan']);
 Route::get('/kurir/penghasilan/{id}', [DataKurirController::class, 'getPenghasilan']);
+Route::get('/kurir/edit/{id}', [DataKurirController::class, 'getDataKurir']);
 
 // Keuangan routes here
 Route::get('/keuangan/kurir', [KeuanganController::class, 'getDataKeuangan']);
@@ -92,3 +98,5 @@ Route::get('/keuangan/kurir', [KeuanganController::class, 'getDataKeuangan']);
 Route::get('/pemilik/income', [PemilikController::class, 'getOwnerIncome']);
 Route::get('/pemilik/minggu', [PemilikController::class, 'getDataPerMinggu']);
 Route::get('/pemilik/bulan', [PemilikController::class, 'getDataPerBulan']);
+
+Route::get('/catatan-penjualan', [PenjualanController::class, 'getCatatanPenjual']);

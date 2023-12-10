@@ -12,12 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transaksi', function (Blueprint $table) {
-            $table->bigIncrements('id_transaksi');       
-            $table->foreignId('kode_lapak')->constrained('lapak', 'kode_lapak');
-            $table->integer('id_kurir');    
+            $table->bigIncrements('id_transaksi');
+            $table->foreignId('kode_lapak')->nullable();
+            $table->foreign('kode_lapak')->references('kode_lapak')->on('lapak')->onDelete('set null');
+            $table->integer('id_kurir');
             $table->string('bukti_pengiriman')->nullable();
             $table->date('tanggal_pengiriman')->default(now());
-            $table->enum('status', ['ready', 'on delivery', 'delivered', 'finished']);  
+            $table->enum('status', ['ready', 'on delivery', 'delivered', 'finished']);
         });
     }
 

@@ -1,20 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilBell,
-  cilBurger,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDescription,
-  cilDrop,
-  cilEnvelopeLetter,
-  cilNotes,
-  cilPencil,
-  cilPuzzle,
-  cilSpeedometer,
-  cilStar,
-} from '@coreui/icons'
+import { cilCarAlt, cilMoney, cilNotes } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const navKurir = [
@@ -23,27 +9,22 @@ const navKurir = [
     name: 'Kelola Pengiriman',
   },
   {
-    component: CNavGroup,
-    name: 'Pengiriman',
-    to: '/kurir',
-    icon: <CIcon icon={cilEnvelopeLetter} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Pengiriman Roti',
-        to: '/kurir/pengiriman',
-      },
-      {
-        component: CNavItem,
-        name: 'Penerimaan Uang Roti',
-        to: 'kurir/daftar-pengiriman',
-      },
-      {
-        component: CNavItem,
-        name: 'Riwayat Pengiriman',
-        to: 'kurir/riwayat',
-      },
-    ],
+    component: CNavItem,
+    name: 'Pengiriman Roti',
+    to: '/kurir/pengiriman',
+    icon: <CIcon icon={cilCarAlt} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Penerimaan Uang Roti',
+    to: '/kurir/daftar-pengiriman',
+    icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Riwayat Pengiriman',
+    to: '/kurir/riwayat',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
   },
 ]
 

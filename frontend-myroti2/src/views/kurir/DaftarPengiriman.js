@@ -24,6 +24,10 @@ import {
   CInputGroup,
   CRow,
   CCol,
+  CPagination,
+  CPaginationItem,
+  CFormLabel,
+  CFormSelect,
 } from '@coreui/react'
 import { cilPen, cilSearch } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -32,41 +36,59 @@ import { useNavigate } from 'react-router-dom'
 const DaftarPengiriman = () => {
   const navigate = useNavigate()
   const [modalRoti, setModalRoti] = useState(false)
+  const [roti, setRoti] = useState([])
   const [modalRotiBasi, setModalRotiBasi] = useState(false)
   const [loading, setLoading] = useState(false)
   const [dataRotiDipilih, setDataRotiDipilih] = useState([])
-  const [message, setMessage] = useState('')
   const [searchText, setSearchText] = useState('')
-  const [formData, setFormData] = useState({
-    id_transaksi: '',
-    catatan_penjual: '',
-    total_harga: '',
-    total_dengan_rotibasi: '',
-    uang_setoran: '',
-  })
+  const [formData, setFormData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [dataTransaksi, setDataTransaksi] = useState([])
+  const [catatanNtotalHarga, setCatatanNtotalHarga] = useState([])
+  const itemsPerPageOptions = [10, 25, 50, dataTransaksi.length] // Jumlah data per halaman
 
   const [idKurir, setKurirId] = useState('')
   useEffect(() => {
-    const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
-    setKurirId(infoLogin.id)
-    handleDataTransaksi()
+    fetchData()
   }, [])
+
+  const fetchData = async () => {
+    try {
+      // Get infoLogin from localStorage
+      const infoLogin = JSON.parse(localStorage.getItem('dataLogin'))
+
+      setKurirId(infoLogin.id)
+
+      const response = await axios.get('http://localhost:8000/api/kurir/transaksi')
+
+      setDataTransaksi(response.data)
+
+      const initCatatanNtotalHarga = response.data.map((transaksi) => ({
+        id_transaksi: transaksi.id_transaksi,
+        catatan_penjual: '',
+        total_dengan_rotibasi: 0,
+      }))
+      setCatatanNtotalHarga(initCatatanNtotalHarga)
+
+      response.data.map((transaksi) => {
+        const initRoti = transaksi.transaksi_roti.map((roti) => ({
+          id_transaksi: roti.id_transaksi,
+          kode_roti: roti.roti.kode_roti,
+          harga_satuan_roti: roti.roti.harga_satuan_roti,
+          jumlah_roti: 0,
+          jumlah_roti_dikirim: roti.jumlah_roti,
+        }))
+        setFormData(initRoti)
+      })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
 
   function handleModalRoti(lapak) {
     setModalRoti(true)
     setDataRotiDipilih(lapak.transaksi_roti)
-  }
-
-  const [dataTransaksi, setDataTransaksi] = useState([])
-  function handleDataTransaksi() {
-    axios
-      .get('http://localhost:8000/api/kurir/transaksi')
-      .then((response) => {
-        setDataTransaksi(response.data)
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error)
-      })
   }
 
   function handleModalRotiBasi(lapak) {
@@ -97,29 +119,42 @@ const DaftarPengiriman = () => {
   })
 
   const [inputDataRotiBasi, setInputDataRotiBasi] = useState([])
-  const handleJumlahRotiBasi = (item, event, index) => {
+  const handleJumlahRotiBasi = (roti, event) => {
+    setRoti(roti)
     const inputValue = event.target.value
-    const jumlahRoti = inputValue !== '' ? parseInt(inputValue, 10) : 0 // Mengonversi nilai input menjadi integer, atau set nilai 0 jika input kosong
-    const newData = [...inputDataRotiBasi]
-    newData[index] = {
-      ...newData[index],
-      jumlah_roti: jumlahRoti,
-      kode_roti: item.kode_roti,
-      harga_satuan_roti: item.roti.harga_satuan_roti,
-      id_transaksi: item.id_transaksi,
-    }
-    setInputDataRotiBasi(newData)
+    const jumlahRoti = inputValue !== '' ? parseInt(inputValue, 10) : 0
+
+    setInputDataRotiBasi((prevData) => {
+      const newData = prevData.map((existingRoti) => {
+        if (existingRoti.kode_roti === roti.kode_roti) {
+          return {
+            ...existingRoti,
+            jumlah_roti: jumlahRoti,
+          }
+        }
+        return existingRoti
+      })
+      if (!newData.some((existingRoti) => existingRoti.kode_roti === roti.kode_roti)) {
+        newData.push({
+          kode_roti: roti.kode_roti,
+          harga_satuan_roti: roti.roti.harga_satuan_roti,
+          id_transaksi: roti.id_transaksi,
+          jumlah_roti: jumlahRoti,
+          stok_roti: roti.jumlah_roti,
+        })
+      }
+      return newData
+    })
   }
 
   const handleCloseRotiBasi = () => {
-    setInputDataRotiBasi([])
     setModalRotiBasi(false)
   }
 
-  const simpanRotiBasi = () => {
-    const isValid = inputDataRotiBasi.every(
-      (item, index) => item.jumlah_roti <= dataRotiDipilih[index].jumlah_roti,
-    )
+  const simpanRotiBasi = (roti) => {
+    const isValid = inputDataRotiBasi.every((item) => {
+      return item.stok_roti >= item.jumlah_roti
+    })
 
     if (isValid) {
       const totalHargaRotiBasi = inputDataRotiBasi.reduce((total, roti) => {
@@ -127,36 +162,65 @@ const DaftarPengiriman = () => {
         return total + hargaRoti
       }, 0)
 
-      const newDataTotalHargaRotiBasi = {
-        ...formData,
-        total_dengan_rotibasi: totalHargaRotiBasi,
-      }
-
-      setFormData(newDataTotalHargaRotiBasi)
+      setCatatanNtotalHarga((prevData) => {
+        const newData = prevData.map((existingRoti) => {
+          if (existingRoti.id_transaksi === roti.id_transaksi) {
+            return {
+              ...existingRoti,
+              total_dengan_rotibasi: totalHargaRotiBasi,
+            }
+          }
+          return existingRoti
+        })
+        return newData
+      })
       setModalRotiBasi(false)
       navigate('/kurir/daftar-pengiriman')
     } else {
-      alert(
-        'Ada jumlah roti yang melebihi stok yang tersedia atau memiliki nilai 0. Silakan periksa kembali jumlah roti yang dimasukkan.',
-      )
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        },
+      })
+      Toast.fire({
+        icon: 'error',
+        title: 'Maaf! anda melebihi stok roti yang tersedia',
+      })
     }
   }
 
   const handleSubmit = async (item) => {
-    const kodeRotiArray = inputDataRotiBasi.map((roti) => roti.kode_roti)
-    const jumlahRotiArray = inputDataRotiBasi.map((roti) => roti.jumlah_roti)
+    const kodeRotiArray = formData.map((roti) => {
+      if (roti.id_transaksi === item.id_transaksi) {
+        return roti.kode_roti
+      }
+    })
+    const jumlahRotiArray = formData.map((roti) => {
+      if (roti.id_transaksi === item.id_transaksi) {
+        return roti.jumlah_roti
+      }
+    })
 
+    const dataTrans = catatanNtotalHarga.find(
+      (transaksi) => transaksi.id_transaksi === item.id_transaksi,
+    )
+    const catatan = dataTrans.catatan_penjual === '' ? '-' : dataTrans.catatan_penjual
     const informasiPenjualan = {
       kode_roti: kodeRotiArray,
       jumlah_roti: jumlahRotiArray,
-      catatan_penjual: formData.catatan_penjual,
+      catatan_penjual: catatan,
       total_harga: item.totalHargaRoti,
-      total_dengan_rotibasi: formData.total_dengan_rotibasi,
-      uang_setoran: item.totalHargaRoti - formData.total_dengan_rotibasi,
+      total_dengan_rotibasi: dataTrans.total_dengan_rotibasi,
+      uang_setoran: item.totalHargaRoti - dataTrans.total_dengan_rotibasi,
     }
-
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:8000/api/kurir/penjualan/${item.id_transaksi}`,
         informasiPenjualan,
       )
@@ -171,16 +235,38 @@ const DaftarPengiriman = () => {
         }
       })
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        const resMessage =
-          (error.response && error.response.data && error.response.data.message) ||
-          error.message ||
-          error.toString()
-        setMessage(resMessage)
-      }
       setLoading(false)
     }
   }
+
+  const handleInputCatatanChange = (event, data) => {
+    setCatatanNtotalHarga((prevData) => {
+      const newData = prevData.map((existingData) => {
+        if (existingData.id_transaksi === data.id_transaksi) {
+          return {
+            ...existingData,
+            catatan_penjual: event.target.value,
+          }
+        }
+        return existingData
+      })
+      return newData
+    })
+  }
+
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex =
+    itemsPerPage === dataTransaksi.length ? dataTransaksi.length : startIndex + itemsPerPage
+  const paginatedData = filteredData.slice(startIndex, endIndex)
+
+  const handleItemsPerPageChange = (value) => {
+    setCurrentPage(1)
+    setItemsPerPage(value)
+  }
+
+  const startRange = startIndex + 1
+  const endRange = Math.min(startIndex + itemsPerPage, filteredData.length)
+  const isDataEmpty = filteredData.length === 0
 
   return (
     <>
@@ -202,6 +288,22 @@ const DaftarPengiriman = () => {
                   </CButton>
                 </CInputGroup>
               </CCol>
+              <CCol md={2} xs={3}>
+                <CFormLabel>Rows Per Page:</CFormLabel>
+              </CCol>
+              <CCol md={2} xs={3}>
+                <CFormSelect
+                  className="form-select"
+                  value={itemsPerPage}
+                  onChange={(e) => handleItemsPerPageChange(parseInt(e.target.value))}
+                >
+                  {itemsPerPageOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option === dataTransaksi.length ? 'All' : option}
+                    </option>
+                  ))}
+                </CFormSelect>
+              </CCol>
             </CRow>
           </CForm>
           <CTable striped bordered responsive>
@@ -220,17 +322,17 @@ const DaftarPengiriman = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {filteredData.length === 0 ? (
+              {paginatedData.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="text-center">
+                  <td colSpan="10" className="text-center">
                     Tidak ada data.
                   </td>
                 </tr>
               ) : (
-                filteredData.map((lapak, index) => {
+                paginatedData.map((lapak, index) => {
                   return (
                     <CTableRow key={index}>
-                      <CTableDataCell>{index + 1}</CTableDataCell>
+                      <CTableDataCell>{startIndex + index + 1}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.nama_lapak}</CTableDataCell>
                       <CTableDataCell>{lapak.lapak.alamat_lapak}</CTableDataCell>
                       <CTableDataCell>{lapak.tanggal_pengiriman}</CTableDataCell>
@@ -263,10 +365,8 @@ const DaftarPengiriman = () => {
                         <CFormTextarea
                           id="catatan"
                           name="catatan"
-                          value={formData.catatan_penjual}
-                          onChange={(e) =>
-                            setFormData({ ...formData, catatan_penjual: e.target.value })
-                          }
+                          value={catatanNtotalHarga.catatan_penjual}
+                          onChange={(e) => handleInputCatatanChange(e, lapak)}
                           placeholder="Masukkan catatan Anda di sini..."
                         />
                       </CTableDataCell>
@@ -288,6 +388,79 @@ const DaftarPengiriman = () => {
               )}
             </CTableBody>
           </CTable>
+          <CRow className="mt-2 mb-2">
+            <CCol md={4} xs={8}>
+              Total Rows: {filteredData.length} Page: {startRange} of {endRange}
+            </CCol>
+          </CRow>
+          <CPagination
+            activepage={currentPage}
+            pages={Math.ceil(filteredData.length / itemsPerPage)}
+            onActivePageChange={setCurrentPage}
+            align="center"
+            doublearrows="false"
+          >
+            <CPaginationItem
+              onClick={() => !isDataEmpty && setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1 || isDataEmpty}
+              style={{ cursor: isDataEmpty ? 'default' : 'pointer' }}
+            >
+              Prev
+            </CPaginationItem>
+
+            {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => {
+              const pageIndex = index + 1
+              const totalPages = Math.ceil(filteredData.length / itemsPerPage)
+
+              // Display three consecutive pages centered around the current page
+              if (
+                (pageIndex >= currentPage - 1 && pageIndex <= currentPage + 1) ||
+                totalPages <= 3 ||
+                (currentPage === 1 && pageIndex <= 3) ||
+                (currentPage === totalPages && pageIndex >= totalPages - 2)
+              ) {
+                return (
+                  <CPaginationItem
+                    key={pageIndex}
+                    active={pageIndex === currentPage}
+                    onClick={() => setCurrentPage(pageIndex)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {pageIndex}
+                  </CPaginationItem>
+                )
+              }
+
+              // Display ellipses for pages before the current page
+              if (pageIndex === 1 && currentPage > 2) {
+                return (
+                  <CPaginationItem key={pageIndex} disabled style={{ cursor: 'default' }}>
+                    ...
+                  </CPaginationItem>
+                )
+              }
+
+              // Display ellipses for pages after the current page
+              if (pageIndex === totalPages && currentPage < totalPages - 1) {
+                return (
+                  <CPaginationItem key={pageIndex} disabled style={{ cursor: 'default' }}>
+                    ...
+                  </CPaginationItem>
+                )
+              }
+
+              return null
+            })}
+            <CPaginationItem
+              onClick={() => !isDataEmpty && setCurrentPage(currentPage + 1)}
+              disabled={
+                currentPage === Math.ceil(filteredData.length / itemsPerPage) || isDataEmpty
+              }
+              style={{ cursor: isDataEmpty ? 'default' : 'pointer' }}
+            >
+              Next
+            </CPaginationItem>
+          </CPagination>
         </CCardBody>
       </CCard>
       <CModal
@@ -332,6 +505,7 @@ const DaftarPengiriman = () => {
         </CModalFooter>
       </CModal>
       {/* Modal roti basi */}
+
       <CModal
         backdrop="static"
         visible={modalRotiBasi}
@@ -364,7 +538,10 @@ const DaftarPengiriman = () => {
                         size="sm"
                         name="jumlah_roti"
                         value={
-                          (inputDataRotiBasi[index] && inputDataRotiBasi[index].jumlah_roti) ?? 0
+                          (inputDataRotiBasi.find((item) => item.kode_roti === roti.kode_roti) &&
+                            inputDataRotiBasi.find((item) => item.kode_roti === roti.kode_roti)
+                              .jumlah_roti) ??
+                          0
                         }
                         onChange={(e) => handleJumlahRotiBasi(roti, e, index)}
                         required
@@ -385,7 +562,7 @@ const DaftarPengiriman = () => {
               <CSpinner color="info" size="sm" />
             </CButton>
           ) : (
-            <CButton color="primary" onClick={simpanRotiBasi}>
+            <CButton color="primary" onClick={() => simpanRotiBasi(roti)}>
               Selesai
             </CButton>
           )}

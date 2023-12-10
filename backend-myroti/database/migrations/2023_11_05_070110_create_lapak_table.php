@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('nama_lapak', 50);
             $table->string('alamat_lapak', 100);
             $table->string('no_telp', 15)->nullable();
-            $table->foreignId('id_kurir')->constrained('kurirs', 'id_kurir');
-            $table->foreignId('area_id')->constrained('areadistribusi', 'area_id');
+            $table->foreignId('id_kurir')->nullable();
+            $table->foreign('id_kurir')->references('id_kurir')->on('kurirs')->onDelete('set null');
+            $table->foreignId('area_id')->nullable();
+            $table->foreign('area_id')->references('area_id')->on('areadistribusi');
             $table->enum('status', ['enable', 'disable'])->default('enable');
             $table->softDeletes();
             $table->timestamps();

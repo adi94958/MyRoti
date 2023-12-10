@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Roti;
 use App\Models\Transaksi;
+use App\Models\TransaksiRoti;
 use Illuminate\Http\Request;
 
 class DataRotiController extends Controller
@@ -69,12 +70,6 @@ class DataRotiController extends Controller
 
         if (!$roti) {
             return response()->json(['message' => 'Data roti tidak ditemukan'], 404);
-        }
-
-        $transaksi = Transaksi::where('kode_roti', $kode_roti)->get();
-
-        foreach ($transaksi as $transaksi1) {
-            $transaksi1->delete();
         }
 
         $roti->delete();
