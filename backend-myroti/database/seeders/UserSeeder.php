@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
         ]);
         DB::table('admins')->insert([
             'username' => 'admin',
-            'password' => Crypt::encryptString('admin2'),
+            'password' => Crypt::encryptString('admin'),
             'user_type' => 'admin',
             'created_at' => Carbon::now()->subDays(15),
             'updated_at' => Carbon::now(),
