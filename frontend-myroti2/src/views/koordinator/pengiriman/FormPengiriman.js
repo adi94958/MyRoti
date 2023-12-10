@@ -25,97 +25,131 @@ import {
   CModalBody,
   CModalFooter,
   CModalTitle,
+  CFormTextarea,
 } from '@coreui/react'
 import { cilTrash, cilBurger } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 const FormPengiriman = () => {
+  const [dataRoti, setDataRoti] = useState([])
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const [dataRekomendasi, setDataRekomendasi] = useState([])
   const [modalRoti, setModalRoti] = useState(false)
+
   const [formData, setFormData] = useState({
     tanggal: new Date().toLocaleDateString(), // Mendapatkan tanggal sekarang dalam format lokal
     kode_lapak: '',
     nama_lapak: '',
     nama_kurir: '',
   })
-  const [inputDataRotiArray, setInputDataRotiArray] = useState([])
+  //const [inputDataRotiArray, setInputDataRotiArray] = useState([])
   const [dataArray, setDataArray] = useState([])
 
   useEffect(() => {
-    const dataTransaksi = JSON.parse(localStorage.getItem('dataTransaksi'))
-    console.log(dataTransaksi)
-    setFormData({
-      ...formData,
-      kode_lapak: dataTransaksi.kode_lapak,
-      nama_lapak: dataTransaksi.nama_lapak,
-      nama_kurir: dataTransaksi.nama_kurir,
-    })
-  }, [])
+    const fetchData = async () => {
+      try {
+        // First useEffect logic
+        const dataTransaksi = JSON.parse(localStorage.getItem('dataTransaksi'))
+        setFormData({
+          ...formData,
+          kode_lapak: dataTransaksi.kode_lapak,
+          nama_lapak: dataTransaksi.nama_lapak,
+          nama_kurir: dataTransaksi.nama_kurir,
+        });
 
-  const [dataRoti, setDataRoti] = useState([])
-  const handleRotiModal = () => {
-    setModalRoti(true)
-    axios
-      .get('http://localhost:8000/api/koordinator/dataroti')
-      .then((response) => {
-        console.log(response.data)
-        setDataRoti(response.data)
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error)
-      })
-  }
+        const responseRekomendasi = await axios.get('http://localhost:8000/api/rekomendasi');
+        console.log('Rekomendasi', responseRekomendasi.data);
 
-  const handleJumlahRoti = (item, event, index) => {
+        const filteredData = responseRekomendasi.data.filter((transaksi) => {
+          return transaksi.kode_lapak === dataTransaksi.kode_lapak;
+        });
+
+        const mappedFilteredData = filteredData.map((transaksi) => ({
+          kode_lapak: transaksi.kode_lapak,
+          kode_roti: transaksi.kode_roti,
+          jumlah_roti_transaksi: transaksi.jumlah_roti_transaksi,
+          jumlah_roti_rotibasi: transaksi.jumlah_roti_rotibasi,
+          calculated_value: transaksi.calculated_value,
+        }));
+        console.log('data filter', mappedFilteredData);
+        setDataRekomendasi(mappedFilteredData);
+
+        // Second useEffect logic
+        const responseRoti = await axios.get('http://localhost:8000/api/koordinator/dataroti');
+        const initRoti = responseRoti.data.map((roti) => ({
+          kode_roti: roti.kode_roti,
+          nama_roti: roti.nama_roti,
+          stok_roti: roti.stok_roti,
+          rasa_roti: roti.rasa_roti,
+          harga_satuan_roti: roti.harga_satuan_roti,
+          jumlah_roti_dikirim: 0,
+        }));
+
+        if (mappedFilteredData.length > 0) {
+          const dataRecom = initRoti.map((existingRoti) => {
+            const matchedRoti = mappedFilteredData.find((roti) => roti.kode_roti === existingRoti.kode_roti);
+
+            if (matchedRoti) {
+              return {
+                ...existingRoti,
+                jumlah_roti_dikirim: matchedRoti.calculated_value,
+              };
+            }
+            return existingRoti;
+          });
+
+          setDataRoti(dataRecom);
+        } else {
+          // Handle the case where mappedFilteredData is empty
+          const randomIndices = shuffleArray(Array.from({ length: initRoti.length }, (_, index) => index)).slice(0, 10);
+
+          randomIndices.forEach((index) => {
+            initRoti[index].jumlah_roti_dikirim = 5;
+          });
+          setDataRoti(initRoti);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures the effect runs only once on mount
+
+  const handleRotiModal = async () => {
+    setModalRoti(true);
+  };
+
+  const handleJumlahRoti = (item, event) => {
     const inputValue = event.target.value
     const jumlahRoti = inputValue !== '' ? parseInt(inputValue, 10) : 0
 
-    setInputDataRotiArray((prevData) => {
+    setDataRoti((prevData) => {
       const newData = prevData.map((existingItem) => {
-        // Jika kode roti sudah ada dalam array, lakukan pembaruan
         if (existingItem.kode_roti === item.kode_roti) {
           return {
             ...existingItem,
-            jumlah_roti: jumlahRoti,
-            kode_roti: item.kode_roti,
-            nama_roti: item.nama_roti,
-            rasa_roti: item.rasa_roti,
-            harga_satuan_roti: item.harga_satuan_roti,
-            stok_roti: item.stok_roti,
-            // tambahkan properti lain yang perlu diperbarui
+            jumlah_roti_dikirim: jumlahRoti,
           }
         }
-        // Jika kode roti belum ada dalam array, tambahkan item baru
         return existingItem
       })
-
-      // Jika kode roti belum ada dalam array, tambahkan item baru
-      if (!newData.some((existingItem) => existingItem.kode_roti === item.kode_roti)) {
-        newData.push({
-          jumlah_roti: jumlahRoti,
-          kode_roti: item.kode_roti,
-          nama_roti: item.nama_roti,
-          rasa_roti: item.rasa_roti,
-          harga_satuan_roti: item.harga_satuan_roti,
-          stok_roti: item.stok_roti,
-        })
-      }
-
-      console.log(newData) // Output yang diperbarui
+      console.log("newData", newData)
       return newData
     })
   }
 
   const tambahRoti = () => {
-    const isValid = inputDataRotiArray.every((item) => {
-      const stokRoti = dataRoti.find((roti) => roti.kode_roti === item.kode_roti).stok_roti
-      return item.jumlah_roti <= stokRoti && item.jumlah_roti > 0
+    const isValid = dataRoti.every((item) => {
+      return item.jumlah_roti_dikirim <= item.stok_roti
     })
+    console.log(isValid)
 
     if (isValid) {
-      const newDataArray = inputDataRotiArray.filter((item) => item.jumlah_roti > 0)
+      const newDataArray = dataRoti.filter((item) => item.jumlah_roti_dikirim > 0)
+      console.log("newDataArray :", newDataArray)
       setDataArray(newDataArray)
       setModalRoti(false)
       navigate('/pengiriman/kelola/kirim')
@@ -139,7 +173,7 @@ const FormPengiriman = () => {
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 7000,
+        timer: 5000,
         timerProgressBar: true,
         didOpen: (toast) => {
           toast.onmouseenter = Swal.stopTimer
@@ -149,7 +183,7 @@ const FormPengiriman = () => {
       Toast.fire({
         icon: 'warning',
         title:
-          'Ada jumlah roti yang melebihi stok yang tersedia atau jumlah roti belum diisi. Silakan periksa kembali jumlah roti yang dimasukan!',
+          'Mohon maaf! Ada jumlah roti yang melebihi stok yang tersedia.',
       })
     }
   }
@@ -235,6 +269,21 @@ const FormPengiriman = () => {
     navigate('/pengiriman/kelola')
   }
 
+  const getRotiQuantity = (dataRoti, kode_roti) => {
+    const matchingRoti = dataRoti.find((item) => item.kode_roti === kode_roti);
+    return matchingRoti ? matchingRoti.jumlah_roti : 5;
+  };
+
+  // Random fill
+
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
   return (
     <>
       <CCard>
@@ -277,6 +326,17 @@ const FormPengiriman = () => {
                       />
                     </CInputGroup>
                   </CCol>
+                  <CCol xs={12}>
+                    <CInputGroup className="mb-3">
+                      <CFormTextarea
+                        name="catatan_penjual"
+                        placeholder="Catatan Penjual"
+                        floatingLabel="Catatan Penjual"
+                        value={formData.nama_kurir}
+                        disabled
+                      />
+                    </CInputGroup>
+                  </CCol>
                 </CRow>
               </CCardBody>
             </CCard>
@@ -284,7 +344,7 @@ const FormPengiriman = () => {
               <CCardHeader>Data Roti</CCardHeader>
               <CCardBody>
                 <CRow>
-                  <CCol md={8} xs={6}>
+                  <CCol md={8} xs={6} className="mb-3">
                     <CButton variant="outline" onClick={handleRotiModal}>
                       <CIcon icon={cilBurger} className="mx-8 me-2" />
                       Pilih Roti
@@ -315,7 +375,7 @@ const FormPengiriman = () => {
                           <CTableDataCell>{index + 1}</CTableDataCell>
                           <CTableDataCell>{item.nama_roti}</CTableDataCell>
                           <CTableDataCell>{item.rasa_roti}</CTableDataCell>
-                          <CTableDataCell>{item.jumlah_roti}</CTableDataCell>
+                          <CTableDataCell>{item.jumlah_roti_dikirim}</CTableDataCell>
                           <CTableDataCell>{item.harga_satuan_roti}</CTableDataCell>
                           <CTableDataCell>
                             <CCol>
@@ -414,12 +474,7 @@ const FormPengiriman = () => {
                         <CFormInput
                           size="sm"
                           name="jumlah_roti"
-                          value={
-                            (inputDataRotiArray.find((item) => item.kode_roti === roti.kode_roti) &&
-                              inputDataRotiArray.find((item) => item.kode_roti === roti.kode_roti)
-                                .jumlah_roti) ??
-                            0
-                          }
+                          value={roti.jumlah_roti_dikirim}
                           onChange={(e) => handleJumlahRoti(roti, e)}
                           required
                         />

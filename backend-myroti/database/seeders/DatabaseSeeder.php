@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AreaSeeder::class);
         $this->call(RotiSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(KurirSeeder::class);
         $this->call(LapakSeeder::class);
         $this->call(TransaksiSeeder::class);
         $this->call(KoordinatorSeeder::class);

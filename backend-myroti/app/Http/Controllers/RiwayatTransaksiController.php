@@ -14,9 +14,11 @@ class RiwayatTransaksiController extends Controller
      */
     public function readDataPenjualan()
 {
-    $datas = DataPenjualan::select('datapenjualan.id_penjualan', 'datapenjualan.tanggal_pengambilan', 'datapenjualan.uang_setoran', 'datapenjualan.id_transaksi', 'transaksi.kode_lapak')
+    $datas = DataPenjualan::select('datapenjualan.tanggal_pengambilan', 'datapenjualan.uang_setoran', 'datapenjualan.id_transaksi', 'lapak.nama_lapak', 'lapak.alamat_lapak', 'transaksi.status', 'transaksi.id_kurir', 'transaksi.tanggal_pengiriman', 'kurirs.nama')
+
         ->join('transaksi', 'datapenjualan.id_transaksi', '=', 'transaksi.id_transaksi')
         ->join('lapak', 'transaksi.kode_lapak', '=', 'lapak.kode_lapak')
+        ->join('kurirs', 'transaksi.id_kurir', '=', 'kurirs.id_kurir')
         ->get();
 
     return response()->json($datas, 200);
