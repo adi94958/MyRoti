@@ -34,7 +34,7 @@ const EditKurir = () => {
     id: '',
     nama: '',
     username: '',
-    password: '',=
+    password: '',
     no_telp: '',
     area_id: '',
     area_distribusi: null,
@@ -114,7 +114,7 @@ const EditKurir = () => {
       setFormData({ ...formData, no_telp: inputValue.slice(0, 25) })
     }
   }
-  
+
   const handleAreaChange = (e) => {
     const inputValue = e.target.value
     setFormData({ ...formData, area: inputValue })
