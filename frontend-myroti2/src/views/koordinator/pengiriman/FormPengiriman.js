@@ -66,14 +66,14 @@ const FormPengiriman = () => {
             kode_lapak: dataTransaksi.kode_lapak,
             nama_lapak: dataTransaksi.nama_lapak,
             nama_kurir: dataTransaksi.nama_kurir,
-            catatan_penjual: filteredDataCatatan[index - 1].catatan_penjual
+            catatan_penjual: filteredDataCatatan[index - 1].catatan_penjual,
           })
         } else {
           setFormData({
             ...formData,
             kode_lapak: dataTransaksi.kode_lapak,
             nama_lapak: dataTransaksi.nama_lapak,
-            nama_kurir: dataTransaksi.nama_kurir
+            nama_kurir: dataTransaksi.nama_kurir,
           })
         }
 
@@ -293,7 +293,7 @@ const FormPengiriman = () => {
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
-        ;[array[i], array[j]] = [array[j], array[i]]
+      ;[array[i], array[j]] = [array[j], array[i]]
     }
     return array
   }
