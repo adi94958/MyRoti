@@ -196,12 +196,12 @@ const DaftarPengiriman = () => {
   }
 
   const handleSubmit = async (item) => {
-    const kodeRotiArray = formData.map((roti) => {
+    const kodeRotiArray = inputDataRotiBasi.map((roti) => {
       if (roti.id_transaksi === item.id_transaksi) {
         return roti.kode_roti
       }
     })
-    const jumlahRotiArray = formData.map((roti) => {
+    const jumlahRotiArray = inputDataRotiBasi.map((roti) => {
       if (roti.id_transaksi === item.id_transaksi) {
         return roti.jumlah_roti
       }
